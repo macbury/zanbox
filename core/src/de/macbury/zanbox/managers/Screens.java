@@ -1,0 +1,47 @@
+package de.macbury.zanbox.managers;
+
+import com.badlogic.gdx.utils.Disposable;
+import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.screens.BaseScreen;
+import de.macbury.zanbox.screens.LoadingScreen;
+import de.macbury.zanbox.screens.PerlinNoiseTestScreen;
+
+/**
+ * Created by macbury on 26.05.14.
+ */
+public class Screens implements Disposable {
+  private Zanbox game;
+  private LoadingScreen loadingScreen;
+  private BaseScreen currentScreen;
+
+  public Screens(Zanbox zanbox) {
+    this.game = zanbox;
+  }
+
+  public void showLoadingScreen() {
+    if (loadingScreen == null) {
+      loadingScreen = new LoadingScreen();
+    }
+
+    enter(loadingScreen);
+  }
+
+  public void showGameScreen() {
+    enter(new PerlinNoiseTestScreen());
+  }
+
+  public void enter(BaseScreen screen) {
+    if (currentScreen != null) {
+      currentScreen.onExit();
+    }
+
+    currentScreen = screen;
+    game.setScreen(currentScreen);
+    currentScreen.onEnter();
+  }
+
+  @Override
+  public void dispose() {
+    loadingScreen.dispose();
+  }
+}
