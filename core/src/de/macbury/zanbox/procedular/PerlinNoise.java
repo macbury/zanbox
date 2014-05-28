@@ -1,7 +1,6 @@
 package de.macbury.zanbox.procedular;
 
-import com.badlogic.gdx.math.MathUtils;
-import de.macbury.zanbox.MyMath;
+import de.macbury.zanbox.utils.MyMath;
 
 import java.util.Random;
 

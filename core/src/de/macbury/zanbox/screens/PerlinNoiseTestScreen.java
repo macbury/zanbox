@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.macbury.zanbox.terrain.WorldBiomeProvider;
+import de.macbury.zanbox.terrain.biome.Biome;
+import de.macbury.zanbox.terrain.biome.Liquid;
+import de.macbury.zanbox.terrain.biome.WorldBiomeProvider;
 
 /**
  * Created by macbury on 26.05.14.
@@ -23,9 +25,8 @@ public class PerlinNoiseTestScreen extends BaseScreen implements InputProcessor 
   private int sy;
 
   public PerlinNoiseTestScreen() {
-    this.worldBiomeProvider = new WorldBiomeProvider(1245);
+    this.worldBiomeProvider = new WorldBiomeProvider(99999);
     this.spriteBatch        = new SpriteBatch();
-
 
     rebuild();
 
@@ -33,19 +34,19 @@ public class PerlinNoiseTestScreen extends BaseScreen implements InputProcessor 
   }
 
   public void rebuild() {
-    int width  = 1024;
-    int height = 1024;
+    int width  = 512;
+    int height = 512;
     this.pixmap = new Pixmap( width, height, Pixmap.Format.RGBA8888 );
     Gdx.app.log("TAG", "REBUILD!");
     for(int x = sx; x < sx + pixmap.getWidth(); x++) {
       for(int y = sy; y < sy + pixmap.getHeight(); y++) {
-        WorldBiomeProvider.Biome biome = worldBiomeProvider.getBiomeAt(x,y);
+        Biome biome = worldBiomeProvider.getBiomeAt(x,y);
         switch (biome) {
           case DESERT:
             pixmap.setColor(Color.YELLOW);
             break;
 
-          case DUNGEON:
+          case MOUNTAINS:
             pixmap.setColor(Color.DARK_GRAY);
             break;
 
@@ -61,6 +62,18 @@ public class PerlinNoiseTestScreen extends BaseScreen implements InputProcessor 
             pixmap.setColor(Color.OLIVE);
             break;
         }
+
+        if (biome != Biome.DESERT) {
+          Liquid liquid = worldBiomeProvider.getLiquid(x,y);
+          if (liquid == Liquid.LAVA) {
+            pixmap.setColor(Color.RED);
+          } else if (liquid == Liquid.DEEP_WATER) {
+            pixmap.setColor(Color.BLUE);
+          } else if (liquid == Liquid.SHALLOW_WATER) {
+            pixmap.setColor(Color.CYAN);
+          }
+        }
+
         pixmap.drawPixel(x-sx,y-sy);
       }
     }

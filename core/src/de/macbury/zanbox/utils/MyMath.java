@@ -1,4 +1,4 @@
-package de.macbury.zanbox;
+package de.macbury.zanbox.utils;
 
 /**
  * Created by macbury on 26.05.14.

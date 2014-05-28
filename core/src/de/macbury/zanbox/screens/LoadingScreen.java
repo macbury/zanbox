@@ -13,7 +13,9 @@ public class LoadingScreen extends BaseScreen {
     Gdx.gl.glClearColor(1, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    if (!Zanbox.assets.update()) {
+    Gdx.app.log("Progress", "Progress:" + Zanbox.assets.getProgress());
+
+    if (Zanbox.assets.update()) {
       Zanbox.screens.showGameScreen();
     }
   }
@@ -50,8 +52,7 @@ public class LoadingScreen extends BaseScreen {
 
   @Override
   public void onEnter() {
-    Zanbox.assets.init();
-    Zanbox.screens.showGameScreen();
+
   }
 
   @Override
