@@ -86,7 +86,7 @@ public class SpriteShader extends BaseShader {
   protected void bindMaterial (final Renderable renderable) {
     if (currentMaterial == renderable.material) return;
 
-    int depthFunc = GL20.GL_LEQUAL;
+    int depthFunc = GL20.GL_LESS;
     float depthRangeNear = 0f;
     float depthRangeFar = 1f;
     boolean depthMask = true;

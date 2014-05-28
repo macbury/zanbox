@@ -11,7 +11,7 @@ public class MovementComponent extends Component {
   public float speed;
 
   public MovementComponent(float speed) {
-    this.speed = 1f;
+    this.speed = speed;
     direction = new Vector3();
   }
 }

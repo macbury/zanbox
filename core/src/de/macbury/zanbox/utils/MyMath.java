@@ -1,9 +1,30 @@
 package de.macbury.zanbox.utils;
 
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import de.macbury.zanbox.level.terrain.chunk.Chunk;
+import de.macbury.zanbox.level.terrain.tiles.Tile;
+
 /**
  * Created by macbury on 26.05.14.
  */
 public class MyMath {
+  private static Vector3 tempA = new Vector3();
+  private static Vector3 tempB = new Vector3();
+
+  public static void positionToTilePosition(Vector3 in, Vector3 out) {
+    out.set(MathUtils.round(in.x / Tile.SIZE), MathUtils.round(in.y / Tile.SIZE), MathUtils.round(in.z / Tile.SIZE));
+  }
+
+  public static void tilePositionToChunkPoistion(Vector3 in, Vector2 out) {
+    out.set(MathUtils.round(in.x / Chunk.SIZE), MathUtils.round(in.z / Chunk.SIZE));
+  }
+
+  public static void positionToChunkPosition(Vector3 in, Vector2 out) {
+    positionToTilePosition(in, tempA);
+    tilePositionToChunkPoistion(tempA, out);
+  }
 
   public static double fastFloor(double d) {
     int i = (int) d;

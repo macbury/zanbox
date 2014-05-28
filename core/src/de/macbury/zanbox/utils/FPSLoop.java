@@ -23,8 +23,8 @@ public class FPSLoop {
 
   public void tick() {
     if (running) {
-      int tick = totalTicks / maxSeconds;
-      if (listener.onFPSLoopTick(this, tick / Gdx.graphics.getFramesPerSecond())) {
+      int tick = totalTicks / maxSeconds / Math.max(Gdx.graphics.getFramesPerSecond(), 1);
+      if (listener.onFPSLoopTick(this, tick)) {
         listener.onFPSLoopFinish(this);
         running = false;
       }

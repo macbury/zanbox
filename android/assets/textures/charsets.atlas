@@ -3,16 +3,23 @@ charsets.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dummy
+sign
   rotate: false
   xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+dummy
+  rotate: false
+  xy: 19, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 1
 dummy
   rotate: false
-  xy: 19, 1
+  xy: 37, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

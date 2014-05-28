@@ -32,8 +32,6 @@ import de.macbury.zanbox.level.terrain.chunk.ChunkRenderable;
  */
 public class GameTestScreen extends BaseScreen {
   private final Renderable chunkRenderable;
-  private final AnimatedSprite3D animatedSprite3D;
-  private RenderContext renderContext;
   private CameraInputController cameraController;
   private Array<BaseSprite3D> sprites;
   private GameLevel gameLevel;
@@ -41,8 +39,6 @@ public class GameTestScreen extends BaseScreen {
   private PerspectiveCamera camera;
 
   public GameTestScreen() {
-    this.renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED));
-    this.modelBatch    = new ModelAndSpriteBatch(renderContext);
     this.gameLevel = new GameLevel(1234);
 
     TextureAtlas terrainAtlas   = Zanbox.assets.get(Assets.TERRAIN_TEXTURE);
@@ -55,7 +51,7 @@ public class GameTestScreen extends BaseScreen {
 
     Animation animation = new Animation(0.25f, charAtlas.findRegions("dummy"));
     animation.setPlayMode(Animation.PlayMode.LOOP);
-    this.animatedSprite3D = modelBatch.build(animation, true, true);
+/*    this.animatedSprite3D = modelBatch.build(animation, true, true);
     animatedSprite3D.set(1,0.5f,1);
     this.sprites = new Array<BaseSprite3D>();
     sprites.add(animatedSprite3D);
@@ -70,10 +66,10 @@ public class GameTestScreen extends BaseScreen {
     }
 
     modelBatch.debug();
-
+*/
 
     MeshAssembler meshAssembler = new MeshAssembler();
-    TextureRegion region        = terrainAtlas.findRegion("light_grass");
+    TextureRegion region        = terrainAtlas.findRegion("debug");
 
     meshAssembler.begin(); {
       for(int x = 0; x < 20; x++) {
@@ -124,23 +120,14 @@ public class GameTestScreen extends BaseScreen {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
     gameLevel.update(delta);
-    cameraController.update();
-    camera.update();
 
-    animatedSprite3D.incStateTime(delta);
-    animatedSprite3D.lookAt(camera.position, Vector3.Y);
-    //animatedSprite3D.setRotation();
-    renderContext.begin(); {
-      modelBatch.begin(camera); {
-        for(Chunk chunk : gameLevel.chunks) {
-          chunk.render(modelBatch);
-        }
-        modelBatch.render(chunkRenderable);
+    gameLevel.renderContext.begin(); {
+      gameLevel.modelBatch.begin(gameLevel.camera); {
+        gameLevel.modelBatch.render(chunkRenderable);
+      } gameLevel.modelBatch.end();
+    } gameLevel.renderContext.end();
 
-        for(BaseSprite3D sprite : sprites)
-          modelBatch.render(sprite);
-      } modelBatch.end();
-    } renderContext.end();
+    gameLevel.render();
   }
 
   @Override

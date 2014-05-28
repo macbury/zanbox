@@ -10,7 +10,6 @@ import de.macbury.zanbox.graphics.sprites.normal.Sprite3D;
 public class SpriteComponent extends Component {
   public Sprite3D sprite;
   public Vector3 offset;
-  public boolean visible;
 
   public SpriteComponent(Sprite3D sprite) {
     this.sprite = sprite;

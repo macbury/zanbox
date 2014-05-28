@@ -62,6 +62,10 @@ public class Chunk implements Disposable, FPSLoop.FPSLoopListener {
     this.chunks = chunks;
   }
 
+  public boolean at(float x, float z, int layer) {
+    return at((int)x, (int)z, layer);
+  }
+
   public boolean at(int x, int z, int layer) {
     return (this.tx == x && this.tz == z && this.level == layer);
   }
