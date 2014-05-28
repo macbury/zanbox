@@ -1,6 +1,5 @@
 package de.macbury.zanbox.managers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.screens.*;

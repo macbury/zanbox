@@ -85,7 +85,7 @@ public class SpriteShader extends BaseShader {
 
   protected void bindMaterial (final Renderable renderable) {
     if (currentMaterial == renderable.material) return;
-    context.setCullFace(GL20.GL_NONE);
+
     int depthFunc = GL20.GL_LEQUAL;
     float depthRangeNear = 0f;
     float depthRangeFar = 1f;
@@ -110,6 +110,7 @@ public class SpriteShader extends BaseShader {
 
     context.setDepthTest(depthFunc, depthRangeNear, depthRangeFar);
     context.setDepthMask(depthMask);
+    context.setCullFace(GL20.GL_NONE);
   }
 
   @Override

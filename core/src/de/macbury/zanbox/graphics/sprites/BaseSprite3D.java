@@ -26,6 +26,9 @@ public abstract class BaseSprite3D {
   protected Material material;
   protected Matrix4 transform   = new Matrix4();
   protected boolean dirty       = true;
+  protected final static Vector3 dir = new Vector3();
+  protected static Vector3 tmp       = new Vector3();
+  protected static Vector3 tmp2      = new Vector3();
 
   public BaseSprite3D(ModelAndSpriteBatch manager) {
     this.manager           = manager;
@@ -73,7 +76,23 @@ public abstract class BaseSprite3D {
     dirty = true;
   }
 
+  public void lookAt (Vector3 position, Vector3 up) {
+    dir.set(position).sub(this.position).nor();
+    setRotation(dir, up);
+  }
+
+  private void setRotation(Vector3 dir, Vector3 up) {
+    tmp.set(up).crs(dir).nor();
+    tmp2.set(dir).crs(tmp).nor();
+    rotation.setFromAxes(tmp.x, tmp2.x, dir.x, tmp.y, tmp2.y, dir.y, tmp.z, tmp2.z, dir.z);
+    dirty = true;
+  }
 
   public abstract Mesh getMesh();
   public abstract Material getMaterial();
+
+  public void set(Vector3 newPos) {
+    this.position.set(newPos);
+    dirty = true;
+  }
 }

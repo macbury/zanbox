@@ -1,4 +1,4 @@
-package de.macbury.zanbox.terrain.biome;
+package de.macbury.zanbox.level.terrain.biome;
 
 import de.macbury.zanbox.utils.MyMath;
 import de.macbury.zanbox.procedular.BrownianNoise3D;

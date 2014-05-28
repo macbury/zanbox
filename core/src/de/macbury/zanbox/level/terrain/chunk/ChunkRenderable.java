@@ -1,4 +1,4 @@
-package de.macbury.zanbox.terrain.chunk;
+package de.macbury.zanbox.level.terrain.chunk;
 
 import com.badlogic.gdx.graphics.g3d.Renderable;
 

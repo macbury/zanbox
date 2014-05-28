@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.managers.Screens;
 import de.macbury.zanbox.managers.Shaders;
+import de.macbury.zanbox.level.GameLevel;
 
 public class Zanbox extends Game {
   public static Assets assets;
   public static Screens screens;
   public static Shaders shaders;
+  public static GameLevel level;
   private FPSLogger fpsLogger;
 
   @Override

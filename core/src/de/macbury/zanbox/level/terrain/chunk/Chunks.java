@@ -1,19 +1,19 @@
-package de.macbury.zanbox.terrain.chunk;
+package de.macbury.zanbox.level.terrain.chunk;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import de.macbury.zanbox.terrain.World;
+import de.macbury.zanbox.level.GameLevel;
 
 /**
  * Created by macbury on 27.05.14.
  */
 public class Chunks extends Array<Chunk> implements Disposable {
   public ChunkGeometryBuilder chunksBuilder;
-  public World world;
+  public GameLevel gameLevel;
 
-  public Chunks(World world) {
-    this.world = world;
-    this.chunksBuilder = new ChunkGeometryBuilder(world);
+  public Chunks(GameLevel gameLevel) {
+    this.gameLevel = gameLevel;
+    this.chunksBuilder = new ChunkGeometryBuilder(gameLevel);
   }
 
   public Chunk getByTilePosition(int tx, int tz, int layer) {

@@ -1,4 +1,4 @@
-package de.macbury.zanbox.terrain.biome;
+package de.macbury.zanbox.level.terrain.biome;
 
 /**
  * Created by macbury on 27.05.14.

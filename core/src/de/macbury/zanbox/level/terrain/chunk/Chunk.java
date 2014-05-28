@@ -1,9 +1,6 @@
-package de.macbury.zanbox.terrain.chunk;
+package de.macbury.zanbox.level.terrain.chunk;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.Renderable;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.utils.FPSLoop;
 

@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.macbury.zanbox.terrain.biome.Biome;
-import de.macbury.zanbox.terrain.biome.Liquid;
-import de.macbury.zanbox.terrain.biome.WorldBiomeProvider;
+import de.macbury.zanbox.level.terrain.biome.Biome;
+import de.macbury.zanbox.level.terrain.biome.Liquid;
+import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 
 /**
  * Created by macbury on 26.05.14.
