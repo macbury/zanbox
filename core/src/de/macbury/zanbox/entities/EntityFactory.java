@@ -28,7 +28,7 @@ public class EntityFactory {
 
   public Entity player() {
     Entity e = level.createEntity();
-    e.addComponent(new PositionComponent(10,0,10));
+    e.addComponent(new PositionComponent(1,0,1));
     e.addComponent(new MovementComponent(3f));
 
     Animation animation = new Animation(0.3f, characterAtlas.findRegions("dummy"), Animation.PlayMode.LOOP);
@@ -43,7 +43,7 @@ public class EntityFactory {
 
   public Entity sign() {
     Entity e = level.createEntity();
-    e.addComponent(new PositionComponent(9,0,9));
+    e.addComponent(new PositionComponent(2,0,2));
 
     SpriteComponent spriteComponent = new SpriteComponent(level.modelBatch.build(characterAtlas.findRegion("sign"), true, true));
     spriteComponent.offset.set(0.5f, -0.5f, 0.5f);

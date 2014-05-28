@@ -45,9 +45,7 @@ public class PlayerSystem extends VoidEntitySystem implements MainInGameUIListen
 
     level.camera.position.set(temp.set(positionComponent.vector).add(0, 6,1));
     level.camera.lookAt(positionComponent.vector);
-
-    level.chunks.getByPosition(positionComponent.vector, 0); //TODO: handle level
-
+    level.worldPosition.set(positionComponent.vector);
    // Gdx.app.log(TAG, "Chunks: " + level.chunks.size);
   }
 

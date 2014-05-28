@@ -24,6 +24,9 @@ public class MyMath {
   public static void positionToChunkPosition(Vector3 in, Vector2 out) {
     positionToTilePosition(in, tempA);
     tilePositionToChunkPoistion(tempA, out);
+    if (in.x < 0 || in.z < 0) {
+      out.sub(1,1);
+    }
   }
 
   public static double fastFloor(double d) {
@@ -47,5 +50,9 @@ public class MyMath {
       return 0.0;
     }
     return value;
+  }
+
+  public static void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
+    out.set(MathUtils.round(in.x * Chunk.SIZE), 0, MathUtils.round(in.y * Chunk.SIZE));
   }
 }

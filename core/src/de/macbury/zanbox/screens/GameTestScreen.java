@@ -12,20 +12,15 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
-import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.graphics.sprites.animated.AnimatedSprite3D;
 import de.macbury.zanbox.graphics.sprites.BaseSprite3D;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
-import de.macbury.zanbox.graphics.sprites.normal.Sprite3D;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
+import de.macbury.zanbox.level.terrain.chunk.ChunkPartRenderable;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.chunk.Chunk;
-import de.macbury.zanbox.level.terrain.chunk.ChunkRenderable;
 
 /**
  * Created by macbury on 27.05.14.
@@ -85,7 +80,7 @@ public class GameTestScreen extends BaseScreen {
     mesh.setVertices(meshAssembler.getVerties());
 
 
-    chunkRenderable = new ChunkRenderable();
+    chunkRenderable = new ChunkPartRenderable();
     chunkRenderable.mesh = mesh;
     chunkRenderable.primitiveType = GL30.GL_TRIANGLES;
     chunkRenderable.meshPartSize   = mesh.getNumIndices();

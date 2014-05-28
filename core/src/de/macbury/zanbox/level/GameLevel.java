@@ -32,6 +32,8 @@ public class GameLevel extends World implements Disposable {
   public WorldBiomeProvider biomeProvider;
   public Chunks chunks;
   public RenderContext renderContext;
+  public Vector3 worldPosition = new Vector3(); // for visibility, chunks and other stuff
+  public int currentLayer;
 
   public GameLevel(int seed) {
     this.biomeProvider = new WorldBiomeProvider(seed);
