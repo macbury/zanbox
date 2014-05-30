@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Pool;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
+import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.utils.MyMath;
@@ -27,6 +28,7 @@ public class TileBuilder extends MeshAssembler {
   private final Vector3 tempA = new Vector3();
   private final Vector3 tempB = new Vector3();
   private final RandomRegion rockRegion;
+  private final GameLevel level;
 
   protected static class RenderablePool extends Pool<ChunkLayerPartRenderable> {
     protected Array<ChunkLayerPartRenderable> obtained = new Array<ChunkLayerPartRenderable>();
@@ -56,8 +58,9 @@ public class TileBuilder extends MeshAssembler {
 
   private RenderablePool pool;
 
-  public TileBuilder() {
+  public TileBuilder(GameLevel level) {
     super();
+    this.level          = level;
     this.pool           = new RenderablePool();
     this.terrainAtlas   = Zanbox.assets.get(Assets.TERRAIN_TEXTURE);
 
@@ -75,6 +78,7 @@ public class TileBuilder extends MeshAssembler {
     super.begin();
     this.using(MeshVertexData.AttributeType.Position);
     this.using(MeshVertexData.AttributeType.TextureCord);
+    this.using(MeshVertexData.AttributeType.Shading);
   }
 
   public ChunkLayerPartRenderable getRenderable() {
@@ -83,6 +87,7 @@ public class TileBuilder extends MeshAssembler {
     mesh.setVertices(verties);
 
     ChunkLayerPartRenderable renderable = pool.obtain();
+    renderable.environment              = level.env;
     renderable.mesh                     = mesh;
     renderable.primitiveType            = GL30.GL_TRIANGLES;
     renderable.meshPartSize             = mesh.getNumIndices();
@@ -107,12 +112,16 @@ public class TileBuilder extends MeshAssembler {
         return terrainAtlas.findRegion("light_grass");
       case Tile.DARK_GRASS:
         return terrainAtlas.findRegion("grass");
+      case Tile.DEEP_WATER:
+        return terrainAtlas.findRegion("water");
+      case Tile.SHALLOW_WATER:
+        return terrainAtlas.findRegion("shallow_water");//TODO: Animated and other type!
       default:
         throw new GdxRuntimeException("Undefined tile id: " + tileID);
     }
   }
 
-  public void topFace(int x, int y, int z, byte tileID) {
+  public void topFace(float x, float y, float z, byte tileID) {//TODO implement static height
     TextureRegion region = regionForTile(tileID);
 
     if (tileID == Tile.ROCK) {
@@ -121,6 +130,12 @@ public class TileBuilder extends MeshAssembler {
       rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
       backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
       y += Tile.SIZE;
+    } else if (tileID == Tile.DEEP_WATER || tileID == Tile.SHALLOW_WATER) {
+      y -= 0.2f;
+      //frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
     }
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }

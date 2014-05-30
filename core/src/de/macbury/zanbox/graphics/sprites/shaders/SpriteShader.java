@@ -11,47 +11,17 @@ import de.macbury.zanbox.managers.Shaders;
 /**
  * Created by macbury on 28.05.14.
  */
-public class SpriteShader extends BaseShader {
-  private final int u_projViewTrans;
-  private final int u_worldTrans;
+public class SpriteShader extends CoreShader {
   private final int u_opacity;
-  private final int u_diffuseTexture;
   private final int u_alphaTest;
-  private Renderable renderable;
-  private boolean initialized;
   private Material currentMaterial;
 
   public static class Inputs {
-    public final static Uniform projViewTrans   = new Uniform("u_projViewTrans");
-    public final static Uniform worldTrans      = new Uniform("u_worldTrans");
     public final static Uniform opacity         = new Uniform("u_opacity", BlendingAttribute.Type);
-    public final static Uniform diffuseTexture  = new Uniform("u_diffuseTexture", TextureAttribute.Diffuse);
     public final static Uniform alphaTest       = new Uniform("u_alphaTest", FloatAttribute.AlphaTest);
   }
 
   public static class Setters {
-    public final static Setter projViewTrans = new Setter() {
-      @Override
-      public boolean isGlobal (BaseShader shader, int inputID) {
-        return true;
-      }
-
-      @Override
-      public void set (BaseShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-        shader.set(inputID, shader.camera.combined);
-      }
-    };
-    public final static Setter worldTrans    = new Setter() {
-      @Override
-      public boolean isGlobal (BaseShader shader, int inputID) {
-        return false;
-      }
-
-      @Override
-      public void set (BaseShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-        shader.set(inputID, renderable.worldTransform);
-      }
-    };
     public final static Setter diffuseTexture = new Setter() {
       @Override
       public boolean isGlobal (BaseShader shader, int inputID) {
@@ -68,20 +38,11 @@ public class SpriteShader extends BaseShader {
   }
 
   public SpriteShader() {
-    this.program     = Zanbox.shaders.get(Shaders.SHADER_SPRITES);
-    u_projViewTrans  = register(Inputs.projViewTrans, Setters.projViewTrans);
-    u_worldTrans     = register(Inputs.worldTrans, Setters.worldTrans);
+    super(Zanbox.shaders.get(Shaders.SHADER_SPRITES));
     u_opacity        = register(Inputs.opacity);
     u_alphaTest      = register(Inputs.alphaTest);
-    u_diffuseTexture = register(Inputs.diffuseTexture, Setters.diffuseTexture);
   }
 
-  @Override
-  public void init() {
-    init(program, renderable);
-    renderable = null;
-    initialized = true;
-  }
 
   protected void bindMaterial (final Renderable renderable) {
     if (currentMaterial == renderable.material) return;
@@ -120,11 +81,6 @@ public class SpriteShader extends BaseShader {
 
     bindMaterial(renderable);
     super.render(renderable);
-  }
-
-  public void setRenderable(Renderable renderable) {
-    if (!initialized)
-      this.renderable = renderable;
   }
 
   @Override

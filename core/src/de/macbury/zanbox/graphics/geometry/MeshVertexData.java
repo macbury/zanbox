@@ -6,21 +6,22 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 
 public class MeshVertexData implements Pool.Poolable {
-
   public static enum AttributeType {
-    Position, Normal, TextureCord, Color
+    Position, Normal, TextureCord, Color, Shading
   }
 
+  public boolean shade;
   public Vector3 position;
   public Vector3 normal;
   public Vector2 uv;
   public Color color;
 
   public MeshVertexData() {
-    position = new Vector3();
-    normal = new Vector3();
-    uv = new Vector2();
-    color = new Color(1,1,1,1);
+    position  = new Vector3();
+    normal    = new Vector3();
+    uv        = new Vector2();
+    color     = new Color(1,1,1,1);
+    shade     = false;
     reset();
   }
 
@@ -30,6 +31,7 @@ public class MeshVertexData implements Pool.Poolable {
     normal.set(0,0,0);
     uv.set(0,0);
     color.set(Color.WHITE);
+    shade = false;
   }
 
 

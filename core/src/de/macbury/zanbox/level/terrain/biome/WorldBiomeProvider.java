@@ -25,7 +25,7 @@ public class WorldBiomeProvider {
     return MyMath.clamp((result + 1.0f) / 2.0f);
   }
 
-  public double getLiquidTypeAt(int x, int z) {
+  public double getLiquidAt(int x, int z) {
     double result = liquidNoise.noise(x * NOISE_SIZE, 0, NOISE_SIZE * z);
     return MyMath.clamp((result + 1.0f) / 2.0f);
   }
@@ -36,24 +36,33 @@ public class WorldBiomeProvider {
   }
 
   public Biome getBiomeAt(int x, int z) {
-    double temp = getTemperatureAt(x, z);
-    double humidity = getHumidityAt(x, z) * temp;
+    double liquid   = getLiquidAt(x,z);
 
-    if (temp >= 0.5d && humidity < 0.3d) {
-      return Biome.DESERT;
-    } else if (humidity >= 0.3d && humidity <= 0.6d && temp >= 0.5d) {
-      return Biome.PLAINS;
-    } else if (temp <= 0.3d && humidity > 0.5d) {
-      return Biome.SNOW;
-    } else if (humidity >= 0.2d && humidity <= 0.6d && temp < 0.5d) {
-      return Biome.MOUNTAINS;
+    if (liquid >= 0.58d && liquid < 0.6d) {
+      return Biome.SHALLOW_WATER;
+    } else if (liquid >= 0.6d && liquid <= 0.7d) {
+      return Biome.DEEP_WATER;
+    } else if (liquid <= 0.1d && liquid >= 0.0d) {
+      return Biome.LAVA;
+    } else {
+      double temp     = getTemperatureAt(x, z);
+      double humidity = getHumidityAt(x, z) * temp;
+      if (temp >= 0.5d && humidity < 0.3d) {
+        return Biome.DESERT;
+      } else if (humidity >= 0.3d && humidity <= 0.6d && temp >= 0.5d) {
+        return Biome.PLAINS;
+      } else if (temp <= 0.3d && humidity > 0.5d) {
+        return Biome.SNOW;
+      } else if (humidity >= 0.2d && humidity <= 0.6d && temp < 0.5d) {
+        return Biome.MOUNTAINS;
+      }
+
+      return Biome.FOREST;
     }
-
-    return Biome.FOREST;
   }
 
   public Liquid getLiquid(int x, int z) {
-    double liquid = getLiquidTypeAt(x,z);
+    double liquid = 0;//getLiquidTypeAt(x,z);
 
     if (liquid >= 0.58d && liquid < 0.6d) {
       return Liquid.SHALLOW_WATER;

@@ -67,9 +67,16 @@ sand
   orig: 32, 32
   offset: 0, 0
   index: -1
-water
+shallow_water
   rotate: false
   xy: 70, 54
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water
+  rotate: false
+  xy: 70, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

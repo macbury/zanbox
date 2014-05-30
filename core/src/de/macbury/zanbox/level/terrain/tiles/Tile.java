@@ -10,4 +10,6 @@ public abstract class Tile {
   public static final byte DARK_GRASS = 2;
   public static final byte SNOW = 3;
   public static final byte ROCK = 4;
+  public static final byte DEEP_WATER = 5;
+  public static final byte SHALLOW_WATER = 6;
 }

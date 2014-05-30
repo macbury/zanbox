@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class MeshAssembler implements Disposable {
 
+  private static final String SHADE_ATTRIBUTE = "a_shade";
   private final Pool<MeshVertexData> meshVertexPool      = Pools.get(MeshVertexData.class);
   private final Pool<MeshVertexIndex> vertexIndeciesPool = Pools.get(MeshVertexIndex.class);
 
@@ -64,6 +65,10 @@ public class MeshAssembler implements Disposable {
 
     if (isUsing(MeshVertexData.AttributeType.Color)) {
       count+=1;
+    }
+
+    if (isUsing(MeshVertexData.AttributeType.Shading)) {
+      count+=2;
     }
 
     return count;
@@ -154,6 +159,15 @@ public class MeshAssembler implements Disposable {
     using(MeshVertexData.AttributeType.Normal);
   }
 
+  public void shade() {
+    currentVertex.shade = true;
+  }
+
+  public void unshade() {
+    currentVertex.shade = true;
+  }
+
+
   public void color(float r, float g, float b, float a) {
     using(MeshVertexData.AttributeType.Color);
     currentVertex.color.set(r, g, b, a);
@@ -175,8 +189,9 @@ public class MeshAssembler implements Disposable {
     this.indices = new short[this.vertexIndexes.size() * 3];
 
     boolean usingTextCord = isUsing(MeshVertexData.AttributeType.TextureCord);
-    boolean usingNormals = isUsing(MeshVertexData.AttributeType.Normal);
-    boolean usingColor = isUsing(MeshVertexData.AttributeType.Color);
+    boolean usingNormals  = isUsing(MeshVertexData.AttributeType.Normal);
+    boolean usingColor    = isUsing(MeshVertexData.AttributeType.Color);
+    boolean usingShade    = isUsing(MeshVertexData.AttributeType.Shading);
 
     int cursor = 0;
     for (MeshVertexIndex index : this.vertexIndexes) {
@@ -209,6 +224,11 @@ public class MeshAssembler implements Disposable {
 
       if (usingColor) {
         this.verties[vertexCursor++] = Color.toFloatBits(vertex.color.r, vertex.color.g, vertex.color.b, vertex.color.a);
+      }
+
+      if (usingShade) {
+        this.verties[vertexCursor++] = vertex.shade ? 1f : 0;
+        this.verties[vertexCursor++] = vertex.shade ? 1 : 0;
       }
     }
   }
@@ -261,6 +281,10 @@ public class MeshAssembler implements Disposable {
       attributes.add(new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE));
     }
 
+    if (isUsing(MeshVertexData.AttributeType.Shading)) {
+      attributes.add(new VertexAttribute(VertexAttributes.Usage.Generic, 2, SHADE_ATTRIBUTE));
+    }
+
     return attributes.toArray(new VertexAttribute[attributes.size()]);
   }
 
@@ -294,8 +318,10 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x, y,  z+depth); // bottom left
     uv(u, v2);
     normal(0,0,1);
+    shade();
     int n2 = this.vertex(x+width, y,  z+depth); //bottom right
     uv(u2, v2);
+    shade();
     normal(0,0,1);
 
     int n3 = this.vertex(x+width,  y+height,  z+depth); //top right
@@ -311,7 +337,7 @@ public class MeshAssembler implements Disposable {
 
   public void backFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2) {
     int n1 = this.vertex(x, y,  z);// bottom left
-
+    shade();
     normal(0,0,-1);
     uv(u, v2);
     int n2 = this.vertex(x, y+height,  z); // top left
@@ -324,6 +350,7 @@ public class MeshAssembler implements Disposable {
 
     n2 = this.vertex(x+width,  y,  z); //bottom right
     indices(n1, n3, n2);
+    shade();
     normal(0,0,-1);
     uv(u2,v2);
   }
@@ -331,11 +358,11 @@ public class MeshAssembler implements Disposable {
   public void leftFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2) {
     int n1 = this.vertex(x, y,  z); // bottom left
     uv(u, v2);
-
+    shade();
     normal(-1,0,0);
     int n2 = this.vertex(x, y,  z+depth); //bottom right
     uv(u2, v2);
-
+    shade();
     normal(-1,0,0);
     int n3 = this.vertex(x, y+height, z+depth); //top right
     uv(u2, v);
@@ -351,6 +378,7 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x+width, y, z); //bottom right
     uv(u2, v2);
     normal(1,0,0);
+    shade();
     int n2 = this.vertex(x+width, y+height, z); //top right
     uv(u2, v);
     normal(1,0,0);
@@ -362,6 +390,7 @@ public class MeshAssembler implements Disposable {
 
     n2 = this.vertex(x+width, y, z+depth); // bottom left
     indices(n1, n3, n2);
+    shade();
     uv(u,v2);
     normal(1,0,0);
   }

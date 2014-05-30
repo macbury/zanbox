@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.GameLevel;
+import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.utils.MyMath;
 
 /**

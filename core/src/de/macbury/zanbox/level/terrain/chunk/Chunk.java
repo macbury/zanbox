@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
+import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.level.terrain.chunk.layers.GroundLayer;
 import de.macbury.zanbox.level.terrain.chunk.layers.Layer;
 import de.macbury.zanbox.level.terrain.tiles.Tile;

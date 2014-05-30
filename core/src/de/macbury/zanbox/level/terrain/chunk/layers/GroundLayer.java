@@ -2,6 +2,7 @@ package de.macbury.zanbox.level.terrain.chunk.layers;
 
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.biome.Biome;
+import de.macbury.zanbox.level.terrain.biome.Liquid;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunk.Chunk;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
@@ -22,7 +23,7 @@ public class GroundLayer extends Layer {
 
     for(int x = 0; x < Chunk.SIZE; x++) {
       for(int z = 0; z < Chunk.SIZE; z++) {
-        Biome biome = provider.getBiomeAt(startX + x, startZ + z);
+        Biome biome   = provider.getBiomeAt(startX + x, startZ + z);
 
         switch (biome) {
           case PLAINS:
@@ -43,6 +44,14 @@ public class GroundLayer extends Layer {
 
           case MOUNTAINS:
             tiles[x][z] = Tile.ROCK;
+          break;
+
+          case DEEP_WATER:
+            tiles[x][z] = Tile.DEEP_WATER;
+          break;
+
+          case SHALLOW_WATER:
+            tiles[x][z] = Tile.SHALLOW_WATER;
           break;
 
           default:

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.Pool;
 import de.macbury.zanbox.graphics.sprites.animated.AnimatedSprite3D;
 import de.macbury.zanbox.graphics.sprites.normal.Sprite3D;
 import de.macbury.zanbox.graphics.sprites.shaders.ShaderProvider;
+import de.macbury.zanbox.level.terrain.WorldEnv;
 
 /**
  * Created by macbury on 27.05.14.
@@ -22,6 +24,9 @@ public class ModelAndSpriteBatch extends ModelBatch {
   private static final String TAG = "Sprite3DManager";
   private Array<Material> materials;
   private Array<Sprite3DCache> spriteCache;
+  private WorldEnv env;
+  private Array<SpriteRenderable> usedRenderables;
+
 
   protected static class SpriteRenderablePool extends Pool<SpriteRenderable> {
     protected Array<SpriteRenderable> obtained = new Array<SpriteRenderable>();
@@ -54,6 +59,7 @@ public class ModelAndSpriteBatch extends ModelBatch {
     super(renderContext, new ShaderProvider());
     materials   = new Array<Material>();
     spriteCache = new Array<Sprite3DCache>();
+    usedRenderables = new Array<SpriteRenderable>();
   }
 
   public Sprite3D build(TextureRegion region, boolean isStatic, boolean transparent) {
@@ -109,10 +115,20 @@ public class ModelAndSpriteBatch extends ModelBatch {
 
   public void render(BaseSprite3D sprite) {
     SpriteRenderable renderable  = spriteRenderablePool.obtain();
+    renderable.environment       = env;
     renderable.build(sprite);
     render(renderable);
+    usedRenderables.add(renderable);
   }
 
+  @Override
+  public void end() {
+    super.end();
+    for(SpriteRenderable renderable : usedRenderables) {
+      spriteRenderablePool.free(renderable);
+    }
+    usedRenderables.clear();
+  }
 
   @Override
   public void dispose() {
@@ -121,12 +137,22 @@ public class ModelAndSpriteBatch extends ModelBatch {
     }
     spriteCache.clear();
     materials.clear();
+    spriteRenderablePool.flush();
     super.dispose();
   }
 
   public void debug() {
     Gdx.app.log(TAG, "Materials: "+materials.size);
     Gdx.app.log(TAG, "Sprite cache: "+spriteCache.size);
+  }
+
+
+  public void setEnv(WorldEnv env) {
+    this.env = env;
+  }
+
+  public WorldEnv getEnv() {
+    return env;
   }
 
 }

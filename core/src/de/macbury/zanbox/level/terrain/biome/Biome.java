@@ -8,5 +8,8 @@ public enum Biome {
   SNOW,
   DESERT,
   FOREST,
-  PLAINS;
+  PLAINS,
+  SHALLOW_WATER,
+  DEEP_WATER,
+  LAVA;
 }

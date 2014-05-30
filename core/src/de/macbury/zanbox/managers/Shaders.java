@@ -18,7 +18,7 @@ public class Shaders extends ShaderManager {
 
   public Shaders() {
     super(Assets.SHADERS_PREFIX, Zanbox.assets);
-    ShaderProgram.pedantic = false;
+    ShaderProgram.pedantic = true;
     add(SHADER_EMPTY, "empty.vert.glsl", "empty.frag.glsl");
     add(SHADER_DEFAULT, "default.vert.glsl", "default.frag.glsl");
 
