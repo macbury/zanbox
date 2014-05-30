@@ -27,9 +27,9 @@ public class MeshAssembler implements Disposable {
   private ArrayList<MeshVertexData.AttributeType> attributeTypes;
   private boolean started;
   private MeshVertexData currentVertex;
-  private float[] verties;
-  private short[] indices;
-  private ArrayList<VertexAttribute> attributes;
+  protected float[] verties;
+  protected short[] indices;
+  protected ArrayList<VertexAttribute> attributes;
 
   public MeshAssembler() {
     this.vertexsList      = new ArrayList<MeshVertexData>();

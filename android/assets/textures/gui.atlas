@@ -1,19 +1,20 @@
 
 gui.png
+size: 162,244
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-touchpad_background
-  rotate: false
-  xy: 1, 83
-  size: 160, 160
-  orig: 160, 160
-  offset: 0, 0
-  index: -1
 joystick_left
   rotate: false
-  xy: 1, 1
+  xy: 2, 2
   size: 80, 80
   orig: 80, 80
+  offset: 0, 0
+  index: -1
+touchpad_background
+  rotate: false
+  xy: 2, 84
+  size: 160, 160
+  orig: 160, 160
   offset: 0, 0
   index: -1

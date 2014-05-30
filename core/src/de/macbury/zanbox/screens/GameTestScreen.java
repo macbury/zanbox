@@ -18,7 +18,7 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.sprites.BaseSprite3D;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
-import de.macbury.zanbox.level.terrain.chunk.ChunkPartRenderable;
+import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.level.GameLevel;
 
@@ -80,7 +80,7 @@ public class GameTestScreen extends BaseScreen {
     mesh.setVertices(meshAssembler.getVerties());
 
 
-    chunkRenderable = new ChunkPartRenderable();
+    chunkRenderable = new ChunkLayerPartRenderable();
     chunkRenderable.mesh = mesh;
     chunkRenderable.primitiveType = GL30.GL_TRIANGLES;
     chunkRenderable.meshPartSize   = mesh.getNumIndices();

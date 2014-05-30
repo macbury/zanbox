@@ -2,20 +2,28 @@ package de.macbury.zanbox.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import de.macbury.zanbox.graphics.stage.InGameStage;
 import de.macbury.zanbox.level.GameLevel;
+import sun.plugin2.util.SystemUtil;
+
+import java.util.Date;
 
 /**
  * Created by macbury on 28.05.14.
  */
 public class GameScreen extends BaseScreen {
 
+  private CameraInputController cameraController;
   private InGameStage gameStage;
   private GameLevel gameLevel;
 
   public GameScreen() {
-    this.gameLevel = new GameLevel(1234);
+    this.gameLevel = new GameLevel((int)new Date().getTime());
     this.gameStage = new InGameStage();
+
+    //cameraController = new CameraInputController(gameLevel.camera);
+
     gameStage.setListener(gameLevel.playerSystem);
 
   }

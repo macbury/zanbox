@@ -14,19 +14,28 @@ public class MyMath {
   private static Vector3 tempB = new Vector3();
 
   public static void positionToTilePosition(Vector3 in, Vector3 out) {
-    out.set(MathUtils.round(in.x / Tile.SIZE), MathUtils.round(in.y / Tile.SIZE), MathUtils.round(in.z / Tile.SIZE));
+    out.set(MathUtils.floor(in.x / Tile.SIZE), MathUtils.floor(in.y / Tile.SIZE), MathUtils.floor(in.z / Tile.SIZE));
   }
 
   public static void tilePositionToChunkPoistion(Vector3 in, Vector2 out) {
-    out.set(MathUtils.round(in.x / Chunk.SIZE), MathUtils.round(in.z / Chunk.SIZE));
+    out.set(MathUtils.floor(in.x / Chunk.SIZE), MathUtils.floor(in.z / Chunk.SIZE));
   }
 
   public static void positionToChunkPosition(Vector3 in, Vector2 out) {
     positionToTilePosition(in, tempA);
     tilePositionToChunkPoistion(tempA, out);
-    if (in.x < 0 || in.z < 0) {
-      out.sub(1,1);
-    }
+  }
+
+  public static void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
+    out.set(MathUtils.floor(in.x * Chunk.SIZE), 0, MathUtils.floor(in.y * Chunk.SIZE));
+  } 
+  public static void tilePositionToPosition(Vector3 in, Vector3 out) {
+    out.set(MathUtils.floor(in.x * Tile.SIZE), MathUtils.floor(in.y * Tile.SIZE), MathUtils.floor(in.z * Tile.SIZE));
+  }
+
+  public static void chunkPositionToPosition(Vector2 in, Vector3 out) {
+    chunkPositionToTilePosition(in, tempA);
+    tilePositionToPosition(tempA, out);
   }
 
   public static double fastFloor(double d) {
@@ -52,7 +61,5 @@ public class MyMath {
     return value;
   }
 
-  public static void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
-    out.set(MathUtils.round(in.x * Chunk.SIZE), 0, MathUtils.round(in.y * Chunk.SIZE));
-  }
+
 }
