@@ -13,10 +13,12 @@ import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
 public class ShaderProvider extends BaseShaderProvider {
   private final DefaultShader.Config config;
   private final SpriteShader spriteShader;
+  private final TerrainShader terrainShader;
 
   public ShaderProvider() {
-    this.config       = new DefaultShader.Config();
-    this.spriteShader = new SpriteShader();
+    this.config        = new DefaultShader.Config();
+    this.spriteShader  = new SpriteShader();
+    this.terrainShader = new TerrainShader();
   }
 
   @Override
@@ -24,8 +26,9 @@ public class ShaderProvider extends BaseShaderProvider {
     if (spriteShader.canRender(renderable)) {
       spriteShader.setRenderable(renderable);
       return spriteShader;
-    } else if (ChunkLayerPartRenderable.class.isInstance(renderable)) {
-      return new DefaultShader(renderable, config);
+    } else if (terrainShader.canRender(renderable)) {
+      terrainShader.setRenderable(renderable);
+      return terrainShader;
     }
     throw new GdxRuntimeException( "Unimplemented renderable: "+renderable.getClass().toString());
   }

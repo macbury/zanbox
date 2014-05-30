@@ -35,7 +35,7 @@ public class EntityFactory {
 
     AnimatedSpriteComponent spriteComponent = new AnimatedSpriteComponent(level.modelBatch.build(animation, false, true));
 
-    spriteComponent.offset.set(0.5f, 0.1f, 0.5f);
+    spriteComponent.offset.set(0.5f, 0.5f, 0.5f);
     e.addComponent(spriteComponent);
     level.getManager(Tags.class).register(Tags.PLAYER,e);
     return e;
@@ -46,7 +46,7 @@ public class EntityFactory {
     e.addComponent(new PositionComponent(2,0,2));
 
     SpriteComponent spriteComponent = new SpriteComponent(level.modelBatch.build(characterAtlas.findRegion("sign"), true, true));
-    spriteComponent.offset.set(0.5f, 0.1f, 0.5f);
+    spriteComponent.offset.set(0.5f, 0.5f, 0.5f);
     e.addComponent(spriteComponent);
     return e;
   }

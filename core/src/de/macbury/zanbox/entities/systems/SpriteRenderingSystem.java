@@ -13,6 +13,7 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.entities.components.AnimatedSpriteComponent;
 import de.macbury.zanbox.entities.components.PositionComponent;
 import de.macbury.zanbox.entities.components.SpriteComponent;
+import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 
 /**
@@ -44,13 +45,13 @@ public class SpriteRenderingSystem extends EntityProcessingSystem {
       animatedSpriteComponent.sprite.incStateTime(Gdx.graphics.getDeltaTime());
       temp.set(positionComponent.vector).add(animatedSpriteComponent.offset);
       animatedSpriteComponent.sprite.set(temp);
-      animatedSpriteComponent.sprite.setRotationX(-80);
+      animatedSpriteComponent.sprite.setRotationX(GameCamera.ROTATION);
       //animatedSpriteComponent.sprite.setRotation(temp.set(-0.38f, 0,0));
       batch.render(animatedSpriteComponent.sprite);
     } else {
       temp.set(positionComponent.vector).add(spriteComponent.offset);
       spriteComponent.sprite.set(temp);
-      spriteComponent.sprite.setRotationX(-80);
+      spriteComponent.sprite.setRotationX(GameCamera.ROTATION);
       batch.render(spriteComponent.sprite);
     }
 

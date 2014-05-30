@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
     config.width = 480 * 2;
     config.height = 320 * 2;
-
+    config.samples = 2;
     TexturePacker.Settings settings = new TexturePacker.Settings();
 
     TexturePacker.process(settings, "../../design/input/charset", "./textures", "charset");

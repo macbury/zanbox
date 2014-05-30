@@ -13,6 +13,7 @@ import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.entities.systems.MovementSystem;
 import de.macbury.zanbox.entities.systems.PlayerSystem;
 import de.macbury.zanbox.entities.systems.SpriteRenderingSystem;
+import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunk.Chunks;
@@ -27,7 +28,7 @@ public class GameLevel extends World implements Disposable {
   public SpriteRenderingSystem spriteRenderingSystem;
   public MovementSystem movementSystem;
   public EntityFactory factory;
-  public PerspectiveCamera camera;
+  public GameCamera camera;
   public ModelAndSpriteBatch modelBatch;
   public WorldBiomeProvider biomeProvider;
   public Chunks chunks;
@@ -42,10 +43,8 @@ public class GameLevel extends World implements Disposable {
     this.renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED));
     this.modelBatch    = new ModelAndSpriteBatch(renderContext);
 
-    this.camera        = new PerspectiveCamera(90, Zanbox.viewport.getWidth(), Zanbox.viewport.getHeight());
+    this.camera        = new GameCamera();
 
-    camera.position.set(0,5,5);
-    camera.lookAt(Vector3.Zero);
     camera.update(true);
 
     this.factory      = new EntityFactory(this);

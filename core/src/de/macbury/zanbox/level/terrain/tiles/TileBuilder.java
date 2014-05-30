@@ -26,6 +26,7 @@ public class TileBuilder extends MeshAssembler {
   private final Material tileMaterial;
   private final Vector3 tempA = new Vector3();
   private final Vector3 tempB = new Vector3();
+  private final RandomRegion rockRegion;
 
   protected static class RenderablePool extends Pool<ChunkLayerPartRenderable> {
     protected Array<ChunkLayerPartRenderable> obtained = new Array<ChunkLayerPartRenderable>();
@@ -65,6 +66,8 @@ public class TileBuilder extends MeshAssembler {
 
     Texture terrainTexture = terrainAtlas.getTextures().first();
     this.tileMaterial      = new Material(TextureAttribute.createDiffuse(terrainTexture));
+
+    this.rockRegion        = new RandomRegion(this.terrainAtlas.findRegions("rock"));
   }
 
   @Override
@@ -99,7 +102,7 @@ public class TileBuilder extends MeshAssembler {
       case Tile.SNOW:
         return terrainAtlas.findRegion("water"); //TODO: change this
       case Tile.ROCK:
-        return terrainAtlas.findRegion("rock");
+        return rockRegion.get();
       case Tile.LIGHT_GRASS:
         return terrainAtlas.findRegion("light_grass");
       case Tile.DARK_GRASS:
@@ -111,6 +114,14 @@ public class TileBuilder extends MeshAssembler {
 
   public void topFace(int x, int y, int z, byte tileID) {
     TextureRegion region = regionForTile(tileID);
+
+    if (tileID == Tile.ROCK) {
+      frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      y += Tile.SIZE;
+    }
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }
 

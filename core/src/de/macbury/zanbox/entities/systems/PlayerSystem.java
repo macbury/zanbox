@@ -43,8 +43,9 @@ public class PlayerSystem extends VoidEntitySystem implements MainInGameUIListen
       this.movementComponent = movementMapper.get(player);
     }
 
-    level.camera.position.set(temp.set(positionComponent.vector).add(0, 6,1));
-    level.camera.lookAt(positionComponent.vector);
+    level.camera.position.set(temp.set(positionComponent.vector).add(0, 9, 2));
+    //level.camera.lookAt(positionComponent.vector);
+
     level.worldPosition.set(positionComponent.vector);
    // Gdx.app.log(TAG, "Chunks: " + level.chunks.size);
   }
