@@ -1,5 +1,6 @@
 package de.macbury.zanbox;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -39,6 +40,8 @@ public class Zanbox extends Game {
 
     Gdx.app.log(TAG, "Virtual width: " +  Zanbox.viewport.getWidth());
     Gdx.app.log(TAG, "Virtual height: " +  Zanbox.viewport.getHeight());
+
+    Gdx.app.setLogLevel(Application.LOG_DEBUG);
 	}
 
   @Override

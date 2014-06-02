@@ -54,7 +54,6 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
     renderables.addAll(visibleRenderables);
   }
 
-
   public void cull() {
     rebuildChunkFpsTicker.update();
     totalRenderables.clear();
@@ -79,6 +78,7 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
     for(Chunk chunk : chunksProvider.chunks) {
       if (frustum.boundsInFrustum(chunk.getBoundingBox())) {
         visibleChunks.add(chunk);
+        chunk.setVisible(true);
         if (chunk.needsToRebuildGeometry() && !chunksToRebuild.contains(chunk, true)) {
           chunksToRebuild.add(chunk);
         }
@@ -99,6 +99,8 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
           }
           totalRenderables.add(renderable);
         }
+      } else {
+        chunk.setVisible(false);
       }
       //TODO: find chunksProvider visible on screen!
       //TODO: find chunksProvider around or create

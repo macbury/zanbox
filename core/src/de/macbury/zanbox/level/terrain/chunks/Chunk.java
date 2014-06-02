@@ -15,6 +15,9 @@ import de.macbury.zanbox.utils.MyMath;
  * Created by macbury on 26.05.14.
  */
 public class Chunk implements Disposable {
+  public final Vector3 worldPosition;
+  private boolean visible;
+
   public enum RebuildGeometryMode {
     All, Border, None
   }
@@ -32,6 +35,7 @@ public class Chunk implements Disposable {
 
   public Chunk(int sx, int sz) {
     position         = new Vector2(sx, sz);
+    worldPosition    = new Vector3();
     layers           = new Array<Layer>();
     this.boundingBox = new BoundingBox();
 
@@ -42,6 +46,7 @@ public class Chunk implements Disposable {
     this.boundingBox.set(startB, endB);
 
     layers.add(new GroundLayer(this));
+    worldPosition.set(startB);
   }
 
   public boolean needsToRebuildGeometry() {
@@ -81,6 +86,7 @@ public class Chunk implements Disposable {
 
   @Override
   public void dispose() {
+    Gdx.app.debug(TAG, "Dispose: "+toString());
     for(Layer layer : layers)
       layer.dispose();
     layers.clear();
@@ -117,8 +123,21 @@ public class Chunk implements Disposable {
     this.locked = false;
   }
 
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
   public BoundingBox getBoundingBox() {
     return boundingBox;
+  }
+
+  public String toString() {
+    return "Chunk: " +position.toString() + " locked = " + locked;
   }
 
 }

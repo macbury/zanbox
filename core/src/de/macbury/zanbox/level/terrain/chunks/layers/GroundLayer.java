@@ -106,7 +106,7 @@ public class GroundLayer extends Layer {
     renderable.z                        = sz;
 
     renderable.worldTransform.translate(tempB);
-    Gdx.app.log(TAG, "World location " + tempB.toString());
+    //Gdx.app.log(TAG, "World location " + tempB.toString());
 
     renderable.mesh.calculateBoundingBox(renderable.boundingBox);
     renderable.boundingBox.min.add(tempB).y = -Tile.SIZE/2;

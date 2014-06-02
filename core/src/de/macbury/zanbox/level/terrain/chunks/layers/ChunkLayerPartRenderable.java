@@ -26,6 +26,7 @@ public class ChunkLayerPartRenderable extends Renderable implements Pool.Poolabl
     if (this.mesh != null) {
       mesh.dispose();
     }
+    mesh     = null;
     material = null;
     border   = false;
   }

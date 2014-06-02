@@ -99,6 +99,7 @@ public class TileBuilder extends MeshAssembler {
   }
 
   public void free(ChunkLayerPartRenderable layerPartRenderable) {
+    layerPartRenderable.reset();
     pool.free(layerPartRenderable);
   }
 

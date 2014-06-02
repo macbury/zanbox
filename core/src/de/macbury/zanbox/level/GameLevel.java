@@ -1,14 +1,12 @@
 package de.macbury.zanbox.level;
 
 import com.artemis.World;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.debug.DebugShape;
 import de.macbury.zanbox.debug.FrustrumRenderer;
 import de.macbury.zanbox.entities.EntityFactory;
 import de.macbury.zanbox.entities.managers.Tags;
@@ -17,7 +15,6 @@ import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
-import de.macbury.zanbox.level.terrain.chunk.Chunks;
 import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
@@ -26,7 +23,7 @@ import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
  * Created by macbury on 26.05.14.
  */
 public class GameLevel extends World implements Disposable {
-  public CullingSystem cullingSystem;
+  public ChunksSystem chunksSystem;
   public ChunksRenderables chunksRenderables;
   public ChunksProvider chunksProvider;
   public FrustrumRenderer frustrumRenderer;
@@ -63,7 +60,7 @@ public class GameLevel extends World implements Disposable {
 
     Zanbox.level      = this;
 
-    cullingSystem         = new CullingSystem(this);
+    chunksSystem = new ChunksSystem(this);
     dayNightSystem        = new DayNightSystem();
     movementSystem        = new MovementSystem();
     spriteRenderingSystem = new SpriteRenderingSystem(modelBatch);
@@ -73,7 +70,7 @@ public class GameLevel extends World implements Disposable {
     setSystem(movementSystem);
     setSystem(playerSystem);
     setSystem(spriteRenderingSystem, true);
-    setSystem(cullingSystem);
+    setSystem(chunksSystem);
     setSystem(dayNightSystem);
     initialize();
 
