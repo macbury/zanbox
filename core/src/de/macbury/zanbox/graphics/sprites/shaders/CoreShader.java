@@ -151,7 +151,6 @@ public abstract class CoreShader extends BaseShader {
     program.setUniformf(loc(u_sunLightColor), env.sunLight.color);
     program.setUniformf(loc(u_sunLightDirection), env.sunLight.direction);
     super.render(renderable);
-
   }
 
   @Override

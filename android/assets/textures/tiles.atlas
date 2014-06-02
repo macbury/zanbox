@@ -1,6 +1,6 @@
 
 tiles.png
-size: 120,120
+size: 358,52
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -13,70 +13,77 @@ debug
   index: -1
 debug_big
   rotate: false
-  xy: 2, 88
+  xy: 2, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 dirt
   rotate: false
-  xy: 2, 54
+  xy: 36, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 104, 104
+  xy: 342, 36
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 light_grass
   rotate: false
-  xy: 36, 88
+  xy: 70, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 2, 20
+  xy: 104, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 rock
   rotate: false
-  xy: 36, 54
+  xy: 138, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 rock
   rotate: false
-  xy: 70, 88
+  xy: 172, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 sand
   rotate: false
-  xy: 36, 20
+  xy: 206, 20
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+shadowmap
+  rotate: false
+  xy: 240, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 shallow_water
   rotate: false
-  xy: 70, 54
+  xy: 274, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 water
   rotate: false
-  xy: 70, 20
+  xy: 308, 20
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

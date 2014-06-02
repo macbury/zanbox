@@ -39,7 +39,6 @@ public class Zanbox extends Game {
 
     Gdx.app.log(TAG, "Virtual width: " +  Zanbox.viewport.getWidth());
     Gdx.app.log(TAG, "Virtual height: " +  Zanbox.viewport.getHeight());
-
 	}
 
   @Override
@@ -52,6 +51,6 @@ public class Zanbox extends Game {
   @Override
   public void render() {
     super.render();
-    fpsLogger.log();
+    //fpsLogger.log();
   }
 }

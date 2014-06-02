@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Pool;
@@ -15,9 +16,8 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
+import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.managers.Assets;
-import de.macbury.zanbox.utils.MyMath;
 
 /**
  * Created by macbury on 29.05.14.
@@ -45,6 +45,7 @@ public class TileBuilder extends MeshAssembler {
       renderable.material = null;
       renderable.mesh = null;
       renderable.shader = null;
+      renderable.border = false;
       renderable.worldTransform.idt();
       obtained.add(renderable);
       return renderable;
@@ -87,6 +88,7 @@ public class TileBuilder extends MeshAssembler {
     mesh.setVertices(verties);
 
     ChunkLayerPartRenderable renderable = pool.obtain();
+    renderable.boundingBox              = new BoundingBox();
     renderable.environment              = level.env;
     renderable.mesh                     = mesh;
     renderable.primitiveType            = GL30.GL_TRIANGLES;
@@ -125,17 +127,17 @@ public class TileBuilder extends MeshAssembler {
     TextureRegion region = regionForTile(tileID);
 
     if (tileID == Tile.ROCK) {
-      frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //frontFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //leftFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //rightFace(x, y, z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //backFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
       y += Tile.SIZE;
     } else if (tileID == Tile.DEEP_WATER || tileID == Tile.SHALLOW_WATER) {
       y -= 0.2f;
-      //frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //frontFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //leftFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //rightFace(x, y, z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      //backFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
     }
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }

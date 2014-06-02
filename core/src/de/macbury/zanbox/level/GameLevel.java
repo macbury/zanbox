@@ -1,28 +1,36 @@
 package de.macbury.zanbox.level;
 
 import com.artemis.World;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.debug.DebugShape;
+import de.macbury.zanbox.debug.FrustrumRenderer;
 import de.macbury.zanbox.entities.EntityFactory;
 import de.macbury.zanbox.entities.managers.Tags;
-import de.macbury.zanbox.entities.systems.DayNightSystem;
-import de.macbury.zanbox.entities.systems.MovementSystem;
-import de.macbury.zanbox.entities.systems.PlayerSystem;
-import de.macbury.zanbox.entities.systems.SpriteRenderingSystem;
+import de.macbury.zanbox.entities.systems.*;
 import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunk.Chunks;
+import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
+import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
 
 /**
  * Created by macbury on 26.05.14.
  */
 public class GameLevel extends World implements Disposable {
+  public CullingSystem cullingSystem;
+  public ChunksRenderables chunksRenderables;
+  public ChunksProvider chunksProvider;
+  public FrustrumRenderer frustrumRenderer;
+  public ShapeRenderer shapeRenderer;
   public DayNightSystem dayNightSystem;
   public TileBuilder  tileBuilder;
   public PlayerSystem playerSystem;
@@ -32,27 +40,30 @@ public class GameLevel extends World implements Disposable {
   public GameCamera camera;
   public ModelAndSpriteBatch modelBatch;
   public WorldBiomeProvider biomeProvider;
-  public Chunks chunks;
   public RenderContext renderContext;
-  public Vector3 worldPosition = new Vector3(); // for visibility, chunks and other stuff
+  public Vector3 worldPosition = new Vector3(); // for visibility, chunksProvider and other stuff
   public int currentLayer;
   public WorldEnv env;
-  public GameLevel(int seed) {
-    this.env           = new WorldEnv();
-    this.tileBuilder   = new TileBuilder(this);
-    this.biomeProvider = new WorldBiomeProvider(seed);
-    this.chunks        = new Chunks(this);
-    this.renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED));
-    this.modelBatch    = new ModelAndSpriteBatch(renderContext);
-    this.camera        = new GameCamera();
-    this.modelBatch.setEnv(env);
 
+  public GameLevel(int seed) {
+    this.env                = new WorldEnv();
+    this.tileBuilder        = new TileBuilder(this);
+    this.biomeProvider      = new WorldBiomeProvider(seed);
+    this.renderContext      = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED));
+    this.modelBatch         = new ModelAndSpriteBatch(renderContext);
+    this.camera             = new GameCamera();
+    this.chunksProvider     = new ChunksProvider(this);
+    this.chunksRenderables  = new ChunksRenderables(this);
+    //this.shapeRenderer = new ShapeRenderer();
+    this.modelBatch.setEnv(env);
+    this.frustrumRenderer = new FrustrumRenderer(camera);
     camera.update(true);
 
     this.factory      = new EntityFactory(this);
 
     Zanbox.level      = this;
 
+    cullingSystem         = new CullingSystem(this);
     dayNightSystem        = new DayNightSystem();
     movementSystem        = new MovementSystem();
     spriteRenderingSystem = new SpriteRenderingSystem(modelBatch);
@@ -62,34 +73,42 @@ public class GameLevel extends World implements Disposable {
     setSystem(movementSystem);
     setSystem(playerSystem);
     setSystem(spriteRenderingSystem, true);
+    setSystem(cullingSystem);
     setSystem(dayNightSystem);
     initialize();
 
     factory.player().addToWorld();
     factory.sign().addToWorld();
-
+    chunksProvider.initializeBaseChunks();
   }
 
   public void update(float delta) {
-    camera.update();
-    this.chunks.update(delta);
     setDelta(delta);
     process();
+    camera.update();
   }
 
   public void render() {
     renderContext.begin(); {
       modelBatch.begin(camera); {
-        chunks.render(modelBatch);
+        modelBatch.render(chunksRenderables);
         spriteRenderingSystem.process();
       } modelBatch.end();
     } renderContext.end();
+    /*
+    renderContext.begin(); {
+      shapeRenderer.setProjectionMatrix(camera.combined);
+      renderContext.setDepthTest(GL20.GL_LESS);
+      frustrumRenderer.render(camera);
+      //DebugShape.drawMap(shapeRenderer, chunksProvider);
+    } renderContext.end();*/
   }
 
   @Override
   public void dispose() {
+    chunksProvider.dispose();
+    chunksRenderables.dispose();
     this.biomeProvider = null;
-    this.chunks.dispose();
     tileBuilder.dispose();
     if (Zanbox.level == this)
       Zanbox.level = null;

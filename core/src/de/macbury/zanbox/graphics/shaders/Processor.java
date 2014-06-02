@@ -27,7 +27,7 @@ import com.badlogic.gdx.utils.ObjectMap.Entry;
 /**
  * @author Przemek Muller
  * Processor is a framebuffer that renders into itself.
- * Think of it as a data container for the GPU - you can run various filters (shaders) to modify its data. 
+ * Think of it as a data container for the GPU - you can async various filters (shaders) to modify its data.
  * See ProcessorTest for an example.
  *
  */

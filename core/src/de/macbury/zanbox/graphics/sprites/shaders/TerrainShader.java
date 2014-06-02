@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.terrain.WorldEnv;
-import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
+import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.managers.Shaders;
 
 /**

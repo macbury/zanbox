@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.BaseShaderProvider;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import de.macbury.zanbox.level.terrain.chunk.layers.ChunkLayerPartRenderable;
 
 /**
  * Created by macbury on 28.05.14.

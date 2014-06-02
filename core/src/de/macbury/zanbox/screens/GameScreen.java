@@ -1,6 +1,7 @@
 package de.macbury.zanbox.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import de.macbury.zanbox.graphics.stage.InGameStage;
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 public class GameScreen extends BaseScreen {
 
+  private InputMultiplexer inputMultiplexer;
   private CameraInputController cameraController;
   private InGameStage gameStage;
   private GameLevel gameLevel;
@@ -25,7 +27,9 @@ public class GameScreen extends BaseScreen {
     //cameraController = new CameraInputController(gameLevel.camera);
 
     gameStage.setListener(gameLevel.playerSystem);
-
+    this.inputMultiplexer = new InputMultiplexer();
+    this.inputMultiplexer.addProcessor(gameStage);
+    this.inputMultiplexer.addProcessor(gameLevel.frustrumRenderer);
   }
 
   @Override
@@ -47,7 +51,7 @@ public class GameScreen extends BaseScreen {
 
   @Override
   public void show() {
-    Gdx.input.setInputProcessor(gameStage);
+    Gdx.input.setInputProcessor(inputMultiplexer);
   }
 
   @Override

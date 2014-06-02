@@ -3,7 +3,7 @@ package de.macbury.zanbox.utils;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import de.macbury.zanbox.level.terrain.chunk.Chunk;
+import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
 
 /**
@@ -13,29 +13,29 @@ public class MyMath {
   private static Vector3 tempA = new Vector3();
   private static Vector3 tempB = new Vector3();
 
-  public static void positionToTilePosition(Vector3 in, Vector3 out) {
+  public static void metersToTilePosition(Vector3 in, Vector3 out) {
     out.set(MathUtils.floor(in.x / Tile.SIZE), MathUtils.floor(in.y / Tile.SIZE), MathUtils.floor(in.z / Tile.SIZE));
   }
 
   public static void tilePositionToChunkPoistion(Vector3 in, Vector2 out) {
-    out.set(MathUtils.floor(in.x / Chunk.SIZE), MathUtils.floor(in.z / Chunk.SIZE));
+    out.set(MathUtils.floor(in.x / Chunk.TILE_SIZE), MathUtils.floor(in.z / Chunk.TILE_SIZE));
   }
 
-  public static void positionToChunkPosition(Vector3 in, Vector2 out) {
-    positionToTilePosition(in, tempA);
+  public static void metersToChunkPosition(Vector3 in, Vector2 out) {
+    metersToTilePosition(in, tempA);
     tilePositionToChunkPoistion(tempA, out);
   }
 
   public static void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
-    out.set(MathUtils.floor(in.x * Chunk.SIZE), 0, MathUtils.floor(in.y * Chunk.SIZE));
+    out.set(MathUtils.floor(in.x * Chunk.TILE_SIZE), 0, MathUtils.floor(in.y * Chunk.TILE_SIZE));
   } 
-  public static void tilePositionToPosition(Vector3 in, Vector3 out) {
+  public static void tilePositionToMeters(Vector3 in, Vector3 out) {
     out.set(MathUtils.floor(in.x * Tile.SIZE), MathUtils.floor(in.y * Tile.SIZE), MathUtils.floor(in.z * Tile.SIZE));
   }
 
-  public static void chunkPositionToPosition(Vector2 in, Vector3 out) {
+  public static void chunkPositionToMeters(Vector2 in, Vector3 out) {
     chunkPositionToTilePosition(in, tempA);
-    tilePositionToPosition(tempA, out);
+    tilePositionToMeters(tempA, out);
   }
 
   public static double fastFloor(double d) {
@@ -62,4 +62,13 @@ public class MyMath {
   }
 
 
+  public static Vector3 min(Vector3 minimum, Vector3 maximum) {
+    return tempA.set(minimum.x < maximum.x ? minimum.x : maximum.x, minimum.y < maximum.y ? minimum.y : maximum.y,
+            minimum.z < maximum.z ? minimum.z : maximum.z);
+  }
+
+  public static Vector3 max(Vector3 minimum, Vector3 maximum) {
+    return tempA.set(minimum.x > maximum.x ? minimum.x : maximum.x, minimum.y > maximum.y ? minimum.y : maximum.y,
+            minimum.z > maximum.z ? minimum.z : maximum.z);
+  }
 }

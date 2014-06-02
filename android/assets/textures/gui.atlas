@@ -1,6 +1,6 @@
 
 gui.png
-size: 162,244
+size: 196,244
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -16,5 +16,13 @@ touchpad_background
   xy: 2, 84
   size: 160, 160
   orig: 160, 160
+  offset: 0, 0
+  index: -1
+window_background
+  rotate: false
+  xy: 164, 212
+  size: 32, 32
+  split: 14, 13, 14, 14
+  orig: 32, 32
   offset: 0, 0
   index: -1

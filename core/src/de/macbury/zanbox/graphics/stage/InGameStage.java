@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.*;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.ui.DebugWindow;
 
 /**
  * Created by macbury on 28.05.14.
@@ -52,6 +53,10 @@ public class InGameStage extends Stage {
         InGameStage.this.listener.onPlayerMovementChange(temp.set(Vector3.Zero), InGameStage.this);
       }
     });
+
+    DebugWindow debugWindow = new DebugWindow();
+    addActor(debugWindow);
+    debugWindow.setVisible(true);
   }
 
   public void resize(int width, int height) {
