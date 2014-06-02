@@ -105,6 +105,8 @@ public class TileBuilder extends MeshAssembler {
 
   public TextureRegion regionForTile(byte tileID) {
     switch (tileID) {
+      case Tile.LAVA:
+        return terrainAtlas.findRegion("lava");
       case Tile.SAND:
         return terrainAtlas.findRegion("sand");
       case Tile.SNOW:
@@ -128,10 +130,10 @@ public class TileBuilder extends MeshAssembler {
     TextureRegion region = regionForTile(tileID);
 
     if (tileID == Tile.ROCK) {
-      //frontFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //leftFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //rightFace(x, y, z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //backFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
+      frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+      backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
       y += Tile.SIZE;
     } else if (tileID == Tile.DEEP_WATER || tileID == Tile.SHALLOW_WATER) {
       y -= 0.2f;

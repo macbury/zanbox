@@ -4,13 +4,11 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.math.MathUtils;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.managers.Screens;
 import de.macbury.zanbox.managers.Shaders;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.managers.UISkin;
-import de.macbury.zanbox.utils.MyMath;
 import de.macbury.zanbox.utils.VirtualViewport;
 
 public class Zanbox extends Game {
@@ -23,10 +21,10 @@ public class Zanbox extends Game {
   public static VirtualViewport viewport;
 
   private FPSLogger fpsLogger;
+
   @Override
 	public void create () {
     fpsLogger = new FPSLogger();
-
     viewport  = new VirtualViewport(800, 600);
     assets    = new Assets();
     screens   = new Screens(this);

@@ -23,6 +23,7 @@ import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
  * Created by macbury on 26.05.14.
  */
 public class GameLevel extends World implements Disposable {
+  public final int seed;
   public ChunksSystem chunksSystem;
   public ChunksRenderables chunksRenderables;
   public ChunksProvider chunksProvider;
@@ -43,6 +44,7 @@ public class GameLevel extends World implements Disposable {
   public WorldEnv env;
 
   public GameLevel(int seed) {
+    this.seed               = seed;
     this.env                = new WorldEnv();
     this.tileBuilder        = new TileBuilder(this);
     this.biomeProvider      = new WorldBiomeProvider(seed);

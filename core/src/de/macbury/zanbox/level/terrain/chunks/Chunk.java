@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
 import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
+import de.macbury.zanbox.persister.KryoSystem;
 import de.macbury.zanbox.utils.MyMath;
 
 /**
@@ -25,7 +26,7 @@ public class Chunk implements Disposable {
   public static final float METERS_SIZE = TILE_SIZE * Tile.SIZE;
   private static final String TAG = "Chunk";
   private BoundingBox boundingBox;
-  private Array<Layer> layers;
+  public Array<Layer> layers;
   public Vector2 position; // chunk position
   public ChunksProvider chunksProvider;
 
@@ -44,8 +45,6 @@ public class Chunk implements Disposable {
     Vector3 endB   = new Vector3();
     endB.set(startB).add(METERS_SIZE, Tile.SIZE * 2, METERS_SIZE);
     this.boundingBox.set(startB, endB);
-
-    layers.add(new GroundLayer(this));
     worldPosition.set(startB);
   }
 
@@ -140,4 +139,33 @@ public class Chunk implements Disposable {
     return "Chunk: " +position.toString() + " locked = " + locked;
   }
 
+  public void unload() {
+    dispose();
+  }
+
+  public void load() {
+    if (KryoSystem.exists(this)) {
+      KryoSystem system = new KryoSystem();
+      system.load(this);
+      this.rebuildGeometryMode = RebuildGeometryMode.All;
+    } else {
+      buildLayers();
+      buildTiles();
+      save();
+    }
+  }
+
+  private void buildLayers() {
+    addLayer(new GroundLayer());
+  }
+
+  public void addLayer(Layer layer) {
+    layer.setChunk(this);
+    layers.add(layer);
+  }
+
+  public void save() {
+    KryoSystem kryo = new KryoSystem();
+    kryo.save(this);
+  }
 }

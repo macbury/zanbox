@@ -14,10 +14,11 @@ public class WorldEnv extends Environment {
   public ColorAttribute ambientColor;
 
   public WorldEnv() {
-    this.ambientColor = new ColorAttribute(ColorAttribute.AmbientLight, 0.1f, 0.1f, 0.1f, 1f);
+    this.ambientColor = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
     this.sunLight     = new DirectionalLight();
-    this.sunLight.set(0.9f, 0.9f, 0.9f, -0.5f, -0.5f, -0.5f);
-    this.shadeColor = new Color(0.1f, 0.1f, 0.1f, 0.1f);
+    this.shadeColor   = new Color(0.1f, 0.1f, 0.1f, 0.1f);
+
+    this.sunLight.set(1f, 1f, 1f, 0.5f, -0.5f, -0.5f);
     set(ambientColor);
     add(sunLight);
   }

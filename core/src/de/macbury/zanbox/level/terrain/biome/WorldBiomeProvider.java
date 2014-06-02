@@ -74,4 +74,33 @@ public class WorldBiomeProvider {
 
     return Liquid.NONE;
   }
+  /*
+  public Color get(String layerName, int x, int z) {
+    switch (layerName) {
+      case "Biome":
+        WorldBiomeProvider.Biome biome = biomeProvider.getBiomeAt(x, z);
+        switch (biome) {
+          case DESERT:
+            return Color.YELLOW;
+          case FOREST:
+            return Color.GREEN;
+          case MOUNTAINS:
+            return new Color(240, 120, 120);
+          case PLAINS:
+            return new Color(220, 220, 60);
+          case SNOW:
+            return Color.WHITE;
+          default:
+            return Color.GREY;
+        }
+      case "Humidity":
+        float hum = biomeProvider.getHumidityAt(x, z);
+        return new Color(hum * 0.2f, hum * 0.2f, hum);
+      case "Temperature":
+        float temp = biomeProvider.getTemperatureAt(x, z);
+        return new Color(temp, temp * 0.2f, temp * 0.2f);
+      default:
+        return new Color();
+    }
+  }*/
 }

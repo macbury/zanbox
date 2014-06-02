@@ -30,7 +30,7 @@ public abstract class ChunkTask implements Disposable {
     return new ChunkTask(chunk) {
       @Override
       public void async() {
-        chunk.buildTiles();
+        chunk.load();
       }
     };
   }

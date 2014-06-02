@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.biome.Biome;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
+import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
 import de.macbury.zanbox.utils.MyMath;
@@ -16,8 +17,9 @@ public class GroundLayer extends Layer {
 
   private static final String TAG = "GroundLayer";
 
-  public GroundLayer(Chunk chunk) {
-    super(chunk, BASE_INDEX);
+  public GroundLayer() {
+    super();
+    setIndex(Layer.BASE_INDEX);
   }
 
   @Override
@@ -77,6 +79,10 @@ public class GroundLayer extends Layer {
             tiles[x][z] = Tile.SHALLOW_WATER;
           break;
 
+          case LAVA:
+            tiles[x][z] = Tile.LAVA;
+          break;
+
           default:
             throw new GdxRuntimeException("Undefined biome: " +biome.toString());
         }
@@ -85,12 +91,18 @@ public class GroundLayer extends Layer {
   }
 
   public void buildPart(int sx, int sz, int tileStartX, int tileStartZ, boolean border) {
-    TileBuilder builder = chunk.chunksProvider.level.tileBuilder;
+    ChunksProvider provider = chunk.chunksProvider;
+    TileBuilder builder     = provider.level.tileBuilder;
     builder.begin(); {
       for(int x = 0; x < ChunkLayerPartRenderable.SIZE_IN_TILES; x++) {
         for(int z = 0; z < ChunkLayerPartRenderable.SIZE_IN_TILES; z++) {
-          byte tileID = tiles[x+sx][z+sz];
+          //MyMath.localToWorldTilePosition(this.chunk, tempB.set(x+sx, 0, z+sz), tempA);
 
+          byte tileID = getTileByLocalTilePosition(x+sx, z+sz);
+         // byte tileID2 = getTileByLocalTilePosition(x+sx, z+sz);
+         // if (tileID != tileID2) {
+        //    throw new GdxRuntimeException("Not working");
+        //  }
           builder.topFace(x,index,z, tileID);
         }
       }

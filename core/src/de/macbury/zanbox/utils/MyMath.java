@@ -13,6 +13,16 @@ public class MyMath {
   private static Vector3 tempA = new Vector3();
   private static Vector3 tempB = new Vector3();
 
+  public static void worldToLocalTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
+    tempA.set(in).sub(chunk.position.x, 0, chunk.position.y);
+    out.set(tempA);
+  }
+
+  public static void localToWorldTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
+    tempA.set(in).add(chunk.position.x, 0, chunk.position.y);
+    out.set(tempA);
+  }
+
   public static void metersToTilePosition(Vector3 in, Vector3 out) {
     out.set(MathUtils.floor(in.x / Tile.SIZE), MathUtils.floor(in.y / Tile.SIZE), MathUtils.floor(in.z / Tile.SIZE));
   }

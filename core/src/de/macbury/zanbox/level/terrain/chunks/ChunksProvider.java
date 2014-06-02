@@ -7,10 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
-import de.macbury.zanbox.level.terrain.tiles.Tile;
 import de.macbury.zanbox.utils.MyMath;
 
 import java.util.Comparator;
@@ -20,7 +18,6 @@ import java.util.Comparator;
  */
 public class ChunksProvider implements Disposable {
   private static final String TAG = "ChunkProvider";
-  public GameLevel level;
   private static final int MAX_CHUNKS_IN_MEMORY         = 18;
   public static final Vector2[] CHUNKS_OFFSET_AROUND = {
           new Vector2(-1,1),
@@ -34,6 +31,7 @@ public class ChunksProvider implements Disposable {
   };
   private ChunksThread thread;
   public Array<Chunk> chunks;
+  public GameLevel level;
   private Array<ChunkTask> tasks;
   private Chunk lastChunk;
   private ChunkTask currentTask = null;
@@ -65,20 +63,19 @@ public class ChunksProvider implements Disposable {
       unloadChunksThatExceedLimit();
   }
 
-  public Tile getTile(int tileX, int tileY, int layerIndex) {
+  public byte getTile(int tileX, int tileY, int layerIndex) {
     MyMath.tilePositionToChunkPoistion(tempB.set(tileX, 0, tileY), tempA);
     if (exists(tempA.x, tempA.y)) {
       Chunk chunk = get(tempA.x, tempA.y);
       Layer layer = chunk.getLayer(layerIndex);
 
       if (layer == null) {
-        return null;
+        return 0;
       } else {
-        //layer.getByWorldTilePosition(tileX, tileY);
-        return null;
+        return layer.getTileByWorldTilePosition(tileX, tileY);
       }
     } else {
-      return null;
+      return 0;
     }
   }
 
@@ -140,7 +137,7 @@ public class ChunksProvider implements Disposable {
         Chunk chunk = chunks.get(i);
         if (!chunk.isVisible() && !chunk.isLocked()) {
           chunks.removeIndex(i);
-          chunk.dispose();
+          chunk.unload();
           diff--;
           Gdx.app.debug(TAG, "Unloaded: " + chunk.toString());
         }
@@ -165,6 +162,10 @@ public class ChunksProvider implements Disposable {
   @Override
   public void dispose() {
     thread.interrupt();
+  }
+
+  public byte getTile(float x, float z, int index) {
+    return getTile((int)x, (int)z, index);
   }
 
   private class ChunksThread extends Thread {

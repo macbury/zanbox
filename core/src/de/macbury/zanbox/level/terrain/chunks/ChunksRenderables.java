@@ -84,20 +84,22 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
         }
         Layer layer = chunk.getLayer(level.currentLayer);
 
-        for(ChunkLayerPartRenderable renderable : layer.renderables) {
-          if (frustum.boundsInFrustum(renderable.boundingBox)) {
-            if (firstPart) {
-              minVector.set(renderable.boundingBox.min);
-              maxVector.set(renderable.boundingBox.max);
-              firstPart = false;
-            } else {
-              minVector.set(MyMath.min(renderable.boundingBox.min, minVector));
-              maxVector.set(MyMath.max(renderable.boundingBox.max, maxVector));
-            }
+        if (layer != null) {
+          for(ChunkLayerPartRenderable renderable : layer.renderables) {
+            if (frustum.boundsInFrustum(renderable.boundingBox)) {
+              if (firstPart) {
+                minVector.set(renderable.boundingBox.min);
+                maxVector.set(renderable.boundingBox.max);
+                firstPart = false;
+              } else {
+                minVector.set(MyMath.min(renderable.boundingBox.min, minVector));
+                maxVector.set(MyMath.max(renderable.boundingBox.max, maxVector));
+              }
 
-            visibleRenderables.add(renderable);
+              visibleRenderables.add(renderable);
+            }
+            totalRenderables.add(renderable);
           }
-          totalRenderables.add(renderable);
         }
       } else {
         chunk.setVisible(false);

@@ -17,18 +17,24 @@ public abstract class Layer implements Disposable {
   public Array<ChunkLayerPartRenderable> renderables;
 
   protected Array<ChunkLayerPartRenderable> tempArray;
-  protected byte[][] tiles;
+  public byte[][] tiles;
   protected Chunk chunk;
   protected boolean generatedTiles = false;
   protected final static Vector3 tempA = new Vector3();
   protected final static Vector3 tempB = new Vector3();
 
-  public Layer(Chunk chunk, int layer) {
-    this.index       = layer;
-    this.chunk       = chunk;
+  public Layer() {
     this.renderables = new Array<ChunkLayerPartRenderable>();
     this.tempArray   = new Array<ChunkLayerPartRenderable>();
     this.tiles       = new byte[Chunk.TILE_SIZE][Chunk.TILE_SIZE];
+  }
+
+  public void setChunk(Chunk chunk) {
+    this.chunk = chunk;
+  }
+
+  public void setIndex(int index) {
+    this.index = index;
   }
 
   public void buildTiles(int tileStartX, int tileStartZ) {
@@ -75,5 +81,13 @@ public abstract class Layer implements Disposable {
 
     chunk = null;
     tiles = null;
+  }
+
+  public byte getTileByLocalTilePosition(int tileX, int tileY) {
+    return tiles[tileX][tileY];
+  }
+
+  public byte getTileByWorldTilePosition(int tileX, int tileY) {
+    return getTileByLocalTilePosition((int)(tileX + chunk.position.x),(int)(tileY + chunk.position.y));
   }
 }
