@@ -13,11 +13,17 @@ import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
 import de.macbury.zanbox.utils.MyMath;
+import de.macbury.zanbox.utils.time.BaseTimer;
+import de.macbury.zanbox.utils.time.FrameTickTimer;
+import de.macbury.zanbox.utils.time.TimerListener;
 
 /**
  * Created by macbury on 02.06.14.
  */
-public class ChunksRenderables implements RenderableProvider, Disposable {
+public class ChunksRenderables implements RenderableProvider, Disposable, TimerListener {
+  private static final int REBUILD_GEOMETRY_EVERY_FRAME = 4;
+  private FrameTickTimer rebuildChunkFpsTicker;
+  private Array<Chunk> chunksToRebuild;
   private ChunksProvider chunksProvider;
   private GameLevel level;
   public Array<Chunk> visibleChunks;
@@ -35,7 +41,12 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
     this.visibleChunks      = new Array<Chunk>();
     this.visibleRenderables = new Array<ChunkLayerPartRenderable>();
     this.totalRenderables   = new Array<Renderable>();
+    this.chunksToRebuild    = new Array<Chunk>();
+    this.chunksToRebuild    = new Array<Chunk>();
     this.boundingBox        = new BoundingBox();
+
+    this.rebuildChunkFpsTicker = new FrameTickTimer(REBUILD_GEOMETRY_EVERY_FRAME);
+    this.rebuildChunkFpsTicker.setListener(this);
   }
 
   @Override
@@ -43,7 +54,9 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
     renderables.addAll(visibleRenderables);
   }
 
+
   public void cull() {
+    rebuildChunkFpsTicker.update();
     totalRenderables.clear();
     visibleChunks.clear();
     visibleRenderables.clear();
@@ -66,7 +79,9 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
     for(Chunk chunk : chunksProvider.chunks) {
       if (frustum.boundsInFrustum(chunk.getBoundingBox())) {
         visibleChunks.add(chunk);
-
+        if (chunk.needsToRebuildGeometry() && !chunksToRebuild.contains(chunk, true)) {
+          chunksToRebuild.add(chunk);
+        }
         Layer layer = chunk.getLayer(level.currentLayer);
 
         for(ChunkLayerPartRenderable renderable : layer.renderables) {
@@ -98,5 +113,12 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
   public void dispose() {
     visibleChunks.clear();
     visibleRenderables.clear();
+  }
+
+  @Override
+  public void timerTick(BaseTimer sender) {
+    if (sender == rebuildChunkFpsTicker && chunksToRebuild.size > 0) {
+      chunksToRebuild.pop().reBuildGeometry();
+    }
   }
 }

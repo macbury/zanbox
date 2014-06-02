@@ -1,5 +1,6 @@
 package de.macbury.zanbox.level.terrain.chunks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -34,6 +35,7 @@ public class ChunksProvider implements Disposable {
     this.chunks = new Array<Chunk>();
     this.tasks  = new Array<ChunkTask>();
     this.thread = new ChunksThread();
+    thread.setPriority(Thread.MIN_PRIORITY);
     thread.start();
   }
 
@@ -104,6 +106,8 @@ public class ChunksProvider implements Disposable {
 
   private class ChunksThread extends Thread {
 
+    private static final String TAG = "ChunksThread";
+
     @Override
     public void run() {
       while(!this.isInterrupted()) {
@@ -118,11 +122,17 @@ public class ChunksProvider implements Disposable {
 
         if (currentTask == null) {
           try {
-            Thread.sleep(100);
+            Thread.sleep(250);
           } catch (InterruptedException e) {
             break;
           }
         } else {
+          Gdx.app.debug(TAG, "Processing task...");
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            break;
+          }
           currentTask.async();
 
           synchronized (tasks) {

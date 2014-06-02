@@ -15,7 +15,9 @@ import de.macbury.zanbox.utils.MyMath;
  * Created by macbury on 26.05.14.
  */
 public class Chunk implements Disposable {
-
+  public enum RebuildGeometryMode {
+    All, Border, None
+  }
   public static final int TILE_SIZE = 32;
   public static final float METERS_SIZE = TILE_SIZE * Tile.SIZE;
   private static final String TAG = "Chunk";
@@ -26,6 +28,7 @@ public class Chunk implements Disposable {
 
   private final static Vector3 temp = new Vector3();
   private boolean locked;
+  private RebuildGeometryMode rebuildGeometryMode = RebuildGeometryMode.None;
 
   public Chunk(int sx, int sz) {
     position         = new Vector2(sx, sz);
@@ -41,8 +44,12 @@ public class Chunk implements Disposable {
     layers.add(new GroundLayer(this));
   }
 
+  public boolean needsToRebuildGeometry() {
+    return rebuildGeometryMode != RebuildGeometryMode.None;
+  }
 
-  public void buildGeometry(boolean onlyBorder) {
+  public void reBuildGeometry() {
+    boolean onlyBorder = rebuildGeometryMode == RebuildGeometryMode.Border;
     Gdx.app.log(TAG, onlyBorder ? "Rebuilding: " : "Building: " + position.toString());
     MyMath.chunkPositionToTilePosition(position, temp);
 
@@ -52,18 +59,24 @@ public class Chunk implements Disposable {
     for(Layer layer : layers) {
       layer.buildGeometry(ox, oz, onlyBorder);
     }
+
+    this.rebuildGeometryMode = RebuildGeometryMode.None;
   }
 
-  public void buildTiles(boolean onlyBorder) {
-    Gdx.app.log(TAG, onlyBorder ? "Rebuilding: " : "Building: " + position.toString());
+  public void buildTiles() {
+    Gdx.app.log(TAG, "Building: " + position.toString());
     MyMath.chunkPositionToTilePosition(position, temp);
 
     int ox = (int)temp.x;
     int oz = (int)temp.z;
 
-    for(Layer layer : layers) {
-      layer.buildTiles(ox, oz, onlyBorder);
+
+    for(int i = 0; i < layers.size; i++) {
+      Layer layer = layers.get(i);
+      layer.buildTiles(ox, oz);
     }
+
+    this.rebuildGeometryMode = RebuildGeometryMode.All;
   }
 
   @Override

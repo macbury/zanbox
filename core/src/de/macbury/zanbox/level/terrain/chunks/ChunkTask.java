@@ -30,14 +30,7 @@ public abstract class ChunkTask implements Disposable {
     return new ChunkTask(chunk) {
       @Override
       public void async() {
-        chunk.buildTiles(false);
-        final Chunk chunkCache = chunk;
-        Gdx.app.postRunnable(new Runnable() {
-          @Override
-          public void run() {
-            chunkCache.buildGeometry(false);
-          }
-        });
+        chunk.buildTiles();
       }
     };
   }

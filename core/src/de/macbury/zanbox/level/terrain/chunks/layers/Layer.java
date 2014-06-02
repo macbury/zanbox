@@ -31,7 +31,11 @@ public abstract class Layer implements Disposable {
     this.tiles       = new byte[Chunk.TILE_SIZE][Chunk.TILE_SIZE];
   }
 
-  public void buildTiles(int tileStartX, int tileStartZ, boolean onlyBorder) {
+  public void buildTiles(int tileStartX, int tileStartZ) {
+     generateTiles(tileStartX, tileStartZ);
+  }
+
+  public void buildGeometry(int tileStartX, int tileStartZ, boolean onlyBorder) {
     for(ChunkLayerPartRenderable renderable : renderables) {
       if (onlyBorder) {
         if (renderable.border) {
@@ -49,14 +53,6 @@ public abstract class Layer implements Disposable {
     }
     tempArray.clear();
 
-    if (!generatedTiles) {
-      generatedTiles = true;
-      generateTiles(tileStartX, tileStartZ);
-    }
-
-  }
-
-  public void buildGeometry(int tileStartX, int tileStartZ, boolean onlyBorder) {
     buildRenderables(tileStartX, tileStartZ, onlyBorder);
 
     if (renderables.size > ChunkLayerPartRenderable.TOTAL_COUNT) {
