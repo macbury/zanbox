@@ -13,10 +13,15 @@ public abstract class ChunkTask implements Disposable {
 
   public ChunkTask(Chunk chunk) {
     this.chunk = chunk;
-    if (chunk.isLocked()) {
-      throw new GdxRuntimeException("Chunk already locked!!!");
+  }
+
+  public void start() {
+    synchronized (chunk) {
+      if (chunk.isLocked()) {
+        throw new GdxRuntimeException("Chunk already locked!!!");
+      }
+      chunk.lock();
     }
-    chunk.lock();
   }
 
   public abstract void async();
@@ -32,7 +37,7 @@ public abstract class ChunkTask implements Disposable {
       @Override
       public void async() {
         chunk.load();
-        chunk.buildGeometry(false);
+        getProvider().enqueueTask(ChunkTask.buildGeometry(chunk));
       }
     };
   }

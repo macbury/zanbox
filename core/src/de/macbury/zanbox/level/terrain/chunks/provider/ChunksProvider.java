@@ -199,6 +199,7 @@ public class ChunksProvider implements Disposable {
             break;
           }
           currentTask.setProvider(ChunksProvider.this);
+          currentTask.start();
           currentTask.async();
           currentTask.setProvider(null);
 
