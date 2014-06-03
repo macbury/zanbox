@@ -101,11 +101,11 @@ public class GroundLayer extends Layer {
         for(int z = 0; z < LayerSector.SIZE_IN_TILES; z++) {
           //MyMath.localToWorldTilePosition(this.chunk, tempB.set(x+sx, 0, z+sz), tempA);
 
-          byte tileID = getTileByLocalTilePosition(x+sx, z+sz);
-         // byte tileID2 = getTileByLocalTilePosition(x+sx, z+sz);
-         // if (tileID != tileID2) {
-        //    throw new GdxRuntimeException("Not working");
-        //  }
+          byte tileID  = getTileByLocalTilePosition(x+sx, z+sz);
+          byte tileID2 = getTileByWorldTilePosition(x+sx, z+sz);
+          if (tileID != tileID2) {
+            throw new GdxRuntimeException("Not working = " + " (" + tileID + " = " + tileID2 + " )");
+          }
           builder.topFace(x,index,z, tileID);
         }
       }

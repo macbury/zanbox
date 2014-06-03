@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
+import de.macbury.zanbox.utils.MyMath;
+
 /**
  * Created by macbury on 28.05.14.
  */
@@ -76,6 +78,7 @@ public abstract class Layer implements Disposable {
   }
 
   public byte getTileByWorldTilePosition(int tileX, int tileY) {
-    return getTileByLocalTilePosition((int)(tileX + chunk.position.x),(int)(tileY + chunk.position.y));
+    MyMath.worldToLocalTilePosition(tempA.set(tileX, 0, tileY), tempB);
+    return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);
   }
 }

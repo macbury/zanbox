@@ -3,6 +3,7 @@ package de.macbury.zanbox.utils;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
 
@@ -12,15 +13,29 @@ import de.macbury.zanbox.level.terrain.tiles.Tile;
 public class MyMath {
   private static Vector3 tempA = new Vector3();
   private static Vector3 tempB = new Vector3();
+  private static Vector2 tempC = new Vector2();
 
-  public static void worldToLocalTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
-    tempA.set(in).sub(chunk.position.x, 0, chunk.position.y);
+  public static void worldToLocalTilePosition(Vector3 in, Vector3 out) {
+    abs(tempA.set(in));
+    tilePositionToChunkPoistion(tempA, tempC);
+    int dx = MathUtils.round(tempC.x * Chunk.TILE_SIZE);
+    int dy = MathUtils.round(tempC.y * Chunk.TILE_SIZE);
+
+    tempA.sub(dx, 0, dy);
+
     out.set(tempA);
+    if (out.x > Chunk.TILE_SIZE || out.z > Chunk.TILE_SIZE || out.y > Chunk.TILE_SIZE) {
+      throw new GdxRuntimeException("Is above chunk size: " + out.toString());
+    }
+  }
+
+  public static void abs(Vector3 vector) {
+    vector.set(fastAbs(vector.x), fastAbs(vector.y), fastAbs(vector.z));
   }
 
   public static void localToWorldTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
-    tempA.set(in).add(chunk.position.x, 0, chunk.position.y);
-    out.set(tempA);
+    chunkPositionToTilePosition(chunk.position, tempB);
+    out.set(tempB.add(in));
   }
 
   public static void metersToTilePosition(Vector3 in, Vector3 out) {
@@ -60,6 +75,10 @@ public class MyMath {
 
   public static double fastAbs(double d) {
     return (d >= 0) ? d : -d;
+  }
+
+  public static float fastAbs(float d) {
+    return (d >= 0.0) ? d : -d;
   }
 
   public static double clamp(double value) {

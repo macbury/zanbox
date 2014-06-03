@@ -114,7 +114,7 @@ public class ChunksProvider implements Disposable {
     if (exists(chunkX, chunkY)) {
       throw new GdxRuntimeException("Chunk already exists!");
     } else {
-      Chunk chunk = new Chunk(chunkX, chunkY);
+      Chunk chunk          = new Chunk(chunkX, chunkY);
       chunk.chunksProvider = this;
       chunks.add(chunk);
       this.dirtyChunks = true;
@@ -157,12 +157,17 @@ public class ChunksProvider implements Disposable {
   }
 
   public void enqueueTask(ChunkTask task) {
-    tasks.add(task);
+    synchronized (tasks) {
+      tasks.add(task);
+    }
   }
 
   @Override
   public void dispose() {
     thread.interrupt();
+    for(Chunk chunk : chunks)
+      chunk.dispose();
+    chunks.clear();
   }
 
   public byte getTile(float x, float z, int index) {
