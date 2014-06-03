@@ -187,14 +187,14 @@ public class ChunksProvider implements Disposable {
 
         if (currentTask == null) {
           try {
-            Thread.sleep(250);
+            Thread.sleep(50);
           } catch (InterruptedException e) {
             break;
           }
         } else {
           Gdx.app.debug(TAG, "Processing task...");
           try {
-            Thread.sleep(50);
+            Thread.sleep(5);
           } catch (InterruptedException e) {
             break;
           }
