@@ -15,10 +15,10 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.graphics.renderables.TerrainRenderable;
 import de.macbury.zanbox.graphics.sprites.BaseSprite3D;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
-import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.level.GameLevel;
 
@@ -80,7 +80,7 @@ public class GameTestScreen extends BaseScreen {
     mesh.setVertices(meshAssembler.getVerties());
 
 
-    chunkRenderable = new ChunkLayerPartRenderable();
+    chunkRenderable = new TerrainRenderable();
     chunkRenderable.mesh = mesh;
     chunkRenderable.primitiveType = GL30.GL_TRIANGLES;
     chunkRenderable.meshPartSize   = mesh.getNumIndices();

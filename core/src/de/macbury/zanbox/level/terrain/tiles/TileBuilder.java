@@ -16,7 +16,7 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
+import de.macbury.zanbox.level.terrain.chunks.layer.GeometryCache;
 import de.macbury.zanbox.managers.Assets;
 
 /**
@@ -24,45 +24,16 @@ import de.macbury.zanbox.managers.Assets;
  */
 public class TileBuilder extends MeshAssembler {
   private final TextureAtlas terrainAtlas;
-  private final Material tileMaterial;
+  public final Material tileMaterial;
   private final Vector3 tempA = new Vector3();
   private final Vector3 tempB = new Vector3();
   private final RandomRegion rockRegion;
   private final GameLevel level;
 
-  protected static class RenderablePool extends Pool<ChunkLayerPartRenderable> {
-    protected Array<ChunkLayerPartRenderable> obtained = new Array<ChunkLayerPartRenderable>();
-
-    @Override
-    protected ChunkLayerPartRenderable newObject () {
-      return new ChunkLayerPartRenderable();
-    }
-
-    @Override
-    public ChunkLayerPartRenderable obtain () {
-      ChunkLayerPartRenderable renderable = super.obtain();
-      renderable.environment = null;
-      renderable.material = null;
-      renderable.mesh = null;
-      renderable.shader = null;
-      renderable.border = false;
-      renderable.worldTransform.idt();
-      obtained.add(renderable);
-      return renderable;
-    }
-
-    public void flush () {
-      super.freeAll(obtained);
-      obtained.clear();
-    }
-  }
-
-  private RenderablePool pool;
 
   public TileBuilder(GameLevel level) {
     super();
     this.level          = level;
-    this.pool           = new RenderablePool();
     this.terrainAtlas   = Zanbox.assets.get(Assets.TERRAIN_TEXTURE);
 
     if (terrainAtlas.getTextures().size > 1)
@@ -82,26 +53,15 @@ public class TileBuilder extends MeshAssembler {
     this.using(MeshVertexData.AttributeType.Shading);
   }
 
-  public ChunkLayerPartRenderable getRenderable() {
-    Mesh mesh = new Mesh(true,verties.length, this.indices.length, this.getVertexAttributes());
-    mesh.setIndices(indices);
-    mesh.setVertices(verties);
 
-    ChunkLayerPartRenderable renderable = pool.obtain();
-    renderable.boundingBox              = new BoundingBox();
-    renderable.environment              = level.env;
-    renderable.mesh                     = mesh;
-    renderable.primitiveType            = GL30.GL_TRIANGLES;
-    renderable.meshPartSize             = mesh.getNumIndices();
-    renderable.meshPartOffset           = 0;
-    renderable.material                 = tileMaterial;
-    return renderable;
+  public GeometryCache toGeometryCache() {
+    GeometryCache cache = new GeometryCache();
+    cache.verties = verties;
+    cache.indices = indices;
+    cache.attributes = getVertexAttributes();
+    return cache;
   }
 
-  public void free(ChunkLayerPartRenderable layerPartRenderable) {
-    layerPartRenderable.reset();
-    pool.free(layerPartRenderable);
-  }
 
   public TextureRegion regionForTile(byte tileID) {
     switch (tileID) {
@@ -148,7 +108,5 @@ public class TileBuilder extends MeshAssembler {
   @Override
   public void dispose() {
     super.dispose();
-    pool.flush();
-    pool.clear();
   }
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.terrain.WorldEnv;
-import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
+import de.macbury.zanbox.graphics.renderables.TerrainRenderable;
 import de.macbury.zanbox.managers.Shaders;
 
 /**
@@ -53,7 +53,7 @@ public class TerrainShader extends CoreShader {
 
   @Override
   public boolean canRender(Renderable instance) {
-    return ChunkLayerPartRenderable.class.isInstance(instance);
+    return TerrainRenderable.class.isInstance(instance);
   }
 
 }

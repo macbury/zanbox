@@ -9,9 +9,8 @@ import com.esotericsoftware.kryo.io.Output;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
-import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.persister.serializers.GroundLayerSerializer;
-import de.macbury.zanbox.persister.serializers.LayerSerializer;
 
 import java.io.*;
 

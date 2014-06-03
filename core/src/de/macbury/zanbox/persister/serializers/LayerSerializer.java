@@ -5,7 +5,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 
 /**
  * Created by macbury on 02.06.14.

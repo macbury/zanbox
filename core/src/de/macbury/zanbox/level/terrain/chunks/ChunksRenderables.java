@@ -10,55 +10,46 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
-import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layer.LayerSector;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.utils.MyMath;
-import de.macbury.zanbox.utils.time.BaseTimer;
-import de.macbury.zanbox.utils.time.FrameTickTimer;
-import de.macbury.zanbox.utils.time.TimerListener;
 
 /**
  * Created by macbury on 02.06.14.
  */
-public class ChunksRenderables implements RenderableProvider, Disposable, TimerListener {
-  private static final int REBUILD_GEOMETRY_EVERY_FRAME = 4;
-  private FrameTickTimer rebuildChunkFpsTicker;
-  private Array<Chunk> chunksToRebuild;
+public class ChunksRenderables implements RenderableProvider, Disposable {
   private ChunksProvider chunksProvider;
   private GameLevel level;
   public Array<Chunk> visibleChunks;
-  public Array<ChunkLayerPartRenderable> visibleRenderables;
+
   private Vector2 tempA = new Vector2();
   private Chunk currentChunk;
   private Vector3 minVector = new Vector3();
   private Vector3 maxVector = new Vector3();
   public BoundingBox boundingBox;
-  public Array<Renderable> totalRenderables;
+  public Array<LayerSector> totalSectors;
+  public Array<LayerSector> visibleSectors;
 
   public ChunksRenderables(GameLevel level) {
     this.level              = level;
     this.chunksProvider     = level.chunksProvider;
     this.visibleChunks      = new Array<Chunk>();
-    this.visibleRenderables = new Array<ChunkLayerPartRenderable>();
-    this.totalRenderables   = new Array<Renderable>();
-    this.chunksToRebuild    = new Array<Chunk>();
-    this.chunksToRebuild    = new Array<Chunk>();
+    this.visibleSectors     = new Array<LayerSector>();
+    this.totalSectors       = new Array<LayerSector>();
     this.boundingBox        = new BoundingBox();
-
-    this.rebuildChunkFpsTicker = new FrameTickTimer(REBUILD_GEOMETRY_EVERY_FRAME);
-    this.rebuildChunkFpsTicker.setListener(this);
   }
 
   @Override
   public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-    renderables.addAll(visibleRenderables);
+    for(LayerSector sector : visibleSectors)
+      sector.getRenderables(renderables, pool);
   }
 
   public void cull() {
-    rebuildChunkFpsTicker.update();
-    totalRenderables.clear();
+    totalSectors.clear();
     visibleChunks.clear();
-    visibleRenderables.clear();
+    visibleSectors.clear();
     minVector.set(Vector3.Zero);
     maxVector.set(Vector3.Zero);
 
@@ -79,26 +70,24 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
       if (frustum.boundsInFrustum(chunk.getBoundingBox())) {
         visibleChunks.add(chunk);
         chunk.setVisible(true);
-        if (chunk.needsToRebuildGeometry() && !chunksToRebuild.contains(chunk, true)) {
-          chunksToRebuild.add(chunk);
-        }
         Layer layer = chunk.getLayer(level.currentLayer);
 
         if (layer != null) {
-          for(ChunkLayerPartRenderable renderable : layer.renderables) {
-            if (frustum.boundsInFrustum(renderable.boundingBox)) {
+          for(int i = 0; i < layer.sectors.size; i++) {
+            LayerSector sector = layer.sectors.get(i);
+            if (frustum.boundsInFrustum(sector.boundingBox)) {
               if (firstPart) {
-                minVector.set(renderable.boundingBox.min);
-                maxVector.set(renderable.boundingBox.max);
+                minVector.set(sector.boundingBox.min);
+                maxVector.set(sector.boundingBox.max);
                 firstPart = false;
               } else {
-                minVector.set(MyMath.min(renderable.boundingBox.min, minVector));
-                maxVector.set(MyMath.max(renderable.boundingBox.max, maxVector));
+                minVector.set(MyMath.min(sector.boundingBox.min, minVector));
+                maxVector.set(MyMath.max(sector.boundingBox.max, maxVector));
               }
 
-              visibleRenderables.add(renderable);
+              visibleSectors.add(sector);
             }
-            totalRenderables.add(renderable);
+            totalSectors.add(sector);
           }
         }
       } else {
@@ -116,13 +105,7 @@ public class ChunksRenderables implements RenderableProvider, Disposable, TimerL
   @Override
   public void dispose() {
     visibleChunks.clear();
-    visibleRenderables.clear();
+    visibleSectors.clear();
   }
 
-  @Override
-  public void timerTick(BaseTimer sender) {
-    if (sender == rebuildChunkFpsTicker && chunksToRebuild.size > 0) {
-      chunksToRebuild.pop().reBuildGeometry();
-    }
-  }
 }

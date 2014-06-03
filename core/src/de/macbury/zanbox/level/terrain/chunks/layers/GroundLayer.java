@@ -5,7 +5,10 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.biome.Biome;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
+import de.macbury.zanbox.level.terrain.chunks.layer.GeometryCache;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layer.LayerSector;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
 import de.macbury.zanbox.utils.MyMath;
@@ -23,13 +26,13 @@ public class GroundLayer extends Layer {
   }
 
   @Override
-  protected void buildRenderables(int tileStartX, int tileStartZ, boolean onlyBorder) {
-    for(int x = 0; x < ChunkLayerPartRenderable.ROW_COUNT; x++) {
-      for(int z = 0; z < ChunkLayerPartRenderable.ROW_COUNT; z++) {
-        boolean border = (x == 0 || z == 0 || x == ChunkLayerPartRenderable.ROW_COUNT -1 || z == ChunkLayerPartRenderable.ROW_COUNT -1);
+  protected void buildGeometryCaches(int tileStartX, int tileStartZ, boolean onlyBorder) {
+    for(int x = 0; x < LayerSector.ROW_COUNT; x++) {
+      for(int z = 0; z < LayerSector.ROW_COUNT; z++) {
+        boolean border = (x == 0 || z == 0 || x == LayerSector.ROW_COUNT -1 || z == LayerSector.ROW_COUNT -1);
 
-        int sx = x * ChunkLayerPartRenderable.SIZE_IN_TILES; //Local tile position in tiles table
-        int sz = z * ChunkLayerPartRenderable.SIZE_IN_TILES;
+        int sx = x * LayerSector.SIZE_IN_TILES; //Local tile position in tiles table
+        int sz = z * LayerSector.SIZE_IN_TILES;
 
         if (onlyBorder) {
           if (border) {
@@ -94,8 +97,8 @@ public class GroundLayer extends Layer {
     ChunksProvider provider = chunk.chunksProvider;
     TileBuilder builder     = provider.level.tileBuilder;
     builder.begin(); {
-      for(int x = 0; x < ChunkLayerPartRenderable.SIZE_IN_TILES; x++) {
-        for(int z = 0; z < ChunkLayerPartRenderable.SIZE_IN_TILES; z++) {
+      for(int x = 0; x < LayerSector.SIZE_IN_TILES; x++) {
+        for(int z = 0; z < LayerSector.SIZE_IN_TILES; z++) {
           //MyMath.localToWorldTilePosition(this.chunk, tempB.set(x+sx, 0, z+sz), tempA);
 
           byte tileID = getTileByLocalTilePosition(x+sx, z+sz);
@@ -108,23 +111,18 @@ public class GroundLayer extends Layer {
       }
     } builder.end();
 
-    MyMath.tilePositionToMeters(tempA.set(sx, 0, sz), tempB);
-    MyMath.chunkPositionToMeters(chunk.position, tempA);
-    tempB.add(tempA);
+    LayerSector layerSector = getSector(sx, sz);
+    if (layerSector == null) {
+      layerSector = new LayerSector(sx, sz, this);
+    }
+    layerSector.setBoundingBox();
+    layerSector.setTerrainGeometryCache(builder.toGeometryCache());
 
-    ChunkLayerPartRenderable renderable = builder.getRenderable();
-    renderable.border                   = border;
-    renderable.x                        = sx;
-    renderable.z                        = sz;
+    if (!sectors.contains(layerSector, true)) {
+      sectors.add(layerSector);
+    }
+    //sectors.add(renderable);
 
-    renderable.worldTransform.translate(tempB);
-    //Gdx.app.log(TAG, "World location " + tempB.toString());
-
-    renderable.mesh.calculateBoundingBox(renderable.boundingBox);
-    renderable.boundingBox.min.add(tempB).y = -Tile.SIZE/2;
-    renderable.boundingBox.max.add(tempB).y = Tile.SIZE;
-    renderables.add(renderable);
-
-    //Gdx.app.log(TAG, "Builded part: " +renderable.toString() + " tileStartXZ = " + tileStartX + "x" + tileStartZ);
+    //Gdx.app.log(TAG, "Builded part: " +layerSector.toString() + " tileStartXZ = " + tileStartX + "x" + tileStartZ);
   }
 }

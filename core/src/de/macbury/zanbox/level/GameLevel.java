@@ -1,21 +1,24 @@
 package de.macbury.zanbox.level;
 
 import com.artemis.World;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.debug.DebugShape;
 import de.macbury.zanbox.debug.FrustrumRenderer;
 import de.macbury.zanbox.entities.EntityFactory;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.entities.systems.*;
 import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
+import de.macbury.zanbox.level.pools.Pools;
 import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
-import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
 
@@ -24,6 +27,7 @@ import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
  */
 public class GameLevel extends World implements Disposable {
   public final int seed;
+  public Pools pools;
   public ChunksSystem chunksSystem;
   public ChunksRenderables chunksRenderables;
   public ChunksProvider chunksProvider;
@@ -45,6 +49,7 @@ public class GameLevel extends World implements Disposable {
 
   public GameLevel(int seed) {
     this.seed               = seed;
+    this.pools              = new Pools(this);
     this.env                = new WorldEnv();
     this.tileBuilder        = new TileBuilder(this);
     this.biomeProvider      = new WorldBiomeProvider(seed);
@@ -53,7 +58,7 @@ public class GameLevel extends World implements Disposable {
     this.camera             = new GameCamera();
     this.chunksProvider     = new ChunksProvider(this);
     this.chunksRenderables  = new ChunksRenderables(this);
-    //this.shapeRenderer = new ShapeRenderer();
+    this.shapeRenderer      = new ShapeRenderer();
     this.modelBatch.setEnv(env);
     this.frustrumRenderer = new FrustrumRenderer(camera);
     camera.update(true);
@@ -94,13 +99,14 @@ public class GameLevel extends World implements Disposable {
         spriteRenderingSystem.process();
       } modelBatch.end();
     } renderContext.end();
-    /*
+
     renderContext.begin(); {
       shapeRenderer.setProjectionMatrix(camera.combined);
       renderContext.setDepthTest(GL20.GL_LESS);
       frustrumRenderer.render(camera);
-      //DebugShape.drawMap(shapeRenderer, chunksProvider);
-    } renderContext.end();*/
+
+      DebugShape.drawMap(shapeRenderer, chunksRenderables);
+    } renderContext.end();
   }
 
   @Override
@@ -109,6 +115,7 @@ public class GameLevel extends World implements Disposable {
     chunksRenderables.dispose();
     this.biomeProvider = null;
     tileBuilder.dispose();
+    pools.dispose();
     if (Zanbox.level == this)
       Zanbox.level = null;
   }

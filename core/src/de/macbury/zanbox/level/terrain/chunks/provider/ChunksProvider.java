@@ -1,4 +1,4 @@
-package de.macbury.zanbox.level.terrain.chunks;
+package de.macbury.zanbox.level.terrain.chunks.provider;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -8,7 +8,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
+import de.macbury.zanbox.level.terrain.chunks.Chunk;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.utils.MyMath;
 
 import java.util.Comparator;
@@ -197,7 +198,9 @@ public class ChunksProvider implements Disposable {
           } catch (InterruptedException e) {
             break;
           }
+          currentTask.setProvider(ChunksProvider.this);
           currentTask.async();
+          currentTask.setProvider(null);
 
           synchronized (tasks) {
             tasks.removeValue(currentTask, true);

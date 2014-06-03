@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-import de.macbury.zanbox.level.terrain.chunk.Chunks;
-import de.macbury.zanbox.level.terrain.chunks.layers.ChunkLayerPartRenderable;
+import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
+import de.macbury.zanbox.level.terrain.chunks.layer.LayerSector;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 
 /**
  * Created by macbury on 09.03.14.
@@ -34,17 +35,17 @@ public class DebugShape {
     }
   }
 
-  public static void drawMap(ShapeRenderer shapeRender, Chunks chunks) {
+  public static void drawMap(ShapeRenderer shapeRender, ChunksRenderables renderables) {
     shapeRender.begin(ShapeRenderer.ShapeType.Line); {
 
-      for (Chunk chunk : chunks) {
-        shapeRender.setColor(chunks.contains(chunk, true) ? Color.WHITE : Color.BLUE);
+    //  for (Chunk chunk : chunks) {
+   //     shapeRender.setColor(chunks.contains(chunk, true) ? Color.WHITE : Color.BLUE);
         //DebugShape.draw(shapeRender, chunk.getBoundingBox());
-      }
+   //   }
 
-      for(ChunkLayerPartRenderable part : chunks.totalRenderables) {
-        shapeRender.setColor(chunks.visibleRenderables.contains(part, true) ? Color.GREEN : Color.RED);
-        DebugShape.draw(shapeRender, part.boundingBox);
+      for(LayerSector sector : renderables.visibleSectors) {
+        shapeRender.setColor(renderables.visibleSectors.contains(sector, true) ? Color.GREEN : Color.RED);
+        DebugShape.draw(shapeRender, sector.boundingBox);
       }
 
     } shapeRender.end();

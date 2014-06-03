@@ -123,12 +123,12 @@ public abstract class CoreShader extends BaseShader {
   }
 
   public CoreShader(ShaderProgram program) {
-    this.program     = program;
-    u_projViewTrans  = register(Inputs.projViewTrans, Setters.projViewTrans);
-    u_worldTrans     = register(Inputs.worldTrans, Setters.worldTrans);
-    u_diffuseTexture = register(Inputs.diffuseTexture, Setters.diffuseTexture);
-    u_normalMatrix   = register(Inputs.normalMatrix, Setters.normalMatrix);
-    u_ambientColor   = register(Inputs.ambientLight, Setters.ambientColor);
+    this.program         = program;
+    u_projViewTrans      = register(Inputs.projViewTrans, Setters.projViewTrans);
+    u_worldTrans         = register(Inputs.worldTrans, Setters.worldTrans);
+    u_diffuseTexture     = register(Inputs.diffuseTexture, Setters.diffuseTexture);
+    u_normalMatrix       = register(Inputs.normalMatrix, Setters.normalMatrix);
+    u_ambientColor       = register(Inputs.ambientLight, Setters.ambientColor);
     u_sunLightColor      = register(CoreShader.Inputs.sunLightColor);
     u_sunLightDirection  = register(CoreShader.Inputs.sunLightDirection);
   }

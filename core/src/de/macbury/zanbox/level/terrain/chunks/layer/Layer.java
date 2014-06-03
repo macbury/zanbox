@@ -1,4 +1,4 @@
-package de.macbury.zanbox.level.terrain.chunks.layers;
+package de.macbury.zanbox.level.terrain.chunks.layer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-
 /**
  * Created by macbury on 28.05.14.
  */
@@ -14,9 +13,8 @@ public abstract class Layer implements Disposable {
   public final static int BASE_INDEX = 0;
   private static final String TAG = "Layer";
   public int index = BASE_INDEX;
-  public Array<ChunkLayerPartRenderable> renderables;
+  public Array<LayerSector> sectors;
 
-  protected Array<ChunkLayerPartRenderable> tempArray;
   public byte[][] tiles;
   protected Chunk chunk;
   protected boolean generatedTiles = false;
@@ -24,9 +22,16 @@ public abstract class Layer implements Disposable {
   protected final static Vector3 tempB = new Vector3();
 
   public Layer() {
-    this.renderables = new Array<ChunkLayerPartRenderable>();
-    this.tempArray   = new Array<ChunkLayerPartRenderable>();
+    this.sectors      = new Array<LayerSector>();
     this.tiles       = new byte[Chunk.TILE_SIZE][Chunk.TILE_SIZE];
+  }
+
+  public LayerSector getSector(int localOffsetX, int localOffsetZ) {
+    for(LayerSector sector : sectors) {
+      if (sector.at(localOffsetX, localOffsetZ))
+        return sector;
+    }
+    return null;
   }
 
   public void setChunk(Chunk chunk) {
@@ -42,42 +47,25 @@ public abstract class Layer implements Disposable {
   }
 
   public void buildGeometry(int tileStartX, int tileStartZ, boolean onlyBorder) {
-    for(ChunkLayerPartRenderable renderable : renderables) {
-      if (onlyBorder) {
-        if (renderable.border) {
-          chunk.chunksProvider.level.tileBuilder.free(renderable);
-          tempArray.add(renderable);
-        }
-      } else {
-        chunk.chunksProvider.level.tileBuilder.free(renderable);
-        tempArray.add(renderable);
-      }
-    }
+    buildGeometryCaches(tileStartX, tileStartZ, onlyBorder);
 
-    for (ChunkLayerPartRenderable renderable : tempArray) {
-      renderables.removeValue(renderable, true);
-    }
-    tempArray.clear();
-
-    buildRenderables(tileStartX, tileStartZ, onlyBorder);
-
-    if (renderables.size > ChunkLayerPartRenderable.TOTAL_COUNT) {
-      throw new GdxRuntimeException("There is more than " + ChunkLayerPartRenderable.TOTAL_COUNT + " it was " + renderables.size);
+    if (sectors.size > LayerSector.TOTAL_COUNT) {
+      throw new GdxRuntimeException("There is more than " + LayerSector.TOTAL_COUNT + " it was " + sectors.size);
     } else {
-      Gdx.app.log(TAG, "Renderables for layer: " + renderables.size);
+      Gdx.app.log(TAG, "Renderables for layer: " + sectors.size);
     }
   }
 
-  protected abstract void buildRenderables(int tileStartX, int tileStartZ, boolean onlyBorder);
+  protected abstract void buildGeometryCaches(int tileStartX, int tileStartZ, boolean onlyBorder);
   public abstract void generateTiles(int tileStartX, int tileStartZ);
 
   @Override
   public void dispose() {
-    for(ChunkLayerPartRenderable renderable : renderables) {
-      chunk.chunksProvider.level.tileBuilder.free(renderable);
+    for(LayerSector sector: sectors) {
+      sector.dispose();
     }
 
-    renderables.clear();
+    sectors.clear();
 
     chunk = null;
     tiles = null;

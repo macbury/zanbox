@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.level.terrain.chunks.ChunksProvider;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.utils.time.BaseTimer;
 import de.macbury.zanbox.utils.time.IntervalTimer;
@@ -119,7 +119,7 @@ public class DebugWindow extends Window implements TimerListener {
 
     fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
     visibleChunks.setText("Chunks(Visible/Total): " + renderables.visibleChunks.size + "/" + provider.chunks.size);
-    visibleChunkRenderablesLabel.setText("Chunk parts(V/T): " + renderables.visibleRenderables.size + "/"+renderables.totalRenderables.size);
+    visibleChunkRenderablesLabel.setText("Chunk parts(V/T): " + renderables.visibleSectors.size + "/"+renderables.totalSectors.size);
     visiblityBoundingBoxLabel.setText("World Box " + renderables.boundingBox.toString());
     memoryLabel.setText("Memory(Java/Native): " + convertToStringRepresentation(Gdx.app.getJavaHeap()) + "/" + convertToStringRepresentation(Gdx.app.getNativeHeap()));
   }

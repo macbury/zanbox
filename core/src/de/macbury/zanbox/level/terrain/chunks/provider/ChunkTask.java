@@ -1,14 +1,15 @@
-package de.macbury.zanbox.level.terrain.chunks;
+package de.macbury.zanbox.level.terrain.chunks.provider;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import de.macbury.zanbox.level.terrain.chunks.Chunk;
 
 /**
  * Created by macbury on 02.06.14.
  */
 public abstract class ChunkTask implements Disposable {
   public Chunk chunk;
+  private ChunksProvider provider;
 
   public ChunkTask(Chunk chunk) {
     this.chunk = chunk;
@@ -31,7 +32,26 @@ public abstract class ChunkTask implements Disposable {
       @Override
       public void async() {
         chunk.load();
+        chunk.buildGeometry(false);
       }
     };
+  }
+
+  public static ChunkTask buildGeometry(Chunk chunk) {
+    return new ChunkTask(chunk) {
+      @Override
+      public void async() {
+        chunk.buildGeometry(false);
+      }
+    };
+  }
+
+
+  public void setProvider(ChunksProvider provider) {
+    this.provider = provider;
+  }
+
+  public ChunksProvider getProvider() {
+    return provider;
   }
 }

@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
-import de.macbury.zanbox.level.terrain.chunks.layers.Layer;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
 import de.macbury.zanbox.persister.KryoSystem;
 import de.macbury.zanbox.utils.MyMath;
@@ -32,7 +33,6 @@ public class Chunk implements Disposable {
 
   private final static Vector3 temp = new Vector3();
   private boolean locked;
-  private RebuildGeometryMode rebuildGeometryMode = RebuildGeometryMode.None;
 
   public Chunk(int sx, int sz) {
     position         = new Vector2(sx, sz);
@@ -48,12 +48,7 @@ public class Chunk implements Disposable {
     worldPosition.set(startB);
   }
 
-  public boolean needsToRebuildGeometry() {
-    return rebuildGeometryMode != RebuildGeometryMode.None;
-  }
-
-  public void reBuildGeometry() {
-    boolean onlyBorder = rebuildGeometryMode == RebuildGeometryMode.Border;
+  public void buildGeometry(boolean onlyBorder) {
     Gdx.app.log(TAG, onlyBorder ? "Rebuilding: " : "Building: " + position.toString());
     MyMath.chunkPositionToTilePosition(position, temp);
 
@@ -63,8 +58,6 @@ public class Chunk implements Disposable {
     for(Layer layer : layers) {
       layer.buildGeometry(ox, oz, onlyBorder);
     }
-
-    this.rebuildGeometryMode = RebuildGeometryMode.None;
   }
 
   public void buildTiles() {
@@ -74,13 +67,10 @@ public class Chunk implements Disposable {
     int ox = (int)temp.x;
     int oz = (int)temp.z;
 
-
     for(int i = 0; i < layers.size; i++) {
       Layer layer = layers.get(i);
       layer.buildTiles(ox, oz);
     }
-
-    this.rebuildGeometryMode = RebuildGeometryMode.All;
   }
 
   @Override
@@ -147,7 +137,6 @@ public class Chunk implements Disposable {
     if (KryoSystem.exists(this)) {
       KryoSystem system = new KryoSystem();
       system.load(this);
-      this.rebuildGeometryMode = RebuildGeometryMode.All;
     } else {
       buildLayers();
       buildTiles();
