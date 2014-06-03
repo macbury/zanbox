@@ -28,6 +28,12 @@ public class MyMathTest {
 
     MyMath.worldToLocalTilePosition(in.set(-(Chunk.TILE_SIZE * 2 + 1), 0, -(Chunk.TILE_SIZE * 2 + 1)), out);
     TestHelper.assertEqual(out, new Vector3(1, 0,1));
+
+    MyMath.worldToLocalTilePosition(in.set((Chunk.TILE_SIZE), 0, (Chunk.TILE_SIZE)), out);
+    TestHelper.assertEqual(out, new Vector3(0, 0, 0));
+
+    MyMath.worldToLocalTilePosition(in.set(-(Chunk.TILE_SIZE), 0, -(Chunk.TILE_SIZE)), out);
+    TestHelper.assertEqual(out, new Vector3(0, 0, 0));
   }
 
   @org.junit.Test
