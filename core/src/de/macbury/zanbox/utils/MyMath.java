@@ -15,7 +15,7 @@ public class MyMath {
   private static Vector3 tempB = new Vector3();
   private static Vector2 tempC = new Vector2();
 
-  public static void worldToLocalTilePosition(Vector3 in, Vector3 out) {
+  public static synchronized void worldToLocalTilePosition(Vector3 in, Vector3 out) {
     abs(tempA.set(in));
     tilePositionToChunkPoistion(tempA, tempC);
     int dx = MathUtils.round(tempC.x * Chunk.TILE_SIZE);
@@ -33,32 +33,32 @@ public class MyMath {
     vector.set(fastAbs(vector.x), fastAbs(vector.y), fastAbs(vector.z));
   }
 
-  public static void localToWorldTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
+  public static synchronized void localToWorldTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
     chunkPositionToTilePosition(chunk.position, tempB);
     out.set(tempB.add(in));
   }
 
-  public static void metersToTilePosition(Vector3 in, Vector3 out) {
+  public static synchronized void metersToTilePosition(Vector3 in, Vector3 out) {
     out.set(MathUtils.floor(in.x / Tile.SIZE), MathUtils.floor(in.y / Tile.SIZE), MathUtils.floor(in.z / Tile.SIZE));
   }
 
-  public static void tilePositionToChunkPoistion(Vector3 in, Vector2 out) {
+  public static synchronized void tilePositionToChunkPoistion(Vector3 in, Vector2 out) {
     out.set(MathUtils.floor(in.x / Chunk.TILE_SIZE), MathUtils.floor(in.z / Chunk.TILE_SIZE));
   }
 
-  public static void metersToChunkPosition(Vector3 in, Vector2 out) {
+  public static synchronized void metersToChunkPosition(Vector3 in, Vector2 out) {
     metersToTilePosition(in, tempA);
     tilePositionToChunkPoistion(tempA, out);
   }
 
-  public static void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
+  public static synchronized void chunkPositionToTilePosition(Vector2 in, Vector3 out) {
     out.set(MathUtils.floor(in.x * Chunk.TILE_SIZE), 0, MathUtils.floor(in.y * Chunk.TILE_SIZE));
   } 
-  public static void tilePositionToMeters(Vector3 in, Vector3 out) {
+  public static synchronized void tilePositionToMeters(Vector3 in, Vector3 out) {
     out.set(MathUtils.floor(in.x * Tile.SIZE), MathUtils.floor(in.y * Tile.SIZE), MathUtils.floor(in.z * Tile.SIZE));
   }
 
-  public static void chunkPositionToMeters(Vector2 in, Vector3 out) {
+  public static synchronized void chunkPositionToMeters(Vector2 in, Vector3 out) {
     chunkPositionToTilePosition(in, tempA);
     tilePositionToMeters(tempA, out);
   }
@@ -91,12 +91,12 @@ public class MyMath {
   }
 
 
-  public static Vector3 min(Vector3 minimum, Vector3 maximum) {
+  public synchronized static Vector3 min(Vector3 minimum, Vector3 maximum) {
     return tempA.set(minimum.x < maximum.x ? minimum.x : maximum.x, minimum.y < maximum.y ? minimum.y : maximum.y,
             minimum.z < maximum.z ? minimum.z : maximum.z);
   }
 
-  public static Vector3 max(Vector3 minimum, Vector3 maximum) {
+  public synchronized static Vector3 max(Vector3 minimum, Vector3 maximum) {
     return tempA.set(minimum.x > maximum.x ? minimum.x : maximum.x, minimum.y > maximum.y ? minimum.y : maximum.y,
             minimum.z > maximum.z ? minimum.z : maximum.z);
   }

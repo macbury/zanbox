@@ -36,10 +36,14 @@ public abstract class ChunkTask implements Disposable {
     return new ChunkTask(chunk) {
       @Override
       public void async() {
+        enqueueTask(ChunkTask.buildGeometry(chunk));
         chunk.load();
-        getProvider().enqueueTask(ChunkTask.buildGeometry(chunk));
       }
     };
+  }
+
+  public void enqueueTask(ChunkTask chunkTask) {
+    provider.enqueueTask(chunkTask);
   }
 
   public static ChunkTask buildGeometry(Chunk chunk) {

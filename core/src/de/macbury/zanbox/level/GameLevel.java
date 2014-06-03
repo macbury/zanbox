@@ -110,7 +110,7 @@ public class GameLevel extends World implements Disposable {
       renderContext.setDepthTest(GL20.GL_LESS);
       frustrumRenderer.render(shapeRenderer);
 
-      //DebugShape.drawMap(shapeRenderer, chunksRenderables);
+      DebugShape.drawMap(shapeRenderer, chunksRenderables);
       shapeRenderer.setColor(Color.MAGENTA);
       shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
       DebugShape.draw(shapeRenderer, chunksRenderables.boundingBox);

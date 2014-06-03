@@ -99,14 +99,30 @@ public class GroundLayer extends Layer {
     builder.begin(); {
       for(int x = 0; x < LayerSector.SIZE_IN_TILES; x++) {
         for(int z = 0; z < LayerSector.SIZE_IN_TILES; z++) {
-          //MyMath.localToWorldTilePosition(this.chunk, tempB.set(x+sx, 0, z+sz), tempA);
+          int tx = x + sx;
+          int tz = z + sz;
 
-          byte tileID  = getTileByLocalTilePosition(x+sx, z+sz);
-          byte tileID2 = getTileByWorldTilePosition(x+sx, z+sz);
-          if (tileID != tileID2) {
-            throw new GdxRuntimeException("Not working = " + " (" + tileID + " = " + tileID2 + " )");
+          byte tile       = getTileByLocalTilePosition(tx, tz);
+          byte topTile    = getTileByLocalToWorldTilePosition(tx, tz+1);
+          byte bottomTile = getTileByLocalToWorldTilePosition(tx, tz-1);
+          byte leftTile   = getTileByLocalToWorldTilePosition(tx-1, tz);
+          byte rightTile  = getTileByLocalToWorldTilePosition(tx+1, tz);
+
+          if (Tile.isLiquid(tile)) {
+
+          } else {
+            float y = Tile.height(tile);
+            if (tile != Tile.NONE)
+              builder.topFace(x, y, z, tile);
+            if (Tile.isNextNotWall(tile,bottomTile))
+              builder.backFace(x, 0, z, tile);
+            if (Tile.isNextNotWall(tile,topTile))
+              builder.frontFace(x, 0, z, tile);
+            if (Tile.isNextNotWall(tile,leftTile))
+              builder.leftFace(x, 0, z, tile);
+            if (Tile.isNextNotWall(tile,rightTile))
+              builder.rightFace(x, 0, z, tile);
           }
-          builder.topFace(x,index,z, tileID);
         }
       }
     } builder.end();
@@ -125,4 +141,6 @@ public class GroundLayer extends Layer {
 
     //Gdx.app.log(TAG, "Builded part: " +layerSector.toString() + " tileStartXZ = " + tileStartX + "x" + tileStartZ);
   }
+
+
 }

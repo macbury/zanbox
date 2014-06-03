@@ -21,7 +21,7 @@ public class GameScreen extends BaseScreen {
   private GameLevel gameLevel;
 
   public GameScreen() {
-    this.gameLevel = new GameLevel(1234567);
+    this.gameLevel = new GameLevel(12345678);
     this.gameStage = new InGameStage();
 
     //cameraController = new CameraInputController(gameLevel.camera);

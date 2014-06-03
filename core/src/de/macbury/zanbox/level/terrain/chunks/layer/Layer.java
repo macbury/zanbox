@@ -74,11 +74,20 @@ public abstract class Layer implements Disposable {
   }
 
   public byte getTileByLocalTilePosition(int tileX, int tileY) {
-    return tiles[tileX][tileY];
+    if (tileX >= 0 && tileX < Chunk.TILE_SIZE && tileY >= 0 && tileY < Chunk.TILE_SIZE) {
+      return tiles[tileX][tileY];
+    } else {
+      return 0;
+    }
   }
 
   public byte getTileByWorldTilePosition(int tileX, int tileY) {
     MyMath.worldToLocalTilePosition(tempA.set(tileX, 0, tileY), tempB);
     return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);
+  }
+
+  public byte getTileByLocalToWorldTilePosition(int tileX, int tileY) {
+    MyMath.worldToLocalTilePosition(tempA.set(chunk.position.x + tileX, 0, chunk.position.y + tileY), tempB);
+    return getTileByLocalTilePosition(tileX, tileY);
   }
 }

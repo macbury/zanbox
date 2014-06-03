@@ -30,8 +30,8 @@ public class LayerSector implements RenderableProvider, Disposable {
   private TerrainRenderable terrainRenderable;
   private GeometryCache terrainGeometryCache;
 
-  protected final static Vector3 tempA = new Vector3();
-  protected final static Vector3 tempB = new Vector3();
+  protected final Vector3 tempA = new Vector3();
+  protected final Vector3 tempB = new Vector3();
 
   public LayerSector(int ox, int oz, Layer layer) {
     this.parent            = layer;

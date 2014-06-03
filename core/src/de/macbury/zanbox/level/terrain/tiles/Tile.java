@@ -16,4 +16,28 @@ public abstract class Tile {
   public static final byte DEEP_WATER = 6;
   public static final byte SHALLOW_WATER = 7;
   public static final byte LAVA = 8;
+
+  public static boolean isNextWall(byte currentTile, byte nextTile) {
+    return (!isSolid(currentTile) && isSolid(nextTile));
+  }
+
+  public static boolean isNextNotWall(byte currentTile, byte nextTile) {
+    return (isSolid(currentTile) && !isSolid(nextTile));
+  }
+
+  public static boolean isLiquid(byte tileID) {
+    return (tileID == DEEP_WATER || tileID == LAVA || tileID == LAVA || tileID == SHALLOW_WATER);
+  }
+
+  public static float height(byte tileID) {
+    return isSolid(tileID) ? Tile.SIZE : 0;
+  }
+
+  public static boolean isSolid(byte tileID) {
+    return (tileID == ROCK && isNotEmpty(tileID));
+  }
+
+  public static boolean isNotEmpty(byte tileId) {
+    return tileId != NONE;
+  }
 }

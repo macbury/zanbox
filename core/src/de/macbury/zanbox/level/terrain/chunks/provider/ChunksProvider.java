@@ -17,7 +17,7 @@ import java.util.Comparator;
 /**
  * Created by macbury on 02.06.14.
  */
-public class ChunksProvider implements Disposable {
+public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandler {
   private static final String TAG = "ChunkProvider";
   private static final int MAX_CHUNKS_IN_MEMORY         = 18;
   public static final Vector2[] CHUNKS_OFFSET_AROUND = {
@@ -46,6 +46,7 @@ public class ChunksProvider implements Disposable {
     this.tasks  = new Array<ChunkTask>();
     this.thread = new ChunksThread();
     thread.setPriority(Thread.MIN_PRIORITY);
+    thread.setUncaughtExceptionHandler(this);
     thread.start();
   }
 
@@ -174,9 +175,19 @@ public class ChunksProvider implements Disposable {
     return getTile((int)x, (int)z, index);
   }
 
+  @Override
+  public void uncaughtException(Thread t, Throwable e) {
+    e.printStackTrace();
+    throw new GdxRuntimeException("Somethin went terrible wrong...");
+  }
+
   private class ChunksThread extends Thread {
 
     private static final String TAG = "ChunksThread";
+
+    public void enqueueTask(ChunkTask task) {
+      ChunksProvider.this.enqueueTask(task);
+    }
 
     @Override
     public void run() {

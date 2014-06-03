@@ -88,25 +88,27 @@ public class TileBuilder extends MeshAssembler {
 
   public void topFace(float x, float y, float z, byte tileID) {//TODO implement static height
     TextureRegion region = regionForTile(tileID);
-
-    if (tileID == Tile.ROCK) {
-      frontFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      leftFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      backFace(x,y,z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
-      y += Tile.SIZE;
-    } else if (tileID == Tile.DEEP_WATER || tileID == Tile.SHALLOW_WATER) {
-      y -= 0.2f;
-      //frontFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //leftFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //rightFace(x, y, z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-      //backFace(x,y,z, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, Tile.SIZE_IN_TILES, region.getU(), region.getV(), region.getU2(), region.getV2());
-    }
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }
 
-  @Override
-  public void dispose() {
-    super.dispose();
+
+  public void backFace(float x, float y, float z, byte tileID) {
+    TextureRegion region = regionForTile(tileID);
+    backFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+  }
+
+  public void frontFace(float x, float y, float z, byte tileID) {
+    TextureRegion region = regionForTile(tileID);
+    frontFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+  }
+
+  public void leftFace(float x, float y, float z, byte tileID) {
+    TextureRegion region = regionForTile(tileID);
+    leftFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+  }
+
+  public void rightFace(float x, float y, float z, byte tileID) {
+    TextureRegion region = regionForTile(tileID);
+    rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }
 }
