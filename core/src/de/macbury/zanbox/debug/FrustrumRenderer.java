@@ -18,7 +18,6 @@ public class FrustrumRenderer extends InputAdapter {
   };
   private static final String TAG = "FrustrumRenderer";
   private InputAdapter inputAdapter;
-  private ShapeRenderer renderer;
 
   public PerspectiveCamera frustrumCamera;
   private DebugFrustrum frustrum;
@@ -36,11 +35,10 @@ public class FrustrumRenderer extends InputAdapter {
     this.frustrum = new DebugFrustrum(this.frustrumCamera.frustum, this.frustrumCamera.invProjectionView);
   }
 
-  public void render(PerspectiveCamera camera) {
+  public void render(ShapeRenderer renderer) {
     if (!enabled) {
       return;
     }
-    renderer.setProjectionMatrix(camera.combined);
     renderer.begin(ShapeRenderer.ShapeType.Line);
       renderer.setColor(Color.LIGHT_GRAY);
 
@@ -74,7 +72,4 @@ public class FrustrumRenderer extends InputAdapter {
     return enabled;
   }
 
-  public void setRenderer(ShapeRenderer renderer) {
-    this.renderer = renderer;
-  }
 }

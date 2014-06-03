@@ -1,6 +1,7 @@
 package de.macbury.zanbox.level;
 
 import com.artemis.World;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -27,7 +28,9 @@ import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
  */
 public class GameLevel extends World implements Disposable {
   public final int seed;
+
   public Pools pools;
+  public CullingSystem cullingSystem;
   public ChunksSystem chunksSystem;
   public ChunksRenderables chunksRenderables;
   public ChunksProvider chunksProvider;
@@ -67,18 +70,20 @@ public class GameLevel extends World implements Disposable {
 
     Zanbox.level      = this;
 
-    chunksSystem = new ChunksSystem(this);
+    cullingSystem         = new CullingSystem(this);
+    chunksSystem          = new ChunksSystem(this);
     dayNightSystem        = new DayNightSystem();
     movementSystem        = new MovementSystem();
     spriteRenderingSystem = new SpriteRenderingSystem(modelBatch);
     playerSystem          = new PlayerSystem(this);
 
     setManager(new Tags());
+    setSystem(chunksSystem);
     setSystem(movementSystem);
     setSystem(playerSystem);
-    setSystem(spriteRenderingSystem, true);
-    setSystem(chunksSystem);
+    setSystem(cullingSystem);
     setSystem(dayNightSystem);
+    setSystem(spriteRenderingSystem, true);
     initialize();
 
     factory.player().addToWorld();
@@ -103,9 +108,13 @@ public class GameLevel extends World implements Disposable {
     renderContext.begin(); {
       shapeRenderer.setProjectionMatrix(camera.combined);
       renderContext.setDepthTest(GL20.GL_LESS);
-      frustrumRenderer.render(camera);
+      frustrumRenderer.render(shapeRenderer);
 
-      DebugShape.drawMap(shapeRenderer, chunksRenderables);
+      //DebugShape.drawMap(shapeRenderer, chunksRenderables);
+      shapeRenderer.setColor(Color.MAGENTA);
+      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+      DebugShape.draw(shapeRenderer, chunksRenderables.boundingBox);
+      shapeRenderer.end();
     } renderContext.end();
   }
 

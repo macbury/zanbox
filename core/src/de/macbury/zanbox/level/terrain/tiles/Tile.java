@@ -5,6 +5,8 @@ package de.macbury.zanbox.level.terrain.tiles;
  */
 public abstract class Tile {
   public static final float SIZE = 1f;
+  public static final float HALF_SIZE = SIZE / 2;
+
   public static final byte NONE = 0;
   public static final byte LIGHT_GRASS = 1;
   public static final byte SAND  = 2;

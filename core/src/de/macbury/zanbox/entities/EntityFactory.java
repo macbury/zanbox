@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.entities.components.AnimatedSpriteComponent;
-import de.macbury.zanbox.entities.components.MovementComponent;
-import de.macbury.zanbox.entities.components.PositionComponent;
-import de.macbury.zanbox.entities.components.SpriteComponent;
+import de.macbury.zanbox.entities.components.*;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.managers.Assets;
@@ -31,7 +28,8 @@ public class EntityFactory {
     Entity e = level.createEntity();
     e.addComponent(new PositionComponent(5,0,5));
     e.addComponent(new MovementComponent(8f));
-
+    e.addComponent(new VisibleComponent());
+    e.addComponent(new BoundingBoxComponent());
     Animation animation = new Animation(0.15f, characterAtlas.findRegions("dummy"), Animation.PlayMode.LOOP);
 
     AnimatedSpriteComponent spriteComponent = new AnimatedSpriteComponent(level.modelBatch.build(animation, false, true));
@@ -44,8 +42,9 @@ public class EntityFactory {
 
   public Entity sign() {
     Entity e = level.createEntity();
+    e.addComponent(new BoundingBoxComponent());
     e.addComponent(new PositionComponent(2,0,2));
-
+    e.addComponent(new VisibleComponent());
     SpriteComponent spriteComponent = new SpriteComponent(level.modelBatch.build(characterAtlas.findRegion("sign"), true, true));
     spriteComponent.offset.set(defaultOffset);
     e.addComponent(spriteComponent);

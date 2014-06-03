@@ -10,9 +10,7 @@ import com.artemis.utils.ImmutableBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.entities.components.AnimatedSpriteComponent;
-import de.macbury.zanbox.entities.components.PositionComponent;
-import de.macbury.zanbox.entities.components.SpriteComponent;
+import de.macbury.zanbox.entities.components.*;
 import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 
@@ -27,16 +25,24 @@ public class SpriteRenderingSystem extends EntityProcessingSystem {
   @Mapper
   ComponentMapper<SpriteComponent> spriteMapper;
   @Mapper
+  ComponentMapper<VisibleComponent> visibleMapper;
+  @Mapper
   ComponentMapper<AnimatedSpriteComponent> animatedSpriteMapper;
   private static Vector3 temp = new Vector3();
 
   public SpriteRenderingSystem(ModelAndSpriteBatch batch) {
-    super(Aspect.getAspectForAll(PositionComponent.class).one(SpriteComponent.class, AnimatedSpriteComponent.class));
+    super(Aspect.getAspectForAll(PositionComponent.class, VisibleComponent.class).one(SpriteComponent.class, AnimatedSpriteComponent.class));
     this.batch = batch;
   }
 
   @Override
   protected void process(Entity entity) {
+    VisibleComponent  visibleComponent              = visibleMapper.get(entity);
+
+    if (!visibleComponent.visible) {
+      return;
+    }
+
     PositionComponent positionComponent             = positionMapper.get(entity);
     SpriteComponent   spriteComponent               = spriteMapper.get(entity);
     AnimatedSpriteComponent animatedSpriteComponent = animatedSpriteMapper.get(entity);
