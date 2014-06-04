@@ -1,4 +1,4 @@
-package de.macbury.zanbox.graphics.shaders;
+package de.macbury.zanbox.graphics.fbo;
 
 import java.nio.ByteBuffer;
 
@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
+import de.macbury.zanbox.graphics.shaders.ShaderManager;
 
 /**
  * @author Przemek Muller

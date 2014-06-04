@@ -48,8 +48,8 @@ public abstract class Layer implements Disposable {
      generateTiles(tileStartX, tileStartZ);
   }
 
-  public void buildGeometry(int tileStartX, int tileStartZ, boolean onlyBorder) {
-    buildGeometryCaches(tileStartX, tileStartZ, onlyBorder);
+  public void buildGeometry(boolean onlyBorder) {
+    buildGeometryCaches(onlyBorder);
 
     if (sectors.size > LayerSector.TOTAL_COUNT) {
       throw new GdxRuntimeException("There is more than " + LayerSector.TOTAL_COUNT + " it was " + sectors.size);
@@ -58,7 +58,7 @@ public abstract class Layer implements Disposable {
     }
   }
 
-  protected abstract void buildGeometryCaches(int tileStartX, int tileStartZ, boolean onlyBorder);
+  protected abstract void buildGeometryCaches(boolean onlyBorder);
   public abstract void generateTiles(int tileStartX, int tileStartZ);
 
   @Override

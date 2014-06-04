@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
+import de.macbury.zanbox.graphics.materials.Materials;
 import de.macbury.zanbox.managers.Assets;
 import de.macbury.zanbox.managers.Screens;
 import de.macbury.zanbox.managers.Shaders;
@@ -17,6 +18,7 @@ public class Zanbox extends Game {
   public static Screens screens;
   public static Shaders shaders;
   public static GameLevel level;
+  public static Materials materials;
   public static UISkin skin;
   public static VirtualViewport viewport;
 
@@ -29,6 +31,7 @@ public class Zanbox extends Game {
     assets    = new Assets();
     screens   = new Screens(this);
     shaders   = new Shaders();
+    materials = new Materials();
     assets.init();
     skin      = new UISkin();
     screens.showLoadingScreen();

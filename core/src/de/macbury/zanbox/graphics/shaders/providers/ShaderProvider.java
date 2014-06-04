@@ -1,10 +1,12 @@
-package de.macbury.zanbox.graphics.sprites.shaders;
+package de.macbury.zanbox.graphics.shaders.providers;
 
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.BaseShaderProvider;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import de.macbury.zanbox.graphics.shaders.SpriteShader;
+import de.macbury.zanbox.graphics.shaders.TerrainShader;
 
 /**
  * Created by macbury on 28.05.14.

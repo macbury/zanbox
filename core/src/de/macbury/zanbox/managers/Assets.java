@@ -21,6 +21,5 @@ public class Assets extends AssetManager {
     finishLoading();
     load(TERRAIN_TEXTURE, TextureAtlas.class);
     load(CHARSET_TEXTURE, TextureAtlas.class);
-
   }
 }

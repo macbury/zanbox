@@ -56,7 +56,7 @@ public class Chunk implements Disposable {
     int oz = (int)temp.z;
 
     for(Layer layer : layers) {
-      layer.buildGeometry(ox, oz, onlyBorder);
+      layer.buildGeometry(onlyBorder);
     }
   }
 

@@ -24,7 +24,12 @@ public class GroundLayer extends Layer {
   }
 
   @Override
-  protected void buildGeometryCaches(int tileStartX, int tileStartZ, boolean onlyBorder) {
+  protected void buildGeometryCaches(boolean onlyBorder) {
+    buildGroundGeometryCaches(onlyBorder);
+    buildLiquidGeometryCaches(onlyBorder);
+  }
+
+  private void buildLiquidGeometryCaches(boolean onlyBorder) {
     for(int x = 0; x < LayerSector.ROW_COUNT; x++) {
       for(int z = 0; z < LayerSector.ROW_COUNT; z++) {
         boolean border = (x == 0 || z == 0 || x == LayerSector.ROW_COUNT -1 || z == LayerSector.ROW_COUNT -1);
@@ -34,10 +39,30 @@ public class GroundLayer extends Layer {
 
         if (onlyBorder) {
           if (border) {
-            buildPart(sx,sz, tileStartX, tileStartZ, border);
+            buildLiquidPart(sx, sz);
           }
         } else {
-          buildPart(sx,sz, tileStartX, tileStartZ, border);
+          buildLiquidPart(sx, sz);
+        }
+      }
+    }
+  }
+
+
+  public void buildGroundGeometryCaches(boolean onlyBorder) {
+    for(int x = 0; x < LayerSector.ROW_COUNT; x++) {
+      for(int z = 0; z < LayerSector.ROW_COUNT; z++) {
+        boolean border = (x == 0 || z == 0 || x == LayerSector.ROW_COUNT -1 || z == LayerSector.ROW_COUNT -1);
+
+        int sx = x * LayerSector.SIZE_IN_TILES; //Local tile position in tiles table
+        int sz = z * LayerSector.SIZE_IN_TILES;
+
+        if (onlyBorder) {
+          if (border) {
+            buildGroundPart(sx, sz);
+          }
+        } else {
+          buildGroundPart(sx, sz);
         }
       }
     }
@@ -91,7 +116,7 @@ public class GroundLayer extends Layer {
     }
   }
 
-  public void buildPart(int sx, int sz, int tileStartX, int tileStartZ, boolean border) {
+  public void buildGroundPart(int sx, int sz) {
     ChunksProvider provider = chunk.chunksProvider;
     TileBuilder builder     = provider.level.tileBuilder;
     builder.begin(); {
@@ -121,11 +146,7 @@ public class GroundLayer extends Layer {
               builder.leftFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
             if (Tile.isNextNotLiquid(tile,rightTile))
               builder.rightFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
-            if (tile != Tile.NONE) {
-              builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DEEP_WATER);
-              //builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
-            }
-
+            builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT);
           } else {
             if (tile != Tile.NONE)
               builder.topFace(x, y, z, tile);
@@ -147,7 +168,7 @@ public class GroundLayer extends Layer {
       layerSector = new LayerSector(sx, sz, this);
     }
     layerSector.setBoundingBox();
-    layerSector.setTerrainGeometryCache(builder.toGeometryCache());
+    layerSector.setGroundGeometryCache(builder.toGeometryCache());
 
     if (!sectors.contains(layerSector, true)) {
       sectors.add(layerSector);
@@ -157,5 +178,38 @@ public class GroundLayer extends Layer {
     //Gdx.app.log(TAG, "Builded part: " +layerSector.toString() + " tileStartXZ = " + tileStartX + "x" + tileStartZ);
   }
 
+
+  private void buildLiquidPart(int sx, int sz) {
+    ChunksProvider provider = chunk.chunksProvider;
+    TileBuilder builder     = provider.level.tileBuilder;
+    builder.begin(); {
+      for(int x = 0; x < LayerSector.SIZE_IN_TILES; x++) {
+        for(int z = 0; z < LayerSector.SIZE_IN_TILES; z++) {
+          int tx = x + sx;
+          int tz = z + sz;
+
+          byte tile       = getTileByLocalTilePosition(tx, tz);
+
+          builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
+        }
+      }
+    } builder.end();
+
+    LayerSector layerSector = getSector(sx, sz);
+    if (layerSector == null) {
+      layerSector = new LayerSector(sx, sz, this);
+    }
+    layerSector.setBoundingBox();
+
+    if (builder.isEmpty()) {
+      layerSector.setLiquidGeometryCache(null);
+    } else {
+      layerSector.setLiquidGeometryCache(builder.toGeometryCache());
+    }
+
+    if (!sectors.contains(layerSector, true)) {
+      sectors.add(layerSector);
+    }
+  }
 
 }

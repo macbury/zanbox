@@ -31,6 +31,7 @@ public class MeshAssembler implements Disposable {
   protected float[] verties;
   protected short[] indices;
   protected ArrayList<VertexAttribute> attributes;
+  private boolean empty;
 
   public MeshAssembler() {
     this.vertexsList      = new ArrayList<MeshVertexData>();
@@ -453,5 +454,9 @@ public class MeshAssembler implements Disposable {
     normal(0, 0, 1);
     indices(n1, n3, n2);
     uv(u, v);
+  }
+
+  public boolean isEmpty() {
+    return this.vertexsList.size() == 0;
   }
 }

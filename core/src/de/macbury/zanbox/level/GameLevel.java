@@ -51,6 +51,7 @@ public class GameLevel extends World implements Disposable {
   public WorldEnv env;
 
   public GameLevel(int seed) {
+    Zanbox.materials.init();
     this.seed               = seed;
     this.pools              = new Pools(this);
     this.env                = new WorldEnv();

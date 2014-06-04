@@ -28,7 +28,7 @@ public class EntityFactory {
   public Entity player() {
     Entity e = level.createEntity();
     e.addComponent(new PositionComponent(5,0,5));
-    e.addComponent(new MovementComponent(8f));
+    e.addComponent(new MovementComponent(5f));
     e.addComponent(new VisibleComponent());
     e.addComponent(new BoundingBoxComponent());
     Animation animation = new Animation(0.15f, characterAtlas.findRegions("dummy"), Animation.PlayMode.LOOP);

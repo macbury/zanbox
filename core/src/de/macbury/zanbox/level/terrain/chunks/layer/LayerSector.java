@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
+import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.renderables.TerrainRenderable;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
@@ -20,6 +21,7 @@ public class LayerSector implements RenderableProvider, Disposable {
   public static final float SIZE_IN_METERS  = SIZE_IN_TILES * Tile.SIZE;
   public static final int ROW_COUNT         = Chunk.TILE_SIZE / SIZE_IN_TILES;
   public static final int TOTAL_COUNT       = ROW_COUNT * ROW_COUNT;
+
   private Layer parent;
 
   public BoundingBox boundingBox;
@@ -27,8 +29,10 @@ public class LayerSector implements RenderableProvider, Disposable {
 
   private int offsetX;
   private int offsetZ;
-  private TerrainRenderable terrainRenderable;
-  private GeometryCache terrainGeometryCache;
+  private TerrainRenderable groundRenderable;
+  private TerrainRenderable liquidRenderable;
+  private GeometryCache groundGeometryCache;
+  private GeometryCache liquidGeometryCache;
 
   protected final Vector3 tempA = new Vector3();
   protected final Vector3 tempB = new Vector3();
@@ -56,27 +60,55 @@ public class LayerSector implements RenderableProvider, Disposable {
 
   @Override
   public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-    if (terrainGeometryCache != null) {
+    updateGeometryCacheIfNeeded();
+    updateLiquidGeometryCacheIfNeeded();
+    if (groundRenderable != null)
+      renderables.add(groundRenderable);
+    if (liquidRenderable != null)
+      renderables.add(liquidRenderable);
+  }
 
-      if (terrainRenderable == null) {
-        this.terrainRenderable = parent.chunk.chunksProvider.level.pools.terrainRenderables.obtain();
+  private void updateLiquidGeometryCacheIfNeeded() {
+    if (liquidGeometryCache != null) {
+
+      if (liquidRenderable == null) {
+        this.liquidRenderable = parent.chunk.chunksProvider.level.pools.terrainRenderables.obtain();
       }
 
-      if (terrainRenderable.mesh != null) {
-        terrainRenderable.mesh.dispose();
+      if (liquidRenderable.mesh != null) {
+        liquidRenderable.mesh.dispose();
       }
 
       MyMath.tilePositionToMeters(tempA.set(offsetX, 0, offsetZ), tempB);
       MyMath.chunkPositionToMeters(parent.chunk.position, tempA);
       tempB.add(tempA);
 
-      terrainRenderable.worldTransform.idt().translate(tempB);
-      terrainRenderable.setGeometryCache(terrainGeometryCache);
-      terrainGeometryCache = null;
+      liquidRenderable.material  = Zanbox.materials.liquidMaterial;
+      liquidRenderable.worldTransform.idt().translate(tempB);
+      liquidRenderable.setGeometryCache(liquidGeometryCache);
+      liquidGeometryCache = null;
     }
+  }
 
-    if (terrainRenderable != null)
-      renderables.add(terrainRenderable);
+  private void updateGeometryCacheIfNeeded() {
+    if (groundGeometryCache != null) {
+
+      if (groundRenderable == null) {
+        this.groundRenderable = parent.chunk.chunksProvider.level.pools.terrainRenderables.obtain();
+      }
+
+      if (groundRenderable.mesh != null) {
+        groundRenderable.mesh.dispose();
+      }
+
+      MyMath.tilePositionToMeters(tempA.set(offsetX, 0, offsetZ), tempB);
+      MyMath.chunkPositionToMeters(parent.chunk.position, tempA);
+      tempB.add(tempA);
+      groundRenderable.material  = Zanbox.materials.terrainMaterial;
+      groundRenderable.worldTransform.idt().translate(tempB);
+      groundRenderable.setGeometryCache(groundGeometryCache);
+      groundGeometryCache = null;
+    }
   }
 
   public boolean at(int x, int z) {
@@ -91,17 +123,27 @@ public class LayerSector implements RenderableProvider, Disposable {
   @Override
   public void dispose() {
     //terrainRenderable
-    if (terrainRenderable != null)
-      parent.chunk.chunksProvider.level.pools.terrainRenderables.free(terrainRenderable);
+    if (groundRenderable != null)
+      parent.chunk.chunksProvider.level.pools.terrainRenderables.free(groundRenderable);
+    if (liquidRenderable != null)
+      parent.chunk.chunksProvider.level.pools.terrainRenderables.free(liquidRenderable);
     parent               = null;
-    terrainGeometryCache = null;
+    groundGeometryCache = null;
+    liquidRenderable = null;
+    groundRenderable    = null;
+    liquidGeometryCache = null;
+    boundingBox = null;
   }
 
-  public GeometryCache getTerrainGeometryCache() {
-    return terrainGeometryCache;
+  public GeometryCache getGroundGeometryCache() {
+    return groundGeometryCache;
   }
 
-  public void setTerrainGeometryCache(GeometryCache terrainGeometryCache) {
-    this.terrainGeometryCache = terrainGeometryCache;
+  public void setGroundGeometryCache(GeometryCache groundGeometryCache) {
+    this.groundGeometryCache = groundGeometryCache;
+  }
+
+  public void setLiquidGeometryCache(GeometryCache liquidGeometryCache) {
+    this.liquidGeometryCache = liquidGeometryCache;
   }
 }

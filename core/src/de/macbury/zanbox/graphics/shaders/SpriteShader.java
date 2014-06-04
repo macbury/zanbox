@@ -1,4 +1,4 @@
-package de.macbury.zanbox.graphics.sprites.shaders;
+package de.macbury.zanbox.graphics.shaders;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.*;

@@ -1,18 +1,13 @@
 package de.macbury.zanbox.level.terrain.tiles;
 
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Pool;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.graphics.materials.TerrainMaterial;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
 import de.macbury.zanbox.level.GameLevel;
@@ -24,7 +19,7 @@ import de.macbury.zanbox.managers.Assets;
  */
 public class TileBuilder extends MeshAssembler {
   private final TextureAtlas terrainAtlas;
-  public final Material tileMaterial;
+  public final TerrainMaterial tileMaterial;
   private final Vector3 tempA = new Vector3();
   private final Vector3 tempB = new Vector3();
   private final RandomRegion rockRegion;
@@ -39,8 +34,7 @@ public class TileBuilder extends MeshAssembler {
     if (terrainAtlas.getTextures().size > 1)
       throw new GdxRuntimeException("Only supports one texture for terrain!!!!");
 
-    Texture terrainTexture = terrainAtlas.getTextures().first();
-    this.tileMaterial      = new Material(TextureAttribute.createDiffuse(terrainTexture));
+    this.tileMaterial      = Zanbox.materials.terrainMaterial;
 
     this.rockRegion        = new RandomRegion(this.terrainAtlas.findRegions("rock"));
   }

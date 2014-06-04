@@ -8,7 +8,7 @@ public abstract class Tile {
   public static final float HALF_SIZE = SIZE / 2;
 
   public static final float LIQUID_BOTTOM_HEIGHT = 0;
-  public static final float LIQUID_HEIGHT = LIQUID_BOTTOM_HEIGHT + HALF_SIZE;
+  public static final float LIQUID_HEIGHT = LIQUID_BOTTOM_HEIGHT + 0.7f;
   public static final float GROUND_HEIGHT = SIZE;
   public static final float WALL_HEIGHT   = SIZE * 2;
 

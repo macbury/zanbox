@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import de.macbury.zanbox.graphics.sprites.animated.AnimatedSprite3D;
 import de.macbury.zanbox.graphics.sprites.normal.Sprite3D;
-import de.macbury.zanbox.graphics.sprites.shaders.ShaderProvider;
+import de.macbury.zanbox.graphics.shaders.providers.ShaderProvider;
 import de.macbury.zanbox.level.terrain.WorldEnv;
 
 /**

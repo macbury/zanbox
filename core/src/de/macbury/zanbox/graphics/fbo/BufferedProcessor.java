@@ -1,4 +1,4 @@
-package de.macbury.zanbox.graphics.shaders;
+package de.macbury.zanbox.graphics.fbo;
 
 import java.nio.ByteBuffer;
 
@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.glutils.FloatFrameBuffer;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import de.macbury.zanbox.graphics.shaders.ShaderManager;
 
 /**
  * @author Przemek Muller

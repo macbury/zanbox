@@ -1,4 +1,4 @@
-package de.macbury.zanbox.graphics.sprites.shaders;
+package de.macbury.zanbox.graphics.shaders;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.graphics.materials.TerrainMaterial;
 import de.macbury.zanbox.level.terrain.WorldEnv;
-import de.macbury.zanbox.graphics.renderables.TerrainRenderable;
 import de.macbury.zanbox.managers.Shaders;
 
 /**
@@ -53,7 +53,7 @@ public class TerrainShader extends CoreShader {
 
   @Override
   public boolean canRender(Renderable instance) {
-    return TerrainRenderable.class.isInstance(instance);
+    return TerrainMaterial.class.isInstance(instance.material);
   }
 
 }
