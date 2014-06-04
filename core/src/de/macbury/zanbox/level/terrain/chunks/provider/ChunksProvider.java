@@ -94,7 +94,8 @@ public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandl
       return lastChunk;
     }
 
-    for(Chunk chunk : chunks) {
+    for(int ci = 0; ci < chunks.size; ci++) {
+      Chunk chunk = chunks.get(ci);
       if (chunk.at(chunkX,chunkY)) {
         lastChunk = chunk;
         return chunk;

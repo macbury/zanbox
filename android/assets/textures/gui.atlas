@@ -1,9 +1,16 @@
 
 gui.png
-size: 196,244
+size: 358,244
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+background
+  rotate: false
+  xy: 2, 84
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
 joystick_left
   rotate: false
   xy: 2, 2
@@ -13,14 +20,14 @@ joystick_left
   index: -1
 touchpad_background
   rotate: false
-  xy: 2, 84
+  xy: 164, 84
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
 window_background
   rotate: false
-  xy: 164, 212
+  xy: 326, 212
   size: 32, 32
   split: 14, 13, 14, 14
   orig: 32, 32

@@ -105,17 +105,20 @@ public class GameLevel extends World implements Disposable {
       } modelBatch.end();
     } renderContext.end();
 
-    renderContext.begin(); {
-      shapeRenderer.setProjectionMatrix(camera.combined);
-      renderContext.setDepthTest(GL20.GL_LESS);
-      frustrumRenderer.render(shapeRenderer);
+    if (frustrumRenderer.isEnabled()) {
+      renderContext.begin(); {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        renderContext.setDepthTest(GL20.GL_LESS);
+        frustrumRenderer.render(shapeRenderer);
 
-      DebugShape.drawMap(shapeRenderer, chunksRenderables);
-      shapeRenderer.setColor(Color.MAGENTA);
-      shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-      DebugShape.draw(shapeRenderer, chunksRenderables.boundingBox);
-      shapeRenderer.end();
-    } renderContext.end();
+        DebugShape.drawMap(shapeRenderer, chunksRenderables);
+        shapeRenderer.setColor(Color.MAGENTA);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        DebugShape.draw(shapeRenderer, chunksRenderables.boundingBox);
+        shapeRenderer.end();
+      } renderContext.end();
+    }
+
   }
 
   @Override

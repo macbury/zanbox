@@ -48,8 +48,9 @@ public class LayerSector implements RenderableProvider, Disposable {
     tempB.add(tempA);
 
     boundingStartVector.set(tempB);
-    boundingEndVector.set(boundingStartVector).add(SIZE_IN_METERS, Tile.SIZE, SIZE_IN_METERS);
-
+    boundingEndVector.set(boundingStartVector).add(SIZE_IN_METERS, 0, SIZE_IN_METERS);
+    boundingEndVector.y    = Tile.WALL_HEIGHT;
+    boundingStartVector.y  = Tile.LIQUID_BOTTOM_HEIGHT;
     boundingBox            = new BoundingBox(boundingStartVector, boundingEndVector);
   }
 

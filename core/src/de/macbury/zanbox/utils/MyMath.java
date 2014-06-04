@@ -15,27 +15,34 @@ public class MyMath {
   private static Vector3 tempB = new Vector3();
   private static Vector2 tempC = new Vector2();
 
-  public static synchronized void worldToLocalTilePosition(Vector3 in, Vector3 out) {
-    abs(tempA.set(in));
-    tilePositionToChunkPoistion(tempA, tempC);
-    int dx = MathUtils.round(tempC.x * Chunk.TILE_SIZE);
-    int dy = MathUtils.round(tempC.y * Chunk.TILE_SIZE);
+  public static synchronized void localToWorldTilePosition(Chunk chunk, Vector3 localPosition, Vector3 worldPosition) {
+    reset();
+    //tempB = Center
+    //in = Local
+    chunkPositionToTilePosition(chunk.position, tempB);
+    worldPosition.set(tempB.add(localPosition));
+  }
 
-    tempA.sub(dx, 0, dy);
+  public static synchronized void worldToLocalTilePosition(Vector3 worldPosition, Vector3 localPosition) {
+    reset();
+    tilePositionToChunkPoistion(worldPosition, tempC);
+    float dx = fastFloor(tempC.x * Chunk.TILE_SIZE);
+    float dy = fastFloor(tempC.y * Chunk.TILE_SIZE);
 
-    out.set(tempA);
-    if (out.x > Chunk.TILE_SIZE || out.z > Chunk.TILE_SIZE || out.y > Chunk.TILE_SIZE) {
-      throw new GdxRuntimeException("Is above chunk size: " + out.toString());
+    localPosition.set(worldPosition).sub(dx, 0, dy);
+    if (localPosition.x > Chunk.TILE_SIZE || localPosition.z > Chunk.TILE_SIZE || localPosition.y > Chunk.TILE_SIZE) {
+      throw new GdxRuntimeException("Is above chunk size: " + localPosition.toString());
     }
+  }
+
+  private synchronized static void reset() {
+    tempA.set(Vector3.Zero);
+    tempB.set(Vector3.Zero);
+    tempC.set(Vector2.Zero);
   }
 
   public static void abs(Vector3 vector) {
     vector.set(fastAbs(vector.x), fastAbs(vector.y), fastAbs(vector.z));
-  }
-
-  public static synchronized void localToWorldTilePosition(Chunk chunk, Vector3 in, Vector3 out) {
-    chunkPositionToTilePosition(chunk.position, tempB);
-    out.set(tempB.add(in));
   }
 
   public static synchronized void metersToTilePosition(Vector3 in, Vector3 out) {

@@ -66,7 +66,8 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
 
     boolean firstPart = true;
 
-    for(Chunk chunk : chunksProvider.chunks) {
+    for(int ci = 0; ci < chunksProvider.chunks.size; ci++) {
+      Chunk chunk = chunksProvider.chunks.get(ci);
       if (frustum.boundsInFrustum(chunk.getBoundingBox())) {
         visibleChunks.add(chunk);
         chunk.setVisible(true);

@@ -15,4 +15,5 @@ public class TestHelper {
   public static void assertEqual(Vector3 a, Vector3 b) {
     Assert.assertArrayEquals(vector3ToFloat(b), vector3ToFloat(a), 0.1f);
   }
+
 }

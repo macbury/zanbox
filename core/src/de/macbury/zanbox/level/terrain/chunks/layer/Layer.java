@@ -83,11 +83,11 @@ public abstract class Layer implements Disposable {
 
   public byte getTileByWorldTilePosition(int tileX, int tileY) {
     MyMath.worldToLocalTilePosition(tempA.set(tileX, 0, tileY), tempB);
-    return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);
+    return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);// powinno pobierać tile poprzez providera mother fucker :!!!!!
   }
 
   public byte getTileByLocalToWorldTilePosition(int tileX, int tileY) {
     MyMath.worldToLocalTilePosition(tempA.set(chunk.position.x + tileX, 0, chunk.position.y + tileY), tempB);
-    return getTileByLocalTilePosition(tileX, tileY);
+    return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);
   }
 }

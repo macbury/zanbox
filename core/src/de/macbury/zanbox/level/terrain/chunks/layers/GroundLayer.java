@@ -1,11 +1,9 @@
 package de.macbury.zanbox.level.terrain.chunks.layers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import de.macbury.zanbox.level.terrain.biome.Biome;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-import de.macbury.zanbox.level.terrain.chunks.layer.GeometryCache;
 import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.level.terrain.chunks.layer.LayerSector;
@@ -102,26 +100,43 @@ public class GroundLayer extends Layer {
           int tx = x + sx;
           int tz = z + sz;
 
-          byte tile       = getTileByLocalTilePosition(tx, tz);
-          byte topTile    = getTileByLocalToWorldTilePosition(tx, tz+1);
-          byte bottomTile = getTileByLocalToWorldTilePosition(tx, tz-1);
-          byte leftTile   = getTileByLocalToWorldTilePosition(tx-1, tz);
-          byte rightTile  = getTileByLocalToWorldTilePosition(tx+1, tz);
+          MyMath.localToWorldTilePosition(chunk, tempA.set(tx, 0, tz), tempB);
+          int worldX = (int)tempB.x;
+          int worldZ = (int)tempB.z;
+
+          byte tile       = provider.getTile(worldX, worldZ, index);//getTileByLocalTilePosition(tx, tz);
+          byte topTile    = provider.getTile(worldX, worldZ+1, index);
+          byte bottomTile = provider.getTile(worldX, worldZ-1, index);
+          byte leftTile   = provider.getTile(worldX-1, worldZ, index);
+          byte rightTile  = provider.getTile(worldX+1, worldZ, index);
+
+          float y = Tile.height(tile);
 
           if (Tile.isLiquid(tile)) {
+            if (Tile.isNextNotLiquid(tile, topTile))
+              builder.frontFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+            if (Tile.isNextNotLiquid(tile, bottomTile))
+              builder.backFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+            if (Tile.isNextNotLiquid(tile, leftTile))
+              builder.leftFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+            if (Tile.isNextNotLiquid(tile,rightTile))
+              builder.rightFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+            if (tile != Tile.NONE) {
+              builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DEEP_WATER);
+              //builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
+            }
 
           } else {
-            float y = Tile.height(tile);
             if (tile != Tile.NONE)
               builder.topFace(x, y, z, tile);
-            if (Tile.isNextNotWall(tile,bottomTile))
-              builder.backFace(x, 0, z, tile);
-            if (Tile.isNextNotWall(tile,topTile))
-              builder.frontFace(x, 0, z, tile);
-            if (Tile.isNextNotWall(tile,leftTile))
-              builder.leftFace(x, 0, z, tile);
+            if (Tile.isNextNotWall(tile, bottomTile))
+              builder.backFace(x, Tile.GROUND_HEIGHT, z, tile, false);
+            if (Tile.isNextNotWall(tile, topTile))
+              builder.frontFace(x, Tile.GROUND_HEIGHT, z, tile, false);
+            if (Tile.isNextNotWall(tile, leftTile))
+              builder.leftFace(x, Tile.GROUND_HEIGHT, z, tile, false);
             if (Tile.isNextNotWall(tile,rightTile))
-              builder.rightFace(x, 0, z, tile);
+              builder.rightFace(x, Tile.GROUND_HEIGHT, z, tile, false);
           }
         }
       }

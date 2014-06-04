@@ -1,11 +1,13 @@
 package de.macbury.zanbox.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
+import de.macbury.zanbox.utils.MyMath;
 import de.macbury.zanbox.utils.time.BaseTimer;
 import de.macbury.zanbox.utils.time.IntervalTimer;
 import de.macbury.zanbox.utils.time.TimerListener;
@@ -16,6 +18,7 @@ import java.text.DecimalFormat;
  * Created by macbury on 31.05.14.
  */
 public class DebugWindow extends Window implements TimerListener {
+  private DefaultLabel tileInfoLabel;
   private IntervalTimer updateInfoTimer;
   private DefaultLabel memoryLabel;
   private DefaultLabel visibleChunks;
@@ -61,7 +64,7 @@ public class DebugWindow extends Window implements TimerListener {
     this.visiblityBoundingBoxLabel    = new DefaultLabel("");
     this.visibleChunks                = new DefaultLabel("");
     this.memoryLabel                  = new DefaultLabel("");
-
+    this.tileInfoLabel                  = new DefaultLabel("");
     this.updateInfoTimer              = new IntervalTimer(1);
     this.updateInfoTimer.setListener(this);
     table.row().padTop(20).padLeft(20); {
@@ -82,6 +85,10 @@ public class DebugWindow extends Window implements TimerListener {
 
     table.row().padLeft(20); {
       table.add(memoryLabel).left().top().expandX();
+    }
+
+    table.row().padLeft(20); {
+      table.add(tileInfoLabel).left().top().expandX();
     }
 
     table.row().padLeft(20); {
@@ -112,6 +119,7 @@ public class DebugWindow extends Window implements TimerListener {
     return 240;
   }
 
+  Vector3 temp = new Vector3();
   @Override
   public void timerTick(BaseTimer sender) {
     ChunksProvider provider = Zanbox.level.chunksProvider;
@@ -122,5 +130,14 @@ public class DebugWindow extends Window implements TimerListener {
     visibleChunkRenderablesLabel.setText("Chunk parts(V/T): " + renderables.visibleSectors.size + "/"+renderables.totalSectors.size);
     visiblityBoundingBoxLabel.setText("World Box " + renderables.boundingBox.toString());
     memoryLabel.setText("Memory(Java/Native): " + convertToStringRepresentation(Gdx.app.getJavaHeap()) + "/" + convertToStringRepresentation(Gdx.app.getNativeHeap()));
+
+    byte tileID = provider.getTile(Math.round(Zanbox.level.worldPosition.x), Math.round(Zanbox.level.worldPosition.z), Zanbox.level.currentLayer);
+
+    tileInfoLabel.setText("TileID: " + tileID + " for " + Zanbox.level.worldPosition.toString());
+
+    if (Zanbox.level.worldPosition.epsilonEquals(-1,0,11, 1f)) {
+      Gdx.app.log("TAG", "HERE!");
+      provider.getTile(Math.round(Zanbox.level.worldPosition.x), Math.round(Zanbox.level.worldPosition.z), Zanbox.level.currentLayer);
+    }
   }
 }

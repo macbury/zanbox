@@ -69,8 +69,10 @@ public class TileBuilder extends MeshAssembler {
         return terrainAtlas.findRegion("lava");
       case Tile.SAND:
         return terrainAtlas.findRegion("sand");
+      case Tile.DIRT:
+        return terrainAtlas.findRegion("dirt");
       case Tile.SNOW:
-        return terrainAtlas.findRegion("water"); //TODO: change this
+        return terrainAtlas.findRegion("snow"); //TODO: change this
       case Tile.ROCK:
         return rockRegion.get();
       case Tile.LIGHT_GRASS:
@@ -92,23 +94,24 @@ public class TileBuilder extends MeshAssembler {
   }
 
 
-  public void backFace(float x, float y, float z, byte tileID) {
+  public void backFace(float x, float y, float z, byte tileID, boolean outside) {
     TextureRegion region = regionForTile(tileID);
-    backFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+    backFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void frontFace(float x, float y, float z, byte tileID) {
+  public void frontFace(float x, float y, float z, byte tileID, boolean outside) {
     TextureRegion region = regionForTile(tileID);
-    frontFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+    frontFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void leftFace(float x, float y, float z, byte tileID) {
+  public void leftFace(float x, float y, float z, byte tileID, boolean outside) {
     TextureRegion region = regionForTile(tileID);
-    leftFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+    leftFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void rightFace(float x, float y, float z, byte tileID) {
+  public void rightFace(float x, float y, float z, byte tileID, boolean outside) {
     TextureRegion region = regionForTile(tileID);
-    rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+    rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
+
 }

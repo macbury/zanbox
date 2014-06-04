@@ -10,6 +10,7 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.entities.components.*;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.level.GameLevel;
+import de.macbury.zanbox.level.terrain.tiles.Tile;
 import de.macbury.zanbox.managers.Assets;
 
 /**
@@ -18,7 +19,7 @@ import de.macbury.zanbox.managers.Assets;
 public class EntityFactory {
   private TextureAtlas characterAtlas;
   private GameLevel level;
-  private final static Vector3 defaultOffset = new Vector3(0.5f, 0.1f, 0.5f);
+  private final static Vector3 defaultOffset = new Vector3(0.5f, Tile.GROUND_HEIGHT + 0.1f, 0.5f);
   public EntityFactory(GameLevel gameLevel) {
     this.level          = gameLevel;
     this.characterAtlas = Zanbox.assets.get(Assets.CHARSET_TEXTURE);
