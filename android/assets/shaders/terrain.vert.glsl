@@ -1,5 +1,5 @@
 //= require fog
-
+//= require lighting
 uniform vec4 u_sunLightColor;
 uniform vec3 u_sunLightDirection;
 

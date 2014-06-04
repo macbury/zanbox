@@ -14,6 +14,7 @@ public class Assets extends AssetManager {
   public static final String SHADERS_PREFIX  = "shaders/";
 
   public final static String MAIN_FONT = "fonts/Minecraftia-14.fnt";
+  public static final String SHADERS_HELPERS_PREFIX = SHADERS_PREFIX + "helpers/";
 
   public void init() {
     load(GUI_TEXTURE,     TextureAtlas.class);
