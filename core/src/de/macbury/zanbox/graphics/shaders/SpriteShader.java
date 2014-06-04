@@ -16,11 +16,6 @@ public class SpriteShader extends CoreShader {
   private final int u_alphaTest;
   private Material currentMaterial;
 
-  public static class Inputs {
-    public final static Uniform opacity         = new Uniform("u_opacity", BlendingAttribute.Type);
-    public final static Uniform alphaTest       = new Uniform("u_alphaTest", FloatAttribute.AlphaTest);
-  }
-
   public static class Setters {
     public final static Setter diffuseTexture = new Setter() {
       @Override

@@ -15,6 +15,7 @@ public class Shaders extends ShaderManager {
   public static final String SHADER_DEFAULT = "SHADER_DEFAULT";
   public static final String SHADER_SPRITES = "SHADER_SPRITES";
   public static final String SHADER_TERRAIN = "SHADER_TERRAIN";
+  public static final String SHADER_LIQUID  = "SHADER_LIQUID";
 
   public Shaders() {
     super(Assets.SHADERS_PREFIX, Zanbox.assets);
@@ -24,6 +25,7 @@ public class Shaders extends ShaderManager {
 
     add(SHADER_SPRITES, "sprite.vert.glsl", "sprite.frag.glsl");
     add(SHADER_TERRAIN, "terrain.vert.glsl", "terrain.frag.glsl");
+    add(SHADER_LIQUID, "liquid.vert.glsl", "liquid.frag.glsl");
   }
 
 }

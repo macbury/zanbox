@@ -17,7 +17,7 @@ public class Materials implements Disposable{
 
   private boolean initialized;
   public TerrainMaterial terrainMaterial;
-  public TerrainMaterial liquidMaterial;
+  public LiquidMaterial liquidMaterial;
 
   public Materials() {
 
@@ -39,8 +39,8 @@ public class Materials implements Disposable{
 
       Texture terrainTexture = terrainAtlas.getTextures().first();
       terrainMaterial = new TerrainMaterial(TextureAttribute.createDiffuse(terrainTexture));
-      liquidMaterial  = new TerrainMaterial(TextureAttribute.createDiffuse(terrainTexture));
-      liquidMaterial.set(new BlendingAttribute(true, 0.5f));
+      liquidMaterial  = new LiquidMaterial(TextureAttribute.createDiffuse(terrainTexture));
+      liquidMaterial.set(new BlendingAttribute(true, 0.3f));
     }
   }
 }

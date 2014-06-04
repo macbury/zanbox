@@ -139,13 +139,13 @@ public class GroundLayer extends Layer {
 
           if (Tile.isLiquid(tile)) {
             if (Tile.isNextNotLiquid(tile, topTile))
-              builder.frontFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+              builder.frontFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(topTile), true);
             if (Tile.isNextNotLiquid(tile, bottomTile))
-              builder.backFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+              builder.backFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(bottomTile), true);
             if (Tile.isNextNotLiquid(tile, leftTile))
-              builder.leftFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+              builder.leftFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(leftTile), true);
             if (Tile.isNextNotLiquid(tile,rightTile))
-              builder.rightFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, true);
+              builder.rightFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(rightTile), true);
             builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT);
           } else {
             if (tile != Tile.NONE)
@@ -188,9 +188,13 @@ public class GroundLayer extends Layer {
           int tx = x + sx;
           int tz = z + sz;
 
-          byte tile       = getTileByLocalTilePosition(tx, tz);
+          MyMath.localToWorldTilePosition(chunk, tempA.set(tx, 0, tz), tempB);
+          int worldX = (int)tempB.x;
+          int worldZ = (int)tempB.z;
 
-          builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
+          byte tile       = provider.getTile(worldX, worldZ, index);//getTileByLocalTilePosition(tx, tz);
+          if(Tile.isLiquid(tile))
+            builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
         }
       }
     } builder.end();

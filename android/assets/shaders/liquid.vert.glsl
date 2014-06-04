@@ -1,5 +1,3 @@
-//= require fog
-
 uniform vec4 u_sunLightColor;
 uniform vec3 u_sunLightDirection;
 
@@ -11,14 +9,11 @@ uniform mat4  u_worldTrans;
 
 attribute vec3 a_position;
 attribute vec2 a_texCoord0;
-attribute vec2 a_shade;
 attribute vec3 a_normal;
 
 varying vec2   v_texCoords0;
-varying float  v_shadeFactory;
 varying vec3   v_normal;
 varying vec3   v_lightDiffuse;
-varying vec3   v_position;
 
 vec3 sunLightDiffuse(vec3 normal) {
   vec3 lightDir = -u_sunLightDirection;
@@ -29,11 +24,8 @@ vec3 sunLightDiffuse(vec3 normal) {
 
 void main() {
     v_texCoords0   = a_texCoord0;
-    v_shadeFactory = a_shade.x;
     v_normal       = normalize(u_normalMatrix * a_normal);
     v_lightDiffuse = u_ambientLight.rgb + sunLightDiffuse(v_normal);
 
-    vec4 pos       = u_worldTrans * vec4(a_position, 1.0);
-    v_position     = pos.xyz;
-    gl_Position    = u_projViewTrans * pos;
+    gl_Position    = u_projViewTrans * u_worldTrans * vec4(a_position, 1.0);
 }

@@ -23,6 +23,7 @@ vec3 sunLightDiffuse(vec3 normal) {
   return value;
 }
 
+
 void main() {
     v_texCoords0    = a_texCoord0;
     v_opacity       = u_opacity;

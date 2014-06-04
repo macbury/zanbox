@@ -69,4 +69,12 @@ public abstract class Tile {
   public static boolean isNextLiquid(byte currentTile, byte nextTile) {
     return !isLiquid(currentTile) && isLiquid(nextTile);
   }
+
+  public static byte waterWall(byte tile) {
+    if (tile == LIGHT_GRASS || tile == DARK_GRASS || tile == ROCK) {
+      return DIRT;
+    } else {
+      return tile;
+    }
+  }
 }

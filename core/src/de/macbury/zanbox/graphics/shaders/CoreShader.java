@@ -3,6 +3,8 @@ package de.macbury.zanbox.graphics.shaders;
 import com.badlogic.gdx.graphics.g3d.Attributes;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -24,6 +26,8 @@ public abstract class CoreShader extends BaseShader {
   protected boolean initialized;
 
   public static class Inputs {
+    public final static Uniform opacity             = new Uniform("u_opacity", BlendingAttribute.Type);
+    public final static Uniform alphaTest           = new Uniform("u_alphaTest", FloatAttribute.AlphaTest);
     public final static Uniform projViewTrans       = new Uniform("u_projViewTrans");
     public final static Uniform worldTrans          = new Uniform("u_worldTrans");
     public final static Uniform diffuseTexture      = new Uniform("u_diffuseTexture", TextureAttribute.Diffuse);
@@ -144,6 +148,7 @@ public abstract class CoreShader extends BaseShader {
     if (!initialized)
       this.renderable = renderable;
   }
+
 
   @Override
   public void render(Renderable renderable) {
