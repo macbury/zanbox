@@ -65,7 +65,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile 'com.esotericsoftware.kryo:kryo:2.24.0'
-        compile 'com.roundtriangles.games:gdx-artemis:0.5'
     }
 }
 
