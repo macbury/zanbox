@@ -1,18 +1,18 @@
 package de.macbury.zanbox.managers;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.graphics.shaders.ShaderManager;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.graphics.shaders.ShaderManager;
 
 
 /**
@@ -57,7 +57,7 @@ public class Shaders extends ShaderManager {
 
   private String applyHelpers(String source) {
     Matcher matcher = REQIUIRE_HELPER_PATTERN.matcher(source);
-    while(matcher.find()) {
+    while(matcher.matches()) {
       String helperKey = matcher.group(1);
       if (helpers.containsKey(helperKey)) {
         String helperContent = helpers.get(helperKey);
@@ -69,6 +69,10 @@ public class Shaders extends ShaderManager {
       }
     }
     return source;
+  }
+
+  private String nextApplyHelper(String source) {
+    return null;
   }
 
   @Override

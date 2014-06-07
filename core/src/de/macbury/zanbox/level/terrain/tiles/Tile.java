@@ -77,4 +77,8 @@ public abstract class Tile {
       return tile;
     }
   }
+
+  public static boolean isPassable(byte tileId) {
+    return isNotEmpty(tileId) && isGround(tileId);
+  }
 }

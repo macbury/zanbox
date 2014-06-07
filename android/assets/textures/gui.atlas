@@ -1,33 +1,47 @@
 
 gui.png
-size: 358,244
+size: 225,225
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 2, 84
+  xy: 2, 65
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
-joystick_left
+joystick_down_button
+  rotate: false
+  xy: 164, 72
+  size: 61, 75
+  orig: 61, 75
+  offset: 0, 0
+  index: -1
+joystick_left_button
   rotate: false
   xy: 2, 2
-  size: 80, 80
-  orig: 80, 80
+  size: 76, 61
+  orig: 76, 61
   offset: 0, 0
   index: -1
-touchpad_background
+joystick_right_button
   rotate: false
-  xy: 164, 84
-  size: 160, 160
-  orig: 160, 160
+  xy: 80, 2
+  size: 75, 61
+  orig: 75, 61
+  offset: 0, 0
+  index: -1
+joystick_up_button
+  rotate: false
+  xy: 164, 149
+  size: 61, 76
+  orig: 61, 76
   offset: 0, 0
   index: -1
 window_background
   rotate: false
-  xy: 326, 212
+  xy: 164, 38
   size: 32, 32
   split: 14, 13, 14, 14
   orig: 32, 32

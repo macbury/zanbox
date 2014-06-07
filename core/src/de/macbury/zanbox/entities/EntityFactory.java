@@ -1,13 +1,17 @@
 package de.macbury.zanbox.entities;
 
 import com.artemis.Entity;
-import com.artemis.managers.TagManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.entities.components.*;
+import de.macbury.zanbox.entities.components.AnimatedSpriteComponent;
+import de.macbury.zanbox.entities.components.BoundingBoxComponent;
+import de.macbury.zanbox.entities.components.MovementComponent;
+import de.macbury.zanbox.entities.components.PositionComponent;
+import de.macbury.zanbox.entities.components.SpriteComponent;
+import de.macbury.zanbox.entities.components.VisibleComponent;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.tiles.Tile;
@@ -27,8 +31,8 @@ public class EntityFactory {
 
   public Entity player() {
     Entity e = level.createEntity();
-    e.addComponent(new PositionComponent(5,0,5));
-    e.addComponent(new MovementComponent(5f));
+    e.addComponent(new PositionComponent(0,0,0));
+    e.addComponent(new MovementComponent(4f));
     e.addComponent(new VisibleComponent());
     e.addComponent(new BoundingBoxComponent());
     Animation animation = new Animation(0.15f, characterAtlas.findRegions("dummy"), Animation.PlayMode.LOOP);

@@ -1,6 +1,8 @@
 package de.macbury.zanbox.level;
 
 import com.artemis.World;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
@@ -8,19 +10,25 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.debug.DebugShape;
 import de.macbury.zanbox.debug.FrustrumRenderer;
 import de.macbury.zanbox.entities.EntityFactory;
 import de.macbury.zanbox.entities.managers.Tags;
-import de.macbury.zanbox.entities.systems.*;
+import de.macbury.zanbox.entities.systems.ChunksSystem;
+import de.macbury.zanbox.entities.systems.CullingSystem;
+import de.macbury.zanbox.entities.systems.DayNightSystem;
+import de.macbury.zanbox.entities.systems.MovementSystem;
+import de.macbury.zanbox.entities.systems.PlayerSystem;
+import de.macbury.zanbox.entities.systems.SpriteRenderingSystem;
 import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.pools.Pools;
 import de.macbury.zanbox.level.terrain.WorldEnv;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
-import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
+import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
 import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
 
 /**
@@ -62,9 +70,12 @@ public class GameLevel extends World implements Disposable {
     this.camera             = new GameCamera();
     this.chunksProvider     = new ChunksProvider(this);
     this.chunksRenderables  = new ChunksRenderables(this);
-    this.shapeRenderer      = new ShapeRenderer();
     this.modelBatch.setEnv(env);
     this.frustrumRenderer = new FrustrumRenderer(camera);
+
+    if(Gdx.app.getType() == Application.ApplicationType.Desktop)
+      this.shapeRenderer      = new ShapeRenderer();
+
     camera.update(true);
 
     this.factory      = new EntityFactory(this);
@@ -74,7 +85,7 @@ public class GameLevel extends World implements Disposable {
     cullingSystem         = new CullingSystem(this);
     chunksSystem          = new ChunksSystem(this);
     dayNightSystem        = new DayNightSystem();
-    movementSystem        = new MovementSystem();
+    movementSystem        = new MovementSystem(this);
     spriteRenderingSystem = new SpriteRenderingSystem(modelBatch);
     playerSystem          = new PlayerSystem(this);
 
@@ -106,7 +117,7 @@ public class GameLevel extends World implements Disposable {
       } modelBatch.end();
     } renderContext.end();
 
-    if (frustrumRenderer.isEnabled()) {
+    if (Gdx.app.getType() == Application.ApplicationType.Desktop && frustrumRenderer.isEnabled()) {
       renderContext.begin(); {
         shapeRenderer.setProjectionMatrix(camera.combined);
         renderContext.setDepthTest(GL20.GL_LESS);

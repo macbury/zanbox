@@ -6,13 +6,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
+import java.util.Comparator;
+
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.utils.MyMath;
-
-import java.util.Comparator;
 
 /**
  * Created by macbury on 02.06.14.
@@ -79,6 +80,15 @@ public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandl
     } else {
       return 0;
     }
+  }
+
+
+  public byte getTile(float x, float z, int index) {
+    return getTile((int)x, (int)z, index);
+  }
+
+  public byte getTile(Vector3 tileVector) {
+    return getTile(Math.round(tileVector.x), Math.round(tileVector.z), level.currentLayer);
   }
 
   public boolean exists(float chunkX, float chunkY) {
@@ -172,9 +182,6 @@ public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandl
     chunks.clear();
   }
 
-  public byte getTile(float x, float z, int index) {
-    return getTile((int)x, (int)z, index);
-  }
 
   @Override
   public void uncaughtException(Thread t, Throwable e) {

@@ -14,6 +14,6 @@ void main() {
   final.rgb        = final.rgb * v_lightDiffuse;
   gl_FragColor     = final;
 
-  if (v_position.y <= 0.5f)
-    discard;
+  //if (v_position.y <= 0.5f)
+  //  discard;
 }
