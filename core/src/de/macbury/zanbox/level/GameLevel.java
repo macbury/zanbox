@@ -18,7 +18,7 @@ import de.macbury.zanbox.entities.EntityFactory;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.entities.systems.ChunksSystem;
 import de.macbury.zanbox.entities.systems.CullingSystem;
-import de.macbury.zanbox.entities.systems.DayNightSystem;
+import de.macbury.zanbox.entities.systems.daynight.DayNightSystem;
 import de.macbury.zanbox.entities.systems.MovementSystem;
 import de.macbury.zanbox.entities.systems.PlayerSystem;
 import de.macbury.zanbox.entities.systems.SpriteRenderingSystem;
@@ -87,7 +87,7 @@ public class GameLevel extends World implements Disposable {
 
     cullingSystem         = new CullingSystem(this);
     chunksSystem          = new ChunksSystem(this);
-    dayNightSystem        = new DayNightSystem();
+    dayNightSystem        = new DayNightSystem(env);
     movementSystem        = new MovementSystem(this);
     spriteRenderingSystem = new SpriteRenderingSystem(modelBatch);
     playerSystem          = new PlayerSystem(this);
@@ -104,9 +104,12 @@ public class GameLevel extends World implements Disposable {
     factory.player().addToWorld();
     factory.sign().addToWorld();
     chunksProvider.initializeBaseChunks();
+
+    dayNightSystem.setSpeedTimeFactor(4);// TODO: Changet to 1
   }
 
   public void update(float delta) {
+    env.time += delta;
     events.tick();
     setDelta(delta);
     process();

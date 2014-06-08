@@ -12,6 +12,7 @@ public class WorldEnv extends Environment {
   public Color shadeColor;
   public DirectionalLight sunLight;
   public ColorAttribute ambientColor;
+  public float time;
 
   public WorldEnv() {
     this.ambientColor = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);

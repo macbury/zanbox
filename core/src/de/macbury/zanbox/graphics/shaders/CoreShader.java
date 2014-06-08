@@ -35,9 +35,22 @@ public abstract class CoreShader extends BaseShader {
     public final static Uniform sunLightColor       = new Uniform("u_mainLight.color");
     public final static Uniform sunLightDirection   = new Uniform("u_mainLight.direction");
     public final static Uniform ambientLight        = new Uniform("u_ambientLight");
+    public final static Uniform time                = new Uniform("u_time");
   }
 
   public static class Setters {
+    public final static Setter time  = new Setter() {
+      @Override
+      public boolean isGlobal (BaseShader shader, int inputID) {
+        return true;
+      }
+
+      @Override
+      public void set (BaseShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
+        WorldEnv env = (WorldEnv)renderable.environment;
+        shader.set(inputID, env.time);
+      }
+    };
     public final static Setter projViewTrans  = new Setter() {
       @Override
       public boolean isGlobal (BaseShader shader, int inputID) {
