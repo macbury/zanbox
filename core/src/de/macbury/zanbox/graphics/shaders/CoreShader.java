@@ -32,8 +32,8 @@ public abstract class CoreShader extends BaseShader {
     public final static Uniform worldTrans          = new Uniform("u_worldTrans");
     public final static Uniform diffuseTexture      = new Uniform("u_diffuseTexture", TextureAttribute.Diffuse);
     public final static Uniform normalMatrix        = new Uniform("u_normalMatrix");
-    public final static Uniform sunLightColor       = new Uniform("u_sunLightColor");
-    public final static Uniform sunLightDirection   = new Uniform("u_sunLightDirection");
+    public final static Uniform sunLightColor       = new Uniform("u_mainLight.color");
+    public final static Uniform sunLightDirection   = new Uniform("u_mainLight.direction");
     public final static Uniform ambientLight        = new Uniform("u_ambientLight");
   }
 
