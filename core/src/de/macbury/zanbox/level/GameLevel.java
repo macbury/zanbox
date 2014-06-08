@@ -22,6 +22,7 @@ import de.macbury.zanbox.entities.systems.DayNightSystem;
 import de.macbury.zanbox.entities.systems.MovementSystem;
 import de.macbury.zanbox.entities.systems.PlayerSystem;
 import de.macbury.zanbox.entities.systems.SpriteRenderingSystem;
+import de.macbury.zanbox.events.EventsManager;
 import de.macbury.zanbox.graphics.GameCamera;
 import de.macbury.zanbox.graphics.sprites.ModelAndSpriteBatch;
 import de.macbury.zanbox.level.pools.Pools;
@@ -36,6 +37,7 @@ import de.macbury.zanbox.level.terrain.tiles.TileBuilder;
  */
 public class GameLevel extends World implements Disposable {
   public final int seed;
+  public EventsManager events;
 
   public Pools pools;
   public CullingSystem cullingSystem;
@@ -60,6 +62,7 @@ public class GameLevel extends World implements Disposable {
 
   public GameLevel(int seed) {
     Zanbox.materials.init();
+    this.events             = new EventsManager();
     this.seed               = seed;
     this.pools              = new Pools(this);
     this.env                = new WorldEnv();
@@ -104,6 +107,7 @@ public class GameLevel extends World implements Disposable {
   }
 
   public void update(float delta) {
+    events.tick();
     setDelta(delta);
     process();
     camera.update();
@@ -135,6 +139,7 @@ public class GameLevel extends World implements Disposable {
 
   @Override
   public void dispose() {
+    events.clear();
     chunksProvider.dispose();
     chunksRenderables.dispose();
     this.biomeProvider = null;

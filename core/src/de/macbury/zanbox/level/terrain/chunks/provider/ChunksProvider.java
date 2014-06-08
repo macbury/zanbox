@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import java.util.Comparator;
 
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.events.Event;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
@@ -156,6 +157,8 @@ public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandl
         }
 
         i++;
+
+        level.events.trigger(Event.ChunksUpdated);
       }
     }
   }

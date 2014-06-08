@@ -6,13 +6,18 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
-import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
+import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
 import de.macbury.zanbox.persister.serializers.GroundLayerSerializer;
-
-import java.io.*;
 
 /**
  * Created by macbury on 02.06.14.
@@ -84,6 +89,7 @@ public class KryoSystem extends Kryo {
       output.writeInt((int)chunk.position.x);
       output.writeInt((int)chunk.position.y);
       output.writeInt(chunk.layers.size);
+
       for (Layer layer : chunk.layers) {
         writeObject(output, layer);
       }

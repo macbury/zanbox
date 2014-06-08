@@ -56,23 +56,23 @@ public class Shaders extends ShaderManager {
   }
 
   private String applyHelpers(String source) {
-    Matcher matcher = REQIUIRE_HELPER_PATTERN.matcher(source);
-    while(matcher.matches()) {
-      String helperKey = matcher.group(1);
-      if (helpers.containsKey(helperKey)) {
-        String helperContent = helpers.get(helperKey);
-        source = source.substring(0, matcher.start()) + helperContent + "\n" + source.substring(matcher.end(), source.length());
+    while(true) {
+      Matcher matcher  = REQIUIRE_HELPER_PATTERN.matcher(source);
+      if (matcher.find()) {
+        String helperKey = matcher.group(1);
+        if (helpers.containsKey(helperKey)) {
+          String helperContent = helpers.get(helperKey);
+          source = source.substring(0, matcher.start()) + helperContent + "\n" + source.substring(matcher.end(), source.length());
 
-        Gdx.app.log(TAG, "Appending: " + helperKey);
+          Gdx.app.log(TAG, "Appending: " + helperKey);
+        } else {
+          throw new GdxRuntimeException("Not found helper: " + helperKey);
+        }
       } else {
-        throw new GdxRuntimeException("Not found helper: " + helperKey);
+        break;
       }
     }
     return source;
-  }
-
-  private String nextApplyHelper(String source) {
-    return null;
   }
 
   @Override
