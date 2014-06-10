@@ -1,62 +1,26 @@
 package de.macbury.zanbox.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import de.macbury.zanbox.Zanbox;
+import de.macbury.zanbox.screens.menu.BaseMenuScreen;
+import de.macbury.zanbox.ui.stage.LoadingStage;
 
 /**
  * Created by macbury on 26.05.14.
  */
-public class LoadingScreen extends BaseScreen {
+public class LoadingScreen extends BaseMenuScreen {
+
+  public LoadingScreen() {
+    super(new LoadingStage());
+  }
+
   @Override
   public void render(float delta) {
-    Gdx.gl.glClearColor(1, 0, 0, 1);
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-    Gdx.app.log("Progress", "Progress:" + Zanbox.assets.getProgress());
+    super.render(delta);
+    LoadingStage ui = (LoadingStage)stage;
+    ui.setProgress(Zanbox.assets.getProgress());
 
     if (Zanbox.assets.update()) {
-      Zanbox.screens.showGameScreen();
+      Zanbox.screens.showGameMenu();
     }
-  }
-
-  @Override
-  public void resize(int width, int height) {
-
-  }
-
-  @Override
-  public void show() {
-
-  }
-
-  @Override
-  public void hide() {
-
-  }
-
-  @Override
-  public void pause() {
-
-  }
-
-  @Override
-  public void resume() {
-
-  }
-
-  @Override
-  public void dispose() {
-
-  }
-
-  @Override
-  public void onEnter() {
-
-  }
-
-  @Override
-  public void onExit() {
-
   }
 }

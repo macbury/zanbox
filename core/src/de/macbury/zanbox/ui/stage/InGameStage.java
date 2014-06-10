@@ -1,32 +1,27 @@
-package de.macbury.zanbox.graphics.stage;
+package de.macbury.zanbox.ui.stage;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
-import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.ui.DebugWindow;
-import de.macbury.zanbox.ui.Joystick;
+import de.macbury.zanbox.ui.widgets.Joystick;
 
 /**
  * Created by macbury on 28.05.14.
  */
-public class InGameStage extends Stage {
+public class InGameStage extends BaseStage {
   private Joystick joystick;
   private Table mainTable;
 
   public InGameStage() {
-    super(new ScalingViewport(Scaling.stretch, Zanbox.viewport.getWidth(), Zanbox.viewport.getHeight(), new OrthographicCamera(Zanbox.viewport.getWidth(), Zanbox.viewport.getHeight())));
+    super();
     mainTable = new Table();
     mainTable.setFillParent(true);
     this.joystick = new Joystick();
-
+    addActor(mainTable);
     mainTable.row(); {
       mainTable.add(joystick).expand().left().bottom().pad(40);
     }
-    addActor(mainTable);
+
 
     DebugWindow debugWindow = new DebugWindow();
     addActor(debugWindow);

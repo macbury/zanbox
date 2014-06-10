@@ -45,6 +45,22 @@ public class EntityFactory {
     return e;
   }
 
+  public Entity monster(int tileX, int tileZ) {
+    Entity e = level.createEntity();
+    e.addComponent(new PositionComponent(tileX,0,tileZ));
+    e.addComponent(new MovementComponent(4f));
+    e.addComponent(new VisibleComponent());
+    e.addComponent(new BoundingBoxComponent());
+    Animation animation = new Animation(0.15f, characterAtlas.findRegions("dummy"), Animation.PlayMode.LOOP);
+
+    AnimatedSpriteComponent spriteComponent = new AnimatedSpriteComponent(level.modelBatch.build(animation, false, true));
+
+    spriteComponent.offset.set(defaultOffset);
+    e.addComponent(spriteComponent);
+    level.getManager(Tags.class).register(Tags.ENEMY,e);
+    return e;
+  }
+
   public Entity sign() {
     Entity e = level.createEntity();
     e.addComponent(new BoundingBoxComponent());

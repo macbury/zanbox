@@ -2,11 +2,11 @@ package de.macbury.zanbox.graphics.materials;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.managers.Assets;
 
@@ -40,7 +40,7 @@ public class Materials implements Disposable{
       Texture terrainTexture = terrainAtlas.getTextures().first();
       terrainMaterial = new TerrainMaterial(TextureAttribute.createDiffuse(terrainTexture));
       liquidMaterial  = new LiquidMaterial(TextureAttribute.createDiffuse(terrainTexture));
-      liquidMaterial.set(new BlendingAttribute(true, 0.3f));
+      liquidMaterial.set(new BlendingAttribute(true, 0.5f));
     }
   }
 }

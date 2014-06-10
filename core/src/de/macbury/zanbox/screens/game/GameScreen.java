@@ -1,12 +1,13 @@
-package de.macbury.zanbox.screens;
+package de.macbury.zanbox.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 
-import de.macbury.zanbox.graphics.stage.InGameStage;
+import de.macbury.zanbox.ui.stage.InGameStage;
 import de.macbury.zanbox.level.GameLevel;
+import de.macbury.zanbox.screens.BaseScreen;
 
 /**
  * Created by macbury on 28.05.14.

@@ -1,6 +1,6 @@
 
 gui.png
-size: 225,225
+size: 424,225
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -11,9 +11,25 @@ background
   orig: 160, 160
   offset: 0, 0
   index: -1
+button_active
+  rotate: false
+  xy: 164, 91
+  size: 34, 34
+  split: 9, 9, 9, 9
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
+button_normal
+  rotate: false
+  xy: 390, 191
+  size: 34, 34
+  split: 8, 8, 8, 8
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
 joystick_down_button
   rotate: false
-  xy: 164, 72
+  xy: 327, 150
   size: 61, 75
   orig: 61, 75
   offset: 0, 0
@@ -34,16 +50,32 @@ joystick_right_button
   index: -1
 joystick_up_button
   rotate: false
-  xy: 164, 149
+  xy: 264, 149
   size: 61, 76
   orig: 61, 76
   offset: 0, 0
   index: -1
+text_field_active
+  rotate: false
+  xy: 200, 91
+  size: 34, 34
+  split: 5, 5, 5, 5
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
+text_field_normal
+  rotate: false
+  xy: 390, 155
+  size: 34, 34
+  split: 5, 5, 5, 5
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
 window_background
   rotate: false
-  xy: 164, 38
-  size: 32, 32
-  split: 14, 13, 14, 14
-  orig: 32, 32
+  xy: 164, 127
+  size: 98, 98
+  split: 28, 28, 25, 32
+  orig: 98, 98
   offset: 0, 0
   index: -1

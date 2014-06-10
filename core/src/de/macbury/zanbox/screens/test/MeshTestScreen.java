@@ -1,4 +1,4 @@
-package de.macbury.zanbox.screens;
+package de.macbury.zanbox.screens.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.managers.Assets;
+import de.macbury.zanbox.screens.BaseScreen;
 
 /**
  * Created by macbury on 26.05.14.

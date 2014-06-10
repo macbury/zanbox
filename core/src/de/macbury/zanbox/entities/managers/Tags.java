@@ -7,4 +7,5 @@ import com.artemis.managers.TagManager;
  */
 public class Tags extends TagManager {
   public static final String PLAYER = "PLAYER";
+  public static final String ENEMY = "ENEMY";
 }

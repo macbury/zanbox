@@ -103,9 +103,12 @@ public class GameLevel extends World implements Disposable {
 
     factory.player().addToWorld();
     factory.sign().addToWorld();
+    factory.monster(2, 2).addToWorld();
+    factory.monster(2, 3).addToWorld();
+    factory.monster(2, 4).addToWorld();
+    factory.monster(2, 5).addToWorld();
     chunksProvider.initializeBaseChunks();
 
-    dayNightSystem.setSpeedTimeFactor(4);// TODO: Changet to 1
   }
 
   public void update(float delta) {

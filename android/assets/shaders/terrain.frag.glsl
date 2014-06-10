@@ -10,7 +10,7 @@ varying vec3      v_position;
 
 void main() {
   vec4 diffuse     = texture2D(u_diffuseTexture, v_texCoords0);
-  vec4 final       = mix(diffuse, u_shadeColor, v_shadeFactory);//TODO: change this
+  vec4 final       = diffuse;//mix(diffuse, u_shadeColor, v_shadeFactory);//TODO: change this
   final.rgb        = final.rgb * v_lightDiffuse;
   gl_FragColor     = final;
 

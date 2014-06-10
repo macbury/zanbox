@@ -25,36 +25,48 @@ public class DayNightSystem extends VoidEntitySystem {
   private TimeOfDay nextTimeOfDay;
   private Vector3 tempA = new Vector3();
   private Vector3 tempB = new Vector3();
+
+  private static Color rgb(float r, float g, float b) {
+    return new Color(r/255f, g/255f, b/255f, 1);
+  }
+
   public DayNightSystem(WorldEnv env) {
     this.env   = env;
     timeOfDays = new Array<TimeOfDay>();
 
     TimeOfDay night = new TimeOfDay("Night", 0, 6);
-    night.ambientColor.set(Color.BLUE);
-    night.lightDirection.set(0.5f, -0.5f, -0.5f);
+    night.ambientColor.set(rgb(17,16,26));
+    night.lightDirection.set(0f, -0.5f, 0f);
+    night.lightColor.set(rgb(12, 12, 18));
+
     timeOfDays.add(night);
 
-    TimeOfDay sunrise = new TimeOfDay("Sunrise", 6, 7);
-    sunrise.ambientColor.set(Color.RED);
+    TimeOfDay sunrise = new TimeOfDay("Sunrise", 6, 8);
+    sunrise.ambientColor.set(rgb(2, 27, 34));
+    sunrise.lightColor.set(rgb(227, 194, 143));
     sunrise.lightDirection.set(0.5f, -0.5f, 0.5f);
     timeOfDays.add(sunrise);
 
-    TimeOfDay day = new TimeOfDay("Day", 7, 19);
-    day.ambientColor.set(Color.BLUE);
-    day.lightDirection.set(-0.5f, -0.5f, 0.5f);
+    TimeOfDay day = new TimeOfDay("Day", 8, 18);
+    day.ambientColor.set(0.4f, 0.4f, 0.4f, 1f);
+    day.lightColor.set(1f, 1f, 1f, 1f);
+    day.lightDirection.set(0.5f, -0.5f, -0.5f);
     timeOfDays.add(day);
 
-    TimeOfDay sunset = new TimeOfDay("Sunset", 19, 21);
-    sunset.ambientColor.set(Color.OLIVE);
-    sunset.lightDirection.set(0, -0.5f, 0.5f);
+    TimeOfDay sunset = new TimeOfDay("Sunset", 18, 20);
+    sunset.ambientColor.set(rgb(51, 19, 39));
+    sunset.lightColor.set(rgb(255, 110, 39));
+    sunset.lightDirection.set(-1, -0.5f, -1);
     timeOfDays.add(sunset);
 
-    TimeOfDay curNight = new TimeOfDay("Night", 21, 24);
-    curNight.ambientColor.set(Color.PURPLE);
-    curNight.lightDirection.set(0, -0.5f, 0.5f);
+    TimeOfDay curNight = new TimeOfDay("Night", 20, 24);
+    curNight.ambientColor.set(rgb(17,16,26));
+    curNight.lightDirection.set(0f, -0.5f, 0f);
+    curNight.lightColor.set(rgb(12,12,16));
     timeOfDays.add(curNight);
 
-    setTime(4 * 3600);
+    setTime(12 * 3600);
+    setSpeedTimeFactor(1);
   }
 
   @Override
@@ -62,15 +74,26 @@ public class DayNightSystem extends VoidEntitySystem {
     incrTime();
 
     if (currentTimeOfDay.between(gameTime)) {
-      tempA.set(currentTimeOfDay.ambientColor.r, currentTimeOfDay.ambientColor.g, currentTimeOfDay.ambientColor.b);
-      tempB.set(nextTimeOfDay.ambientColor.r, nextTimeOfDay.ambientColor.g, nextTimeOfDay.ambientColor.b);
-      tempA.interpolate(tempB, currentTimeOfDay.alpha(gameTime), Interpolation.exp10In);
-
-      env.ambientColor.color.set(tempA.x, tempA.y, tempA.z, 1.0f);
-      env.sunLight.set(currentTimeOfDay.lightColor,  currentTimeOfDay.lightDirection);
+      interpolate(currentTimeOfDay.ambientColor, nextTimeOfDay.ambientColor, env.ambientColor.color);
+      interpolate(currentTimeOfDay.lightColor, nextTimeOfDay.lightColor, env.sunLight.color);
+      interpolate(currentTimeOfDay.lightDirection, nextTimeOfDay.lightDirection, env.sunLight.direction);
     } else {
       nextTimeOfDay();
     }
+  }
+
+  private void interpolate(Vector3 fromVector, Vector3 targetVector, Vector3 output) {
+    tempA.set(fromVector);
+    tempB.set(targetVector);
+    tempA.interpolate(tempB, currentTimeOfDay.alpha(gameTime), Interpolation.linear);
+    output.set(tempA);
+  }
+
+  private void interpolate(Color fromColor, Color targetColor, Color outputColor) {
+    tempA.set(fromColor.r, fromColor.g, fromColor.b);
+    tempB.set(targetColor.r, targetColor.g, targetColor.b);
+    tempA.interpolate(tempB, currentTimeOfDay.alpha(gameTime), Interpolation.pow5In);
+    outputColor.set(tempA.x, tempA.y, tempA.z, 1.0f);
   }
 
   private void incrTime() {

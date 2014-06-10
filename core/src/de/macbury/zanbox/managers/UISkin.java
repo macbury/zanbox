@@ -5,16 +5,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.ui.TransparentButton;
+import de.macbury.zanbox.ui.widgets.TransparentButton;
 
 /**
  * Created by macbury on 28.05.14.
  */
 public class UISkin extends Skin {
 
+  public TextButton.TextButtonStyle buttonStyle;
   public Label.LabelStyle defaultLabelStyle;
   private BitmapFont mainFont;
   public Window.WindowStyle debugWindowStyle;
@@ -36,6 +38,12 @@ public class UISkin extends Skin {
     this.defaultLabelStyle               = new Label.LabelStyle();
     defaultLabelStyle.font               = mainFont;
     defaultLabelStyle.fontColor          = Color.WHITE;
+
+    this.buttonStyle                     = new TextButton.TextButtonStyle();
+    buttonStyle.up                       = getDrawable("button_normal");
+    buttonStyle.down                     = getDrawable("button_active");
+    buttonStyle.font                     = mainFont;
+    buttonStyle.fontColor                = Color.WHITE;
 
     buildJoystickTheme();
   }

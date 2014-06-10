@@ -1,4 +1,4 @@
-package de.macbury.zanbox.ui;
+package de.macbury.zanbox.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;

@@ -1,15 +1,14 @@
 package de.macbury.zanbox.level.terrain.tiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
 import de.macbury.zanbox.Zanbox;
-import de.macbury.zanbox.graphics.materials.TerrainMaterial;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
+import de.macbury.zanbox.graphics.materials.TerrainMaterial;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.layer.GeometryCache;
 import de.macbury.zanbox.managers.Assets;
@@ -78,7 +77,7 @@ public class TileBuilder extends MeshAssembler {
       case Tile.SHALLOW_WATER:
         return terrainAtlas.findRegion("shallow_water");//TODO: Animated and other type!
       default:
-        throw new GdxRuntimeException("Undefined tile id: " + tileID);
+        return terrainAtlas.findRegion("debug");
     }
   }
 

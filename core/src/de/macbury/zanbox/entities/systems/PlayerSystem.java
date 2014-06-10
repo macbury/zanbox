@@ -10,7 +10,7 @@ import de.macbury.zanbox.entities.components.MovementComponent;
 import de.macbury.zanbox.entities.components.PositionComponent;
 import de.macbury.zanbox.entities.managers.Tags;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.ui.Joystick;
+import de.macbury.zanbox.ui.widgets.Joystick;
 import de.macbury.zanbox.utils.Direction;
 
 /**

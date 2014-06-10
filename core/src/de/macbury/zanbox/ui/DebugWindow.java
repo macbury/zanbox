@@ -2,14 +2,15 @@ package de.macbury.zanbox.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 import java.text.DecimalFormat;
 
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
+import de.macbury.zanbox.ui.widgets.DefaultLabel;
 import de.macbury.zanbox.utils.time.BaseTimer;
 import de.macbury.zanbox.utils.time.IntervalTimer;
 import de.macbury.zanbox.utils.time.TimerListener;
@@ -17,7 +18,7 @@ import de.macbury.zanbox.utils.time.TimerListener;
 /**
  * Created by macbury on 31.05.14.
  */
-public class DebugWindow extends Window implements TimerListener {
+public class DebugWindow extends Dialog implements TimerListener {
   private DefaultLabel dateTimeLabel;
   private DefaultLabel tileInfoLabel;
   private IntervalTimer updateInfoTimer;
@@ -56,10 +57,9 @@ public class DebugWindow extends Window implements TimerListener {
   }
 
   public DebugWindow() {
-    super("Debug", Zanbox.skin.debugWindowStyle);
-    Table table = new Table();
-
-    table.setFillParent(true);
+    super("", Zanbox.skin.debugWindowStyle);
+    Table table = getContentTable();
+    setModal(false);
     this.fpsLabel = new DefaultLabel("FPS: ...");
     this.visibleChunkRenderablesLabel = new DefaultLabel("Visible chunksProvider: ...");
     this.visiblityBoundingBoxLabel    = new DefaultLabel("");
@@ -69,39 +69,34 @@ public class DebugWindow extends Window implements TimerListener {
     this.dateTimeLabel                = new DefaultLabel("");
     this.updateInfoTimer              = new IntervalTimer(1);
     this.updateInfoTimer.setListener(this);
-    table.row().padTop(20).padLeft(20); {
+    table.row(); {
       table.add(fpsLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(dateTimeLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(visibleChunks).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(visibleChunkRenderablesLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(visiblityBoundingBoxLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(memoryLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
+    table.row(); {
       table.add(tileInfoLabel).left().top().expandX();
     }
 
-    table.row().padLeft(20); {
-      table.add().expand();
-    }
-
-    addActor(table);
     timerTick(updateInfoTimer);
   }
 
@@ -115,20 +110,11 @@ public class DebugWindow extends Window implements TimerListener {
   public void setVisible(boolean visible) {
     super.setVisible(visible);
     setWidth(480);
-
-    setPosition(getStage().getWidth() - getWidth(), 0);
+    setHeight(240);
+    setPosition(getStage().getWidth() - getWidth()-10, 10);
 
   }
 
-  @Override
-  public float getMinWidth() {
-    return 240;
-  }
-
-  @Override
-  public float getMinHeight() {
-    return 320;
-  }
 
   Vector3 temp = new Vector3();
   @Override

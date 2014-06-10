@@ -1,4 +1,4 @@
-package de.macbury.zanbox.screens;
+package de.macbury.zanbox.screens.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.macbury.zanbox.level.terrain.biome.Biome;
 import de.macbury.zanbox.level.terrain.biome.Liquid;
 import de.macbury.zanbox.level.terrain.biome.WorldBiomeProvider;
+import de.macbury.zanbox.screens.BaseScreen;
 
 /**
  * Created by macbury on 26.05.14.
