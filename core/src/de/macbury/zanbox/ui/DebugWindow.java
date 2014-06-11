@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.level.terrain.chunks.ChunksRenderables;
 import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 import de.macbury.zanbox.ui.widgets.DefaultLabel;
 import de.macbury.zanbox.utils.time.BaseTimer;
 import de.macbury.zanbox.utils.time.IntervalTimer;
@@ -128,9 +129,10 @@ public class DebugWindow extends Dialog implements TimerListener {
     visiblityBoundingBoxLabel.setText("World Box " + renderables.boundingBox.toString());
     memoryLabel.setText("Memory(Java/Native): " + convertToStringRepresentation(Gdx.app.getJavaHeap()) + "/" + convertToStringRepresentation(Gdx.app.getNativeHeap()));
 
-    byte tileID = provider.getTile(Math.round(Zanbox.level.worldPosition.x), Math.round(Zanbox.level.worldPosition.z), Zanbox.level.currentLayer);
+    BiomeDefinition tileID = provider.getTile(Math.round(Zanbox.level.worldPosition.x), Math.round(Zanbox.level.worldPosition.z), Zanbox.level.currentLayer);
 
-    tileInfoLabel.setText("TileID: " + tileID + " for " + Zanbox.level.worldPosition.toString());
+    if (tileID != null)
+      tileInfoLabel.setText("TileID: " + tileID.biome + " for " + Zanbox.level.worldPosition.toString());
 
     dateTimeLabel.setText("Time: "+Zanbox.level.dayNightSystem.formattedTime());
   }

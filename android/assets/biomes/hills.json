@@ -1,0 +1,9 @@
+{
+  "name": "Hills",
+  "liquid": false,
+  "wall":   true,
+  "biome": "Hills",
+  "regions": {
+    "top": "rock"
+  }
+}

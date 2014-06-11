@@ -327,17 +327,18 @@ public class MeshAssembler implements Disposable {
   }
 
   public void frontFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
+    int normalMode = outside ? -1 : 1;
     int n1 = this.vertex(x, y,  z+depth); // bottom left
     uv(u, v2);
-    normal(0,0,1);
+    normal(0,0,1*normalMode);
     this.bottomLeftVertex = currentVertex;
     int n2 = this.vertex(x+width, y,  z+depth); //bottom right
     uv(u2, v2);
-    normal(0,0,1);
+    normal(0,0,1*normalMode);
     this.bottomRightVertex = currentVertex;
     int n3 = this.vertex(x+width,  y+height,  z+depth); //top right
     uv(u2,v);
-    normal(0,0,1);
+    normal(0,0,1*normalMode);
     this.topRightVertex = currentVertex;
     if (outside) {
       indices(n3, n2, n1);
@@ -345,7 +346,7 @@ public class MeshAssembler implements Disposable {
       indices(n1, n2, n3);
     }
     n2 = this.vertex(x,  y+height,  z+depth); //top left
-    normal(0, 0, 1);
+    normal(0, 0, 1*normalMode);
     if (outside) {
       indices(n2, n3, n1);
     } else {
@@ -356,18 +357,19 @@ public class MeshAssembler implements Disposable {
   }
 
   public void backFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
+    int normalMode = outside ? -1 : 1;
     int n1 = this.vertex(x, y,  z);// bottom left
     this.bottomLeftVertex = currentVertex;
-    normal(0,0,-1);
+    normal(0,0,-1 * normalMode);
     uv(u, v2);
     int n2 = this.vertex(x, y+height,  z); // top left
     this.topLeftVertex = currentVertex;
     uv(u, v);
-    normal(0,0,-1);
+    normal(0,0,-1 * normalMode);
     int n3 = this.vertex(x+width,  y+height,  z); // top right
     this.topRightVertex = currentVertex;
     uv(u2,v);
-    normal(0,0,-1);
+    normal(0,0,-1 * normalMode);
     if (outside) {
       indices(n3, n2, n1);
     } else {
@@ -382,23 +384,24 @@ public class MeshAssembler implements Disposable {
       indices(n1, n3, n2);
     }
 
-    normal(0,0,-1);
+    normal(0,0,-1 * normalMode);
     uv(u2,v2);
   }
 
   public void leftFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
+    int normalMode = outside ? 1 : -1;
     int n1 = this.vertex(x, y,  z); // bottom left
     this.bottomLeftVertex = currentVertex;
     uv(u, v2);
-    normal(-1,0,0);
+    normal(-1 * normalMode,0,0);
     int n2 = this.vertex(x, y,  z+depth); //bottom right
     this.bottomRightVertex = currentVertex;
     uv(u2, v2);
-    normal(-1,0,0);
+    normal(-1 * normalMode,0,0);
     int n3 = this.vertex(x, y+height, z+depth); //top right
     this.topRightVertex = currentVertex;
     uv(u2, v);
-    normal(-1, 0, 0);
+    normal(-1 * normalMode, 0, 0);
 
     if (outside) {
       indices(n3, n2, n1);
@@ -409,7 +412,7 @@ public class MeshAssembler implements Disposable {
     n2 = this.vertex(x,  y+height,  z); // top left
     this.topLeftVertex = currentVertex;
     uv(u,v);
-    normal(-1,0,0);
+    normal(-1 * normalMode,0,0);
 
     if (outside) {
       indices(n2, n3, n1);
@@ -419,14 +422,15 @@ public class MeshAssembler implements Disposable {
   }
 
   public void rightFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
+    int normalMode = outside ? 1 : -1;
     int n1 = this.vertex(x+width, y, z); //bottom right
     uv(u2, v2);
-    normal(1,0,0);
+    normal(1*normalMode,0,0);
     this.bottomRightVertex = currentVertex;
     int n2 = this.vertex(x+width, y+height, z); //top right
     this.topRightVertex = currentVertex;
     uv(u2, v);
-    normal(1,0,0);
+    normal(1*normalMode,0,0);
 
     int n3 = this.vertex(x+width, y+height, z+depth); //top left
     this.topLeftVertex = currentVertex;
@@ -437,12 +441,12 @@ public class MeshAssembler implements Disposable {
       indices(n1, n2, n3);
     }
 
-    normal(1, 0, 0);
+    normal(1*normalMode, 0, 0);
 
     n2 = this.vertex(x+width, y, z+depth); // bottom left
     this.bottomLeftVertex = this.currentVertex;
     uv(u,v2);
-    normal(1,0,0);
+    normal(1*normalMode,0,0);
 
     if (outside) {
       indices(n2, n3, n1);

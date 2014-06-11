@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import de.macbury.zanbox.entities.components.MovementComponent;
 import de.macbury.zanbox.entities.components.PositionComponent;
 import de.macbury.zanbox.level.GameLevel;
-import de.macbury.zanbox.level.terrain.tiles.Tile;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 
 /**
  * Created by macbury on 28.05.14.
@@ -50,8 +50,8 @@ public class MovementSystem extends EntityProcessingSystem {
 
   public void moveToNextTile(PositionComponent positionComponent, MovementComponent movementComponent) {
     temp.set(positionComponent.vector).add(movementComponent.direction.getVector());
-    byte nextTileID = level.chunksProvider.getTile(temp);
-    if (Tile.isPassable(nextTileID)) {
+    BiomeDefinition nextTileID = level.chunksProvider.getTile(temp);
+    if (nextTileID.isPassable()) {
       movementComponent.lock(positionComponent.vector, temp);
     } else {
       movementComponent.stop();

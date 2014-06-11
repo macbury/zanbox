@@ -6,11 +6,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import java.util.HashMap;
+
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.geometry.MeshAssembler;
 import de.macbury.zanbox.graphics.geometry.MeshVertexData;
 import de.macbury.zanbox.graphics.materials.TerrainMaterial;
 import de.macbury.zanbox.level.GameLevel;
+import de.macbury.zanbox.level.terrain.biome.Biome;
 import de.macbury.zanbox.level.terrain.chunks.layer.GeometryCache;
 import de.macbury.zanbox.managers.Assets;
 
@@ -24,8 +27,7 @@ public class TileBuilder extends MeshAssembler {
   private final Vector3 tempB = new Vector3();
   private final RandomRegion rockRegion;
   private final GameLevel level;
-  private final Array<TileDefinition> definitions;
-
+  private HashMap<Biome, BiomeDefinition> biomeMap;
 
   public TileBuilder(GameLevel level) {
     super();
@@ -39,11 +41,25 @@ public class TileBuilder extends MeshAssembler {
 
     this.rockRegion        = new RandomRegion(this.terrainAtlas.findRegions("rock"));
 
-    this.definitions       = new Array<TileDefinition>();
-    Zanbox.assets.getAll(TileDefinition.class, definitions);
+    verifyAndSetupTiles();
+  }
 
-    for (TileDefinition tileDefinition : definitions)
-      tileDefinition.setup(terrainAtlas);
+  private void verifyAndSetupTiles() {
+    this.biomeMap          = new HashMap<Biome, BiomeDefinition>();
+
+    Array<BiomeDefinition> defTemp  = new Array<BiomeDefinition>();
+
+    Zanbox.assets.getAll(BiomeDefinition.class, defTemp);
+
+    for (BiomeDefinition biomeDefinition : defTemp) {
+      biomeDefinition.setup(terrainAtlas);
+      if (biomeMap.containsKey(biomeDefinition.biome)) {
+        throw new GdxRuntimeException("Already existing tile with biome: " + biomeDefinition.biome);
+      } else {
+        biomeMap.put(biomeDefinition.biome, biomeDefinition);
+      }
+    }
+
   }
 
   @Override
@@ -62,56 +78,40 @@ public class TileBuilder extends MeshAssembler {
     return cache;
   }
 
-
-  public TextureRegion regionForTile(byte tileID) {
-    switch (tileID) {
-      case Tile.LAVA:
-        return terrainAtlas.findRegion("lava");
-      case Tile.SAND:
-        return terrainAtlas.findRegion("sand");
-      case Tile.DIRT:
-        return terrainAtlas.findRegion("dirt");
-      case Tile.DIRT_WALL:
-        return terrainAtlas.findRegion("dirt_wall");
-      case Tile.SNOW:
-        return terrainAtlas.findRegion("snow"); //TODO: change this
-      case Tile.ROCK:
-        return rockRegion.get();
-      case Tile.LIGHT_GRASS:
-        return terrainAtlas.findRegion("light_grass");
-      case Tile.DARK_GRASS:
-        return terrainAtlas.findRegion("grass");
-      case Tile.DEEP_WATER:
-        return terrainAtlas.findRegion("water");
-      case Tile.SHALLOW_WATER:
-        return terrainAtlas.findRegion("shallow_water");//TODO: Animated and other type!
-      default:
-        return terrainAtlas.findRegion("debug");
+  public BiomeDefinition get(Biome biome) {
+    if (!biomeMap.containsKey(biome)) {
+      throw new GdxRuntimeException("Undefined tile biome: " + biome);
     }
+    return biomeMap.get(biome);
   }
 
-  public void topFace(float x, float y, float z, byte tileID, boolean flip) {//TODO implement static height
-    TextureRegion region = regionForTile(tileID);
+  public void topFace(float x, float y, float z, BiomeDefinition biome, boolean flip) {
+    TextureRegion region = biome.faceTop;
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }
 
-  public void backFace(float x, float y, float z, byte tileID, boolean outside) {
-    TextureRegion region = regionForTile(tileID);
+  public void bottomFace(float x, float y, float z, BiomeDefinition biome, boolean flip) {
+    TextureRegion region = biome.faceBottom;
+    topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
+  }
+
+  public void backFace(float x, float y, float z, BiomeDefinition biome, boolean outside) {
+    TextureRegion region = biome.faceBack;
     backFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void frontFace(float x, float y, float z, byte tileID, boolean outside) {
-    TextureRegion region = regionForTile(tileID);
+  public void frontFace(float x, float y, float z, BiomeDefinition biome, boolean outside) {
+    TextureRegion region = biome.faceFront;
     frontFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void leftFace(float x, float y, float z, byte tileID, boolean outside) {
-    TextureRegion region = regionForTile(tileID);
+  public void leftFace(float x, float y, float z, BiomeDefinition biome, boolean outside) {
+    TextureRegion region = biome.faceLeft;
     leftFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
-  public void rightFace(float x, float y, float z, byte tileID, boolean outside) {
-    TextureRegion region = regionForTile(tileID);
+  public void rightFace(float x, float y, float z, BiomeDefinition biome, boolean outside) {
+    TextureRegion region = biome.faceRight;
     rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
@@ -134,4 +134,6 @@ public class TileBuilder extends MeshAssembler {
     this.topRightVertex.shade = true;
     this.bottomRightVertex.shade = true;
   }
+
+
 }

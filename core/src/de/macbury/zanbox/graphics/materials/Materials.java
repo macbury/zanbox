@@ -39,9 +39,10 @@ public class Materials implements Disposable{
 
       Texture terrainTexture = terrainAtlas.getTextures().first();
       terrainTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Nearest);
+
       terrainMaterial = new TerrainMaterial(TextureAttribute.createDiffuse(terrainTexture));
       liquidMaterial  = new LiquidMaterial(TextureAttribute.createDiffuse(terrainTexture));
-      liquidMaterial.set(new BlendingAttribute(true, 0.2f));
+      liquidMaterial.set(new BlendingAttribute(true, 0.3f));
     }
   }
 }

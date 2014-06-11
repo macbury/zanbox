@@ -1,0 +1,9 @@
+{
+  "name": "Desert",
+  "liquid": false,
+  "wall":   false,
+  "biome": "Desert",
+  "regions": {
+    "top": "sand"
+  }
+}

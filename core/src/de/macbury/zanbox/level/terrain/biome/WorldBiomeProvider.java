@@ -39,25 +39,25 @@ public class WorldBiomeProvider {
     double liquid   = getLiquidAt(x,z);
 
     if (liquid >= 0.58d && liquid < 0.6d) {
-      return Biome.SHALLOW_WATER;
+      return Biome.ShallowWater;
     } else if (liquid >= 0.6d && liquid <= 0.7d) {
-      return Biome.DEEP_WATER;
+      return Biome.DeepWater;
     } else if (liquid <= 0.1d && liquid >= 0.0d) {
-      return Biome.LAVA;
+      return Biome.Lava;
     } else {
       double temp     = getTemperatureAt(x, z);
       double humidity = getHumidityAt(x, z) * temp;
       if (temp >= 0.5d && humidity < 0.3d) {
-        return Biome.DESERT;
+        return Biome.Desert;
       } else if (humidity >= 0.3d && humidity <= 0.6d && temp >= 0.5d) {
-        return Biome.PLAINS;
+        return Biome.Plains;
       } else if (temp <= 0.3d && humidity > 0.5d) {
-        return Biome.SNOW;
+        return Biome.Snow;
       } else if (humidity >= 0.2d && humidity <= 0.6d && temp < 0.5d) {
-        return Biome.MOUNTAINS;
+        return Biome.Hills;
       }
 
-      return Biome.FOREST;
+      return Biome.Forest;
     }
   }
 

@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 import de.macbury.zanbox.utils.MyMath;
 
 /**
@@ -17,7 +19,7 @@ public abstract class Layer implements Disposable {
   public int index = BASE_INDEX;
   public Array<LayerSector> sectors;
 
-  public byte[][] tiles;
+  public BiomeDefinition[][] tiles;
   protected Chunk chunk;
   protected boolean generatedTiles = false;
   protected final static Vector3 tempA = new Vector3();
@@ -25,7 +27,7 @@ public abstract class Layer implements Disposable {
 
   public Layer() {
     this.sectors      = new Array<LayerSector>();
-    this.tiles       = new byte[Chunk.TILE_SIZE][Chunk.TILE_SIZE];
+    this.tiles        = new BiomeDefinition[Chunk.TILE_SIZE][Chunk.TILE_SIZE];
   }
 
   public LayerSector getSector(int localOffsetX, int localOffsetZ) {
@@ -73,21 +75,25 @@ public abstract class Layer implements Disposable {
     tiles = null;
   }
 
-  public byte getTileByLocalTilePosition(int tileX, int tileY) {
+  public BiomeDefinition getTileByLocalTilePosition(int tileX, int tileY) {
     if (tileX >= 0 && tileX < Chunk.TILE_SIZE && tileY >= 0 && tileY < Chunk.TILE_SIZE) {
       return tiles[tileX][tileY];
     } else {
-      return 0;
+      return null;
     }
   }
 
-  public byte getTileByWorldTilePosition(int tileX, int tileY) {
+  public BiomeDefinition getTileByWorldTilePosition(int tileX, int tileY) {
     MyMath.worldToLocalTilePosition(tempA.set(tileX, 0, tileY), tempB);
     return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);// powinno pobierać tile poprzez providera mother fucker :!!!!!
   }
 
-  public byte getTileByLocalToWorldTilePosition(int tileX, int tileY) {
+  public BiomeDefinition getTileByLocalToWorldTilePosition(int tileX, int tileY) {
     MyMath.worldToLocalTilePosition(tempA.set(chunk.position.x + tileX, 0, chunk.position.y + tileY), tempB);
     return getTileByLocalTilePosition((int)tempB.x,(int)tempB.z);
+  }
+
+  public Chunk getChunk() {
+    return chunk;
   }
 }

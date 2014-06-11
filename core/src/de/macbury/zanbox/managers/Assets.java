@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import de.macbury.zanbox.level.terrain.tiles.TileDefinition;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 import de.macbury.zanbox.loaders.TileLoader;
 
 /**
@@ -20,13 +20,14 @@ public class Assets extends AssetManager {
   public final static String CHARSET_TEXTURE = "textures/charset.atlas";
   public final static String GUI_TEXTURE     = "textures/gui.atlas";
   public final static String SHADERS_PREFIX  = "shaders/";
-  public final static String TILES_PREFIX    = "tiles/";
+  public final static String BIOMES_PREFIX   = "biomes/";
 
   public final static String MAIN_FONT = "fonts/advocut-webfont-18.fnt";
   public static final String SHADERS_HELPERS_PREFIX = SHADERS_PREFIX + "helpers/";
+  public static final String WATER_NORMAL_MAP = "textures/water_normalmap.jpg";
 
   public void init() {
-    setLoader(TileDefinition.class, new TileLoader(new InternalFileHandleResolver()));
+    setLoader(BiomeDefinition.class, new TileLoader(new InternalFileHandleResolver()));
     BitmapFontLoader.BitmapFontParameter fontParameter = new BitmapFontLoader.BitmapFontParameter();
     fontParameter.genMipMaps = false;
     fontParameter.magFilter  = Texture.TextureFilter.Nearest;
@@ -38,14 +39,15 @@ public class Assets extends AssetManager {
 
     load(TERRAIN_TEXTURE, TextureAtlas.class);
     load(CHARSET_TEXTURE, TextureAtlas.class);
-    loadTiles();
+    load(WATER_NORMAL_MAP, Texture.class);
+    loadBiomes();
   }
 
-  private void loadTiles() {
-    FileHandle[] tiles = Gdx.files.internal(TILES_PREFIX).list();
+  private void loadBiomes() {
+    FileHandle[] tiles = Gdx.files.internal(BIOMES_PREFIX).list();
 
     for(FileHandle name : tiles) {
-      load(TILES_PREFIX + name.name(), TileDefinition.class);
+      load(BIOMES_PREFIX + name.name(), BiomeDefinition.class);
     }
   }
 }

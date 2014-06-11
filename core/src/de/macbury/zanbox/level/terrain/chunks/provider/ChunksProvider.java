@@ -14,6 +14,7 @@ import de.macbury.zanbox.events.Event;
 import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.Chunk;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 import de.macbury.zanbox.utils.MyMath;
 
 /**
@@ -67,28 +68,28 @@ public class ChunksProvider implements Disposable, Thread.UncaughtExceptionHandl
       unloadChunksThatExceedLimit();
   }
 
-  public byte getTile(int tileX, int tileY, int layerIndex) {
+  public BiomeDefinition getTile(int tileX, int tileY, int layerIndex) {
     MyMath.tilePositionToChunkPoistion(tempB.set(tileX, 0, tileY), tempA);
     if (exists(tempA.x, tempA.y)) {
       Chunk chunk = get(tempA.x, tempA.y);
       Layer layer = chunk.getLayer(layerIndex);
 
       if (layer == null) {
-        return 0;
+        return null;
       } else {
         return layer.getTileByWorldTilePosition(tileX, tileY);
       }
     } else {
-      return 0;
+      return null;
     }
   }
 
 
-  public byte getTile(float x, float z, int index) {
+  public BiomeDefinition getTile(float x, float z, int index) {
     return getTile((int)x, (int)z, index);
   }
 
-  public byte getTile(Vector3 tileVector) {
+  public BiomeDefinition getTile(Vector3 tileVector) {
     return getTile(Math.round(tileVector.x), Math.round(tileVector.z), level.currentLayer);
   }
 

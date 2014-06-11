@@ -1,0 +1,14 @@
+{
+  "name": "Shallow Water",
+  "liquid": true,
+  "wall":   false,
+  "biome": "ShallowWater",
+  "regions": {
+    "top": "shallow_water",
+    "left": "dirt",
+    "right": "dirt",
+    "front": "dirt",
+    "back": "dirt",
+    "bottom": "dirt"
+  }
+}

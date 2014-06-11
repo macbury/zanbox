@@ -43,28 +43,28 @@ public class PerlinNoiseTestScreen extends BaseScreen implements InputProcessor 
       for(int y = sy; y < sy + pixmap.getHeight(); y++) {
         Biome biome = worldBiomeProvider.getBiomeAt(x,y);
         switch (biome) {
-          case DESERT:
+          case Desert:
             pixmap.setColor(Color.YELLOW);
             break;
 
-          case MOUNTAINS:
+          case Hills:
             pixmap.setColor(Color.DARK_GRAY);
             break;
 
-          case PLAINS:
+          case Plains:
             pixmap.setColor(Color.GREEN);
             break;
 
-          case SNOW:
+          case Snow:
             pixmap.setColor(1,1, 1, 1);
             break;
 
-          case FOREST:
+          case Forest:
             pixmap.setColor(Color.OLIVE);
             break;
         }
 
-        if (biome != Biome.DESERT) {
+        if (biome != Biome.Desert) {
           Liquid liquid = worldBiomeProvider.getLiquid(x,y);
           if (liquid == Liquid.LAVA) {
             pixmap.setColor(Color.RED);

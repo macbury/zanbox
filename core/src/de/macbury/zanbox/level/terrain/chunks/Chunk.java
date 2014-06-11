@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+
+import de.macbury.zanbox.level.GameLevel;
 import de.macbury.zanbox.level.terrain.chunks.layer.Layer;
 import de.macbury.zanbox.level.terrain.chunks.layers.GroundLayer;
 import de.macbury.zanbox.level.terrain.chunks.provider.ChunksProvider;
@@ -20,9 +22,6 @@ public class Chunk implements Disposable {
   public final Vector3 worldPosition;
   private boolean visible;
 
-  public enum RebuildGeometryMode {
-    All, Border, None
-  }
   public static final int TILE_SIZE = 32;
   public static final float METERS_SIZE = TILE_SIZE * Tile.SIZE;
   private static final String TAG = "Chunk";
@@ -156,5 +155,9 @@ public class Chunk implements Disposable {
   public void save() {
     KryoSystem kryo = new KryoSystem();
     kryo.save(this);
+  }
+
+  public GameLevel getLevel() {
+    return chunksProvider.level;
   }
 }

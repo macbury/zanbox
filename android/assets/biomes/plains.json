@@ -1,0 +1,13 @@
+{
+  "name": "Plains",
+  "liquid": false,
+  "wall":   false,
+  "biome": "Plains",
+  "regions": {
+    "top": "light_grass",
+    "left": "dirt_wall",
+    "right": "dirt_wall",
+    "front": "dirt_wall",
+    "back": "dirt_wall",
+  }
+}

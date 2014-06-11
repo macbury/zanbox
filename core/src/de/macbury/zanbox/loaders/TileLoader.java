@@ -9,9 +9,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
-import de.macbury.zanbox.level.terrain.tiles.TileDefinition;
+import de.macbury.zanbox.level.terrain.tiles.BiomeDefinition;
 
-public class TileLoader extends SynchronousAssetLoader<TileDefinition, TileLoader.TileLoaderParameter> {
+public class TileLoader extends SynchronousAssetLoader<BiomeDefinition, TileLoader.TileLoaderParameter> {
   private final Json json;
 
   public TileLoader (FileHandleResolver resolver) {
@@ -21,14 +21,14 @@ public class TileLoader extends SynchronousAssetLoader<TileDefinition, TileLoade
   }
 
   @Override
-  public TileDefinition load (AssetManager assetManager, String fileName, FileHandle file, TileLoaderParameter parameter) {
+  public BiomeDefinition load (AssetManager assetManager, String fileName, FileHandle file, TileLoaderParameter parameter) {
     String result = null;
     FileHandle fh = resolve(fileName);
     if (fh.exists()) {
       result = fh.readString("utf-8");
     }
 
-    TileDefinition tileDefinition = json.fromJson(TileDefinition.class, result);
+    BiomeDefinition tileDefinition = json.fromJson(BiomeDefinition.class, result);
     return tileDefinition;
   }
 
@@ -37,6 +37,6 @@ public class TileLoader extends SynchronousAssetLoader<TileDefinition, TileLoade
     return null;
   }
 
-  static public class TileLoaderParameter extends AssetLoaderParameters<TileDefinition> {
+  static public class TileLoaderParameter extends AssetLoaderParameters<BiomeDefinition> {
   }
 }
