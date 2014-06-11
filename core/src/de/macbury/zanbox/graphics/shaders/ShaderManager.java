@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Keys;
-import de.macbury.zanbox.graphics.fbo.TextFileLoader;
+import de.macbury.zanbox.loaders.TextFileLoader;
 
 /**
  * @author Przemek Muller

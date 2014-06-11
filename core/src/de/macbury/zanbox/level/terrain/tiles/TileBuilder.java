@@ -3,6 +3,7 @@ package de.macbury.zanbox.level.terrain.tiles;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import de.macbury.zanbox.Zanbox;
@@ -23,6 +24,7 @@ public class TileBuilder extends MeshAssembler {
   private final Vector3 tempB = new Vector3();
   private final RandomRegion rockRegion;
   private final GameLevel level;
+  private final Array<TileDefinition> definitions;
 
 
   public TileBuilder(GameLevel level) {
@@ -36,6 +38,12 @@ public class TileBuilder extends MeshAssembler {
     this.tileMaterial      = Zanbox.materials.terrainMaterial;
 
     this.rockRegion        = new RandomRegion(this.terrainAtlas.findRegions("rock"));
+
+    this.definitions       = new Array<TileDefinition>();
+    Zanbox.assets.getAll(TileDefinition.class, definitions);
+
+    for (TileDefinition tileDefinition : definitions)
+      tileDefinition.setup(terrainAtlas);
   }
 
   @Override
@@ -45,7 +53,6 @@ public class TileBuilder extends MeshAssembler {
     this.using(MeshVertexData.AttributeType.TextureCord);
     this.using(MeshVertexData.AttributeType.Shading);
   }
-
 
   public GeometryCache toGeometryCache() {
     GeometryCache cache = new GeometryCache();

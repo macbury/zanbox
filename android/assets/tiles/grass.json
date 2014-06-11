@@ -1,0 +1,10 @@
+{
+  "uuid":  1,
+  "name": "Grass",
+  "liquid": true,
+  "wall":   false,
+  "biome": "FOREST",
+  "regions": {
+    "top": "grass"
+  }
+}
