@@ -25,7 +25,7 @@ public class InGameStage extends BaseStage {
 
     DebugWindow debugWindow = new DebugWindow();
     addActor(debugWindow);
-    debugWindow.setVisible(true);
+    debugWindow.setVisible(false);
   }
 
   public void resize(int width, int height) {

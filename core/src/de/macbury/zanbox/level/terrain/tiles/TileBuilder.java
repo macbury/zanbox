@@ -64,6 +64,8 @@ public class TileBuilder extends MeshAssembler {
         return terrainAtlas.findRegion("sand");
       case Tile.DIRT:
         return terrainAtlas.findRegion("dirt");
+      case Tile.DIRT_WALL:
+        return terrainAtlas.findRegion("dirt_wall");
       case Tile.SNOW:
         return terrainAtlas.findRegion("snow"); //TODO: change this
       case Tile.ROCK:

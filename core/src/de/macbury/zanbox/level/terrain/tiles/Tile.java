@@ -22,7 +22,7 @@ public abstract class Tile {
   public static final byte SHALLOW_WATER = 7;
   public static final byte LAVA          = 8;
   public static final byte DIRT          = 9;
-
+  public static final byte DIRT_WALL     = 10;
 
   public static boolean isNextWall(byte currentTile, byte nextTile) {
     return (!isSolid(currentTile) && isSolid(nextTile));
@@ -72,7 +72,7 @@ public abstract class Tile {
 
   public static byte waterWall(byte tile) {
     if (tile == LIGHT_GRASS || tile == DARK_GRASS || tile == ROCK) {
-      return DIRT;
+      return DIRT_WALL;
     } else {
       return tile;
     }

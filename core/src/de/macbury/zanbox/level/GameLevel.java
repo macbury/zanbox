@@ -120,6 +120,8 @@ public class GameLevel extends World implements Disposable {
   }
 
   public void render() {
+    Gdx.gl.glViewport(0,0, (int) camera.viewportWidth, (int)camera.viewportHeight);
+
     renderContext.begin(); {
       modelBatch.begin(camera); {
         modelBatch.render(chunksRenderables);

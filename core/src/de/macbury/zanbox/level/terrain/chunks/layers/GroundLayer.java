@@ -198,8 +198,8 @@ public class GroundLayer extends Layer {
 
             if (Tile.isNextNotWall(tile, bottomTile)) {
               builder.backFace(x, Tile.GROUND_HEIGHT, z, tile, false);
-              if (Tile.isNextNotLiquid(tile, bottomTile))
-                builder.shadeBottom();
+
+              builder.shadeBottom();
             }
 
             if (Tile.isNextNotWall(tile, topTile)) {
