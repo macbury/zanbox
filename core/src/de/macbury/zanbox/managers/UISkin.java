@@ -1,6 +1,7 @@
 package de.macbury.zanbox.managers;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -27,8 +28,11 @@ public class UISkin extends Skin {
 
   public UISkin() {
     super((TextureAtlas)Zanbox.assets.get(Assets.GUI_TEXTURE));
-
     mainFont  = Zanbox.assets.get(Assets.MAIN_FONT);
+
+    for(Texture texture : getAtlas().getTextures()) {
+      texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+    }
 
     this.debugWindowStyle                = new Window.WindowStyle();
     this.debugWindowStyle.titleFont      = mainFont;

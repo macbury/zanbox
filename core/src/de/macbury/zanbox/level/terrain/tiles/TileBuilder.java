@@ -81,11 +81,10 @@ public class TileBuilder extends MeshAssembler {
     }
   }
 
-  public void topFace(float x, float y, float z, byte tileID) {//TODO implement static height
+  public void topFace(float x, float y, float z, byte tileID, boolean flip) {//TODO implement static height
     TextureRegion region = regionForTile(tileID);
     topFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2());
   }
-
 
   public void backFace(float x, float y, float z, byte tileID, boolean outside) {
     TextureRegion region = regionForTile(tileID);
@@ -107,4 +106,23 @@ public class TileBuilder extends MeshAssembler {
     rightFace(x, y, z, Tile.SIZE, Tile.SIZE, Tile.SIZE, region.getU(), region.getV(), region.getU2(), region.getV2(), outside);
   }
 
+  public void shadeBottom() {
+    this.bottomLeftVertex.shade = true;
+    this.bottomRightVertex.shade = true;
+  }
+
+  public void shadeTop() {
+    this.topLeftVertex.shade = true;
+    this.topRightVertex.shade = true;
+  }
+
+  public void shadeLeft() {
+    this.topLeftVertex.shade = true;
+    this.bottomLeftVertex.shade = true;
+  }
+
+  public void shadeRight() {
+    this.topRightVertex.shade = true;
+    this.bottomRightVertex.shade = true;
+  }
 }

@@ -17,9 +17,9 @@ public class WorldEnv extends Environment {
   public WorldEnv() {
     this.ambientColor = new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f);
     this.sunLight     = new DirectionalLight();
-    this.shadeColor   = new Color(0.1f, 0.1f, 0.1f, 0.1f);
-
-    this.sunLight.set(1f, 1f, 1f, 0.5f, -0.5f, -0.5f);
+    this.shadeColor   = new Color(80f/255f, 80f/255f, 80f/255f, 1f);
+    //0x505050
+    this.sunLight.set(80f/255f, 80f/255f, 80f/255f, 0.5f, -0.5f, -0.5f);
     set(ambientColor);
     add(sunLight);
   }

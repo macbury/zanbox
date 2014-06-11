@@ -48,6 +48,7 @@ public class TerrainShader extends CoreShader {
     context.setCullFace(GL20.GL_BACK);
     context.setDepthMask(true);
     context.setDepthTest(GL20.GL_LEQUAL);
+    //set(u_shadeColor, Zanbox.level.env.shadeColor);
   }
 
 

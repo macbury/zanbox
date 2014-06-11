@@ -135,29 +135,88 @@ public class GroundLayer extends Layer {
           byte leftTile   = provider.getTile(worldX-1, worldZ, index);
           byte rightTile  = provider.getTile(worldX+1, worldZ, index);
 
+          byte topLeftTile     = provider.getTile(worldX-1, worldZ+1, index);
+          byte topRightTile    = provider.getTile(worldX+1, worldZ+1, index);
+          byte bottomRightTile = provider.getTile(worldX+1, worldZ-1, index);
+          byte bottomLeftTile  = provider.getTile(worldX-1, worldZ-1, index);
+
           float y = Tile.height(tile);
 
           if (Tile.isLiquid(tile)) {
-            if (Tile.isNextNotLiquid(tile, topTile))
+            if (Tile.isNextNotLiquid(tile, topTile)) {
               builder.frontFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(topTile), true);
-            if (Tile.isNextNotLiquid(tile, bottomTile))
+              builder.shadeTop();
+            }
+
+            if (Tile.isNextNotLiquid(tile, bottomTile)) {
               builder.backFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(bottomTile), true);
+            }
+
             if (Tile.isNextNotLiquid(tile, leftTile))
               builder.leftFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(leftTile), true);
             if (Tile.isNextNotLiquid(tile,rightTile))
               builder.rightFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.waterWall(rightTile), true);
-            builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT);
+
+            builder.topFace(x, Tile.LIQUID_BOTTOM_HEIGHT, z, Tile.DIRT, false);
+
           } else {
-            if (tile != Tile.NONE)
-              builder.topFace(x, y, z, tile);
-            if (Tile.isNextNotWall(tile, bottomTile))
+            if (tile != Tile.NONE) {
+              builder.topFace(x, y, z, tile, true);
+
+              if (Tile.isNextWall(tile, topTile)) {
+                builder.shadeBottom();
+              }
+
+              if (Tile.isNextWall(tile, bottomTile)) {
+                builder.shadeTop();
+              }
+
+              if (Tile.isNextWall(tile, leftTile)) {
+                builder.shadeLeft();
+              }
+
+              if (Tile.isNextWall(tile, rightTile)) {
+                builder.shadeRight();
+              }
+
+              if (Tile.isNextWall(tile, topLeftTile)) {
+                builder.bottomLeftVertex.shade = true;
+              }
+
+              if (Tile.isNextWall(tile, bottomLeftTile)) {
+                builder.topLeftVertex.shade = true;
+              }
+
+              if (Tile.isNextWall(tile, topRightTile)) {
+                builder.bottomRightVertex.shade = true;
+              }
+
+              if (Tile.isNextWall(tile, bottomRightTile)) {
+                builder.topRightVertex.shade = true;
+              }
+            }
+
+            if (Tile.isNextNotWall(tile, bottomTile)) {
               builder.backFace(x, Tile.GROUND_HEIGHT, z, tile, false);
-            if (Tile.isNextNotWall(tile, topTile))
+              if (Tile.isNextNotLiquid(tile, bottomTile))
+                builder.shadeBottom();
+            }
+
+            if (Tile.isNextNotWall(tile, topTile)) {
               builder.frontFace(x, Tile.GROUND_HEIGHT, z, tile, false);
-            if (Tile.isNextNotWall(tile, leftTile))
+              builder.shadeBottom();
+            }
+
+            if (Tile.isNextNotWall(tile, leftTile)) {
               builder.leftFace(x, Tile.GROUND_HEIGHT, z, tile, false);
-            if (Tile.isNextNotWall(tile,rightTile))
+              builder.shadeBottom();
+            }
+
+            if (Tile.isNextNotWall(tile,rightTile)) {
               builder.rightFace(x, Tile.GROUND_HEIGHT, z, tile, false);
+              builder.shadeBottom();
+            }
+
           }
         }
       }
@@ -194,7 +253,7 @@ public class GroundLayer extends Layer {
 
           byte tile       = provider.getTile(worldX, worldZ, index);//getTileByLocalTilePosition(tx, tz);
           if(Tile.isLiquid(tile))
-            builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile);
+            builder.topFace(x, Tile.LIQUID_HEIGHT, z, tile, false);
         }
       }
     } builder.end();

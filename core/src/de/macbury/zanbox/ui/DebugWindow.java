@@ -110,8 +110,8 @@ public class DebugWindow extends Dialog implements TimerListener {
   public void setVisible(boolean visible) {
     super.setVisible(visible);
     setWidth(480);
-    setHeight(240);
-    setPosition(getStage().getWidth() - getWidth()-10, 10);
+    setHeight(260);
+    setPosition(getStage().getWidth() - getWidth()-11, 11);
 
   }
 

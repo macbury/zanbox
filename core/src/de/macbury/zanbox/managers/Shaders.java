@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.graphics.shaders.ShaderManager;
+import de.macbury.zanbox.utils.FB;
 
 
 /**
@@ -38,6 +39,9 @@ public class Shaders extends ShaderManager {
     add(SHADER_SPRITES, "sprite.vert.glsl", "sprite.frag.glsl");
     add(SHADER_TERRAIN, "terrain.vert.glsl", "terrain.frag.glsl");
     add(SHADER_LIQUID, "liquid.vert.glsl", "liquid.frag.glsl");
+
+    //createFB(FB.UI, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
   }
 
   private void loadHelpers() {
@@ -80,6 +84,11 @@ public class Shaders extends ShaderManager {
     if (frag == null || vert == null)
       return false;
     vert = applyHelpers(vert);
+    frag = applyHelpers(frag);
     return super.init(key, vert, frag);
+  }
+
+  public void beginUI() {
+    beginFB(FB.UI);
   }
 }

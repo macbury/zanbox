@@ -33,6 +33,11 @@ public class MeshAssembler implements Disposable {
   protected ArrayList<VertexAttribute> attributes;
   private boolean empty;
 
+  public MeshVertexData topLeftVertex;
+  public MeshVertexData topRightVertex;
+  public MeshVertexData bottomLeftVertex;
+  public MeshVertexData bottomRightVertex;
+
   public MeshAssembler() {
     this.vertexsList      = new ArrayList<MeshVertexData>();
     this.attributeTypes   = new ArrayList<MeshVertexData.AttributeType>();
@@ -228,8 +233,8 @@ public class MeshAssembler implements Disposable {
       }
 
       if (usingShade) {
-        this.verties[vertexCursor++] = vertex.shade ? 1f : 0;
-        this.verties[vertexCursor++] = vertex.shade ? 1 : 0;
+        this.verties[vertexCursor++] = vertex.shade ? 0.8f : 0;
+        this.verties[vertexCursor++] = vertex.shade ? 0.8f : 0;
       }
     }
   }
@@ -298,44 +303,47 @@ public class MeshAssembler implements Disposable {
   }
 
   public void topFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2) {
-    int n1 = this.vertex(x, y, z);
+    int n1 = this.vertex(x, y, z); //top left
     uv(u, v2);
     normal(0,1,0);
-    int n2 = this.vertex(x, y, z + height);
+    this.topLeftVertex = currentVertex;
+
+    int n2 = this.vertex(x, y, z + height); // bottom left
     uv(u, v);
     normal(0,1,0);
-    int n3 = this.vertex(x + width, y, z);
+    this.bottomLeftVertex = currentVertex;
+
+    int n3 = this.vertex(x + width, y, z); //top right
     uv(u2,v2);
     normal(0,1,0);
     indices(n1, n2, n3);
+    this.topRightVertex = currentVertex;
 
-    n1 = this.vertex(x + width, y, z + height);
+    n1 = this.vertex(x + width, y, z + height); //bottom right
     indices(n3, n2, n1);
     normal(0,1,0);
     uv(u2,v);
+    this.bottomRightVertex = currentVertex;
   }
 
   public void frontFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
     int n1 = this.vertex(x, y,  z+depth); // bottom left
     uv(u, v2);
     normal(0,0,1);
-    shade();
+    this.bottomLeftVertex = currentVertex;
     int n2 = this.vertex(x+width, y,  z+depth); //bottom right
     uv(u2, v2);
-    shade();
     normal(0,0,1);
-
+    this.bottomRightVertex = currentVertex;
     int n3 = this.vertex(x+width,  y+height,  z+depth); //top right
     uv(u2,v);
     normal(0,0,1);
-
+    this.topRightVertex = currentVertex;
     if (outside) {
       indices(n3, n2, n1);
     } else {
       indices(n1, n2, n3);
     }
-
-
     n2 = this.vertex(x,  y+height,  z+depth); //top left
     normal(0, 0, 1);
     if (outside) {
@@ -344,17 +352,20 @@ public class MeshAssembler implements Disposable {
       indices(n1, n3, n2);
     }
     uv(u, v);
+    this.topLeftVertex = currentVertex;
   }
 
   public void backFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
     int n1 = this.vertex(x, y,  z);// bottom left
-    shade();
+    this.bottomLeftVertex = currentVertex;
     normal(0,0,-1);
     uv(u, v2);
     int n2 = this.vertex(x, y+height,  z); // top left
+    this.topLeftVertex = currentVertex;
     uv(u, v);
     normal(0,0,-1);
     int n3 = this.vertex(x+width,  y+height,  z); // top right
+    this.topRightVertex = currentVertex;
     uv(u2,v);
     normal(0,0,-1);
     if (outside) {
@@ -364,27 +375,28 @@ public class MeshAssembler implements Disposable {
     }
 
     n2 = this.vertex(x+width,  y,  z); //bottom right
+    this.bottomRightVertex = currentVertex;
     if (outside) {
       indices(n2, n3, n1);
     } else {
       indices(n1, n3, n2);
     }
 
-    shade();
     normal(0,0,-1);
     uv(u2,v2);
   }
 
   public void leftFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
     int n1 = this.vertex(x, y,  z); // bottom left
+    this.bottomLeftVertex = currentVertex;
     uv(u, v2);
-    shade();
     normal(-1,0,0);
     int n2 = this.vertex(x, y,  z+depth); //bottom right
+    this.bottomRightVertex = currentVertex;
     uv(u2, v2);
-    shade();
     normal(-1,0,0);
     int n3 = this.vertex(x, y+height, z+depth); //top right
+    this.topRightVertex = currentVertex;
     uv(u2, v);
     normal(-1, 0, 0);
 
@@ -395,6 +407,7 @@ public class MeshAssembler implements Disposable {
     }
 
     n2 = this.vertex(x,  y+height,  z); // top left
+    this.topLeftVertex = currentVertex;
     uv(u,v);
     normal(-1,0,0);
 
@@ -409,12 +422,14 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x+width, y, z); //bottom right
     uv(u2, v2);
     normal(1,0,0);
-    shade();
+    this.bottomRightVertex = currentVertex;
     int n2 = this.vertex(x+width, y+height, z); //top right
+    this.topRightVertex = currentVertex;
     uv(u2, v);
     normal(1,0,0);
 
     int n3 = this.vertex(x+width, y+height, z+depth); //top left
+    this.topLeftVertex = currentVertex;
     uv(u, v);
     if (outside) {
       indices(n3, n2, n1);
@@ -425,8 +440,7 @@ public class MeshAssembler implements Disposable {
     normal(1, 0, 0);
 
     n2 = this.vertex(x+width, y, z+depth); // bottom left
-
-    shade();
+    this.bottomLeftVertex = this.currentVertex;
     uv(u,v2);
     normal(1,0,0);
 
@@ -441,16 +455,20 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x, y,  z+depth); // bottom left
     uv(u, v2);
     normal(0,0,1);
+    this.bottomLeftVertex = this.currentVertex;
     int n2 = this.vertex(x+width, y,  z+depth); //bottom right
+    this.bottomRightVertex = this.currentVertex;
     uv(u2, v2);
     normal(0,0,1);
 
     int n3 = this.vertex(x+width,  y+height,  z); //top right
+    this.topRightVertex = this.currentVertex;
     uv(u2,v);
     normal(0,0,1);
     indices(n1, n2, n3);
 
     n2 = this.vertex(x,  y+height,  z); //top left
+    this.topLeftVertex = this.currentVertex;
     normal(0, 0, 1);
     indices(n1, n3, n2);
     uv(u, v);

@@ -12,8 +12,9 @@ import de.macbury.zanbox.ui.widgets.NormalButton;
  * Created by macbury on 10.06.14.
  */
 public class MainMenuStage extends BaseMenuStage {
-  private static final float BUTTON_WIDTH = 240;
+  private static final float BUTTON_WIDTH = 320;
   private static final float BUTTON_PADDING_BOTTOM = 10;
+  private static final float BUTTON_HEIGHT = 60;
   private final NormalButton newWorldButton;
   private final NormalButton loadWorldButton;
   private final NormalButton settingsButton;
@@ -40,7 +41,7 @@ public class MainMenuStage extends BaseMenuStage {
 
   private void button(TextButton button) {
     mainTable.row(); {
-      mainTable.add(button).width(BUTTON_WIDTH).padBottom(BUTTON_PADDING_BOTTOM);
+      mainTable.add(button).width(BUTTON_WIDTH).padBottom(BUTTON_PADDING_BOTTOM).height(BUTTON_HEIGHT);
     }
   }
 }

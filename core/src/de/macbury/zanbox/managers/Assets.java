@@ -20,9 +20,9 @@ public class Assets extends AssetManager {
 
   public void init() {
     BitmapFontLoader.BitmapFontParameter fontParameter = new BitmapFontLoader.BitmapFontParameter();
-    fontParameter.genMipMaps = true;
-    fontParameter.magFilter  = Texture.TextureFilter.MipMapNearestNearest;
-    fontParameter.minFilter  = Texture.TextureFilter.MipMapNearestNearest;
+    fontParameter.genMipMaps = false;
+    fontParameter.magFilter  = Texture.TextureFilter.Nearest;
+    fontParameter.minFilter  = Texture.TextureFilter.Nearest;
 
     load(GUI_TEXTURE,     TextureAtlas.class);
     load(MAIN_FONT, BitmapFont.class, fontParameter);

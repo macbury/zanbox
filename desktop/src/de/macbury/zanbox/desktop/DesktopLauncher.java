@@ -8,9 +8,9 @@ import de.macbury.zanbox.Zanbox;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-    config.width = 800;
-    config.height = 600;
-    config.samples = 1;
-		new LwjglApplication(new Zanbox(), config);
+    config.width  = 1280;
+    config.height = 768;
+    config.samples = 0;
+		new LwjglApplication(new Zanbox(new DebugDesktop()), config);
 	}
 }

@@ -19,7 +19,6 @@ varying vec3   v_normal;
 varying vec3   v_lightDiffuse;
 varying vec3   v_position;
 
-
 void main() {
     v_texCoords0   = a_texCoord0;
     v_shadeFactory = a_shade.x;
