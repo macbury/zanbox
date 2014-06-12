@@ -648,7 +648,7 @@ public class ShaderManager {
 	}
 
 	private String appendGLESPrecisions(String shader) {
-		return appendGLESPrecisions(shader, "mediump");
+		return shader;
 	}
 
 	/**

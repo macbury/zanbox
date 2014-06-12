@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by macbury on 15.03.14.
  */
 public class MeshAssembler implements Disposable {
-
+  private static final String BARYCENTRIC_ATTRIBUTE = "a_barycentric";
   private static final String SHADE_ATTRIBUTE = "a_shade";
   private final Pool<MeshVertexData> meshVertexPool      = Pools.get(MeshVertexData.class);
   private final Pool<MeshVertexIndex> vertexIndeciesPool = Pools.get(MeshVertexIndex.class);
@@ -74,6 +74,10 @@ public class MeshAssembler implements Disposable {
     }
 
     if (isUsing(MeshVertexData.AttributeType.Shading)) {
+      count+=2;
+    }
+
+    if (isUsing(MeshVertexData.AttributeType.Barycentric)) {
       count+=2;
     }
 
@@ -165,6 +169,29 @@ public class MeshAssembler implements Disposable {
     using(MeshVertexData.AttributeType.Normal);
   }
 
+  public void barycenric(float x, float y) {
+    checkIfStarted();
+    currentVertex.barycentric.set(x, y);
+    using(MeshVertexData.AttributeType.Barycentric);
+  }
+
+  public void topRightBarycentric() {
+    barycenric(1,0);
+  }
+
+  public void topLeftBarycentric() {
+    barycenric(0,0);
+  }
+
+  public void bottomRightBarycentric() {
+    barycenric(1,1);
+  }
+
+  public void bottomLeftBarycentric() {
+    barycenric(0,1);
+  }
+
+
   public void shade() {
     currentVertex.shade = true;
   }
@@ -194,10 +221,11 @@ public class MeshAssembler implements Disposable {
     this.verties = new float[this.vertexsList.size() * getAttributesPerVertex()];
     this.indices = new short[this.vertexIndexes.size() * 3];
 
-    boolean usingTextCord = isUsing(MeshVertexData.AttributeType.TextureCord);
-    boolean usingNormals  = isUsing(MeshVertexData.AttributeType.Normal);
-    boolean usingColor    = isUsing(MeshVertexData.AttributeType.Color);
-    boolean usingShade    = isUsing(MeshVertexData.AttributeType.Shading);
+    boolean usingTextCord       = isUsing(MeshVertexData.AttributeType.TextureCord);
+    boolean usingNormals        = isUsing(MeshVertexData.AttributeType.Normal);
+    boolean usingColor          = isUsing(MeshVertexData.AttributeType.Color);
+    boolean usingShade          = isUsing(MeshVertexData.AttributeType.Shading);
+    boolean usingBarycentric    = isUsing(MeshVertexData.AttributeType.Barycentric);
 
     int cursor = 0;
     for (MeshVertexIndex index : this.vertexIndexes) {
@@ -235,6 +263,11 @@ public class MeshAssembler implements Disposable {
       if (usingShade) {
         this.verties[vertexCursor++] = vertex.shade ? 0.8f : 0;
         this.verties[vertexCursor++] = vertex.shade ? 0.8f : 0;
+      }
+
+      if (usingBarycentric) {
+        this.verties[vertexCursor++] = vertex.barycentric.x;
+        this.verties[vertexCursor++] = vertex.barycentric.y;
       }
     }
   }
@@ -291,6 +324,10 @@ public class MeshAssembler implements Disposable {
       attributes.add(new VertexAttribute(VertexAttributes.Usage.Generic, 2, SHADE_ATTRIBUTE));
     }
 
+    if (isUsing(MeshVertexData.AttributeType.Barycentric)) {
+      attributes.add(new VertexAttribute(VertexAttributes.Usage.Tangent, 2, BARYCENTRIC_ATTRIBUTE));
+    }
+
     return attributes.toArray(new VertexAttribute[attributes.size()]);
   }
 
@@ -306,23 +343,27 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x, y, z); //top left
     uv(u, v2);
     normal(0,1,0);
+    topLeftBarycentric();
     this.topLeftVertex = currentVertex;
 
     int n2 = this.vertex(x, y, z + height); // bottom left
     uv(u, v);
     normal(0,1,0);
+    bottomLeftBarycentric();
     this.bottomLeftVertex = currentVertex;
 
     int n3 = this.vertex(x + width, y, z); //top right
     uv(u2,v2);
     normal(0,1,0);
     indices(n1, n2, n3);
+    topRightBarycentric();
     this.topRightVertex = currentVertex;
 
     n1 = this.vertex(x + width, y, z + height); //bottom right
     indices(n3, n2, n1);
     normal(0,1,0);
     uv(u2,v);
+    bottomRightBarycentric();
     this.bottomRightVertex = currentVertex;
   }
 
@@ -331,14 +372,17 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x, y,  z+depth); // bottom left
     uv(u, v2);
     normal(0,0,1*normalMode);
+    bottomLeftBarycentric();
     this.bottomLeftVertex = currentVertex;
     int n2 = this.vertex(x+width, y,  z+depth); //bottom right
     uv(u2, v2);
     normal(0,0,1*normalMode);
+    bottomRightBarycentric();
     this.bottomRightVertex = currentVertex;
     int n3 = this.vertex(x+width,  y+height,  z+depth); //top right
     uv(u2,v);
     normal(0,0,1*normalMode);
+    topRightBarycentric();
     this.topRightVertex = currentVertex;
     if (outside) {
       indices(n3, n2, n1);
@@ -347,6 +391,7 @@ public class MeshAssembler implements Disposable {
     }
     n2 = this.vertex(x,  y+height,  z+depth); //top left
     normal(0, 0, 1*normalMode);
+    topLeftBarycentric();
     if (outside) {
       indices(n2, n3, n1);
     } else {
@@ -359,14 +404,17 @@ public class MeshAssembler implements Disposable {
   public void backFace(float x, float y, float z, float width, float height, float depth, float u, float v, float u2, float v2, boolean outside) {
     int normalMode = outside ? -1 : 1;
     int n1 = this.vertex(x, y,  z);// bottom left
+    bottomLeftBarycentric();
     this.bottomLeftVertex = currentVertex;
     normal(0,0,-1 * normalMode);
     uv(u, v2);
     int n2 = this.vertex(x, y+height,  z); // top left
+    topLeftBarycentric();
     this.topLeftVertex = currentVertex;
     uv(u, v);
     normal(0,0,-1 * normalMode);
     int n3 = this.vertex(x+width,  y+height,  z); // top right
+    topRightBarycentric();
     this.topRightVertex = currentVertex;
     uv(u2,v);
     normal(0,0,-1 * normalMode);
@@ -377,6 +425,7 @@ public class MeshAssembler implements Disposable {
     }
 
     n2 = this.vertex(x+width,  y,  z); //bottom right
+    bottomRightBarycentric();
     this.bottomRightVertex = currentVertex;
     if (outside) {
       indices(n2, n3, n1);
@@ -392,13 +441,16 @@ public class MeshAssembler implements Disposable {
     int normalMode = outside ? 1 : -1;
     int n1 = this.vertex(x, y,  z); // bottom left
     this.bottomLeftVertex = currentVertex;
+    bottomLeftBarycentric();
     uv(u, v2);
     normal(-1 * normalMode,0,0);
     int n2 = this.vertex(x, y,  z+depth); //bottom right
+    bottomRightBarycentric();
     this.bottomRightVertex = currentVertex;
     uv(u2, v2);
     normal(-1 * normalMode,0,0);
     int n3 = this.vertex(x, y+height, z+depth); //top right
+    topRightBarycentric();
     this.topRightVertex = currentVertex;
     uv(u2, v);
     normal(-1 * normalMode, 0, 0);
@@ -411,6 +463,7 @@ public class MeshAssembler implements Disposable {
 
     n2 = this.vertex(x,  y+height,  z); // top left
     this.topLeftVertex = currentVertex;
+    topLeftBarycentric();
     uv(u,v);
     normal(-1 * normalMode,0,0);
 
@@ -426,15 +479,18 @@ public class MeshAssembler implements Disposable {
     int n1 = this.vertex(x+width, y, z); //bottom right
     uv(u2, v2);
     normal(1*normalMode,0,0);
+    bottomRightBarycentric();
     this.bottomRightVertex = currentVertex;
     int n2 = this.vertex(x+width, y+height, z); //top right
     this.topRightVertex = currentVertex;
     uv(u2, v);
+    topRightBarycentric();
     normal(1*normalMode,0,0);
 
     int n3 = this.vertex(x+width, y+height, z+depth); //top left
     this.topLeftVertex = currentVertex;
     uv(u, v);
+    topLeftBarycentric();
     if (outside) {
       indices(n3, n2, n1);
     } else {
@@ -447,7 +503,7 @@ public class MeshAssembler implements Disposable {
     this.bottomLeftVertex = this.currentVertex;
     uv(u,v2);
     normal(1*normalMode,0,0);
-
+    bottomLeftBarycentric();
     if (outside) {
       indices(n2, n3, n1);
     } else {

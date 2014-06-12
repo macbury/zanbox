@@ -31,6 +31,6 @@ public class CullingSystem extends EntityProcessingSystem {
     PositionComponent  positionComponent  = positionMapper.get(entity);
     VisibleComponent   visibleComponent   = visibleMapper.get(entity);
 
-    visibleComponent.visible = level.chunksRenderables.boundingBox.intersects(boxComponent.getBoundingBox(positionComponent.vector));
+    visibleComponent.visible = level.chunksRenderables.visibleBoundingBox.intersects(boxComponent.getBoundingBox(positionComponent.vector));
   }
 }

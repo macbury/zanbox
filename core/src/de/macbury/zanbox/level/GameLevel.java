@@ -138,7 +138,7 @@ public class GameLevel extends World implements Disposable {
         DebugShape.drawMap(shapeRenderer, chunksRenderables);
         shapeRenderer.setColor(Color.MAGENTA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        DebugShape.draw(shapeRenderer, chunksRenderables.boundingBox);
+        DebugShape.draw(shapeRenderer, chunksRenderables.visibleBoundingBox);
         shapeRenderer.end();
       } renderContext.end();
     }

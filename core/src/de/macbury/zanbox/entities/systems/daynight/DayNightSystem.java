@@ -66,7 +66,7 @@ public class DayNightSystem extends VoidEntitySystem {
     timeOfDays.add(curNight);
 
     setTime(12 * 3600);
-    setSpeedTimeFactor(10);
+    setSpeedTimeFactor(1);
   }
 
   @Override

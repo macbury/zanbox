@@ -27,7 +27,7 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
   private Chunk currentChunk;
   private Vector3 minVector = new Vector3();
   private Vector3 maxVector = new Vector3();
-  public BoundingBox boundingBox;
+  public BoundingBox visibleBoundingBox;
   public Array<LayerSector> totalSectors;
   public Array<LayerSector> visibleSectors;
 
@@ -37,7 +37,7 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
     this.visibleChunks      = new Array<Chunk>();
     this.visibleSectors     = new Array<LayerSector>();
     this.totalSectors       = new Array<LayerSector>();
-    this.boundingBox        = new BoundingBox();
+    this.visibleBoundingBox = new BoundingBox();
   }
 
   @Override
@@ -100,7 +100,7 @@ public class ChunksRenderables implements RenderableProvider, Disposable {
       //TODO: unload chunksProvider that are out of screen and are farthest from it and if chunk size exceeds MAX_CHUNKS_IN_MEMORY
     }
 
-    boundingBox.set(minVector, maxVector);
+    visibleBoundingBox.set(minVector, maxVector);
   }
 
   @Override

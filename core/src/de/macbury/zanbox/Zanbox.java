@@ -30,6 +30,10 @@ public class Zanbox extends Game {
     this.debug = debug;
   }
 
+  public Zanbox() {
+    super();
+  }
+
   @Override
 	public void create () {
     fpsLogger = new FPSLogger();

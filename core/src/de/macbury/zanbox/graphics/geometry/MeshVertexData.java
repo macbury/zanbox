@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class MeshVertexData implements Pool.Poolable {
   public static enum AttributeType {
-    Position, Normal, TextureCord, Color, Shading
+    Position, Normal, TextureCord, Color, Shading, Barycentric
   }
 
   public boolean shade;
@@ -15,11 +15,13 @@ public class MeshVertexData implements Pool.Poolable {
   public Vector3 normal;
   public Vector2 uv;
   public Color color;
+  public Vector2 barycentric;
 
   public MeshVertexData() {
     position  = new Vector3();
     normal    = new Vector3();
     uv        = new Vector2();
+    barycentric = new Vector2();
     color     = new Color(1,1,1,1);
     shade     = false;
     reset();
@@ -30,6 +32,7 @@ public class MeshVertexData implements Pool.Poolable {
     position.set(0,0,0);
     normal.set(0,0,0);
     uv.set(0,0);
+    barycentric.set(0,0);
     color.set(Color.WHITE);
     shade = false;
   }

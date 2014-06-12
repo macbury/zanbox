@@ -44,6 +44,7 @@ public class TerrainShader extends CoreShader {
 
   @Override
   public void begin(Camera camera, RenderContext context) {
+    this.program = Zanbox.shaders.get(Shaders.SHADER_TERRAIN);
     super.begin(camera, context);
     context.setCullFace(GL20.GL_BACK);
     context.setDepthMask(true);

@@ -6,6 +6,7 @@ import de.macbury.zanbox.Zanbox;
 import de.macbury.zanbox.screens.BaseScreen;
 import de.macbury.zanbox.screens.LoadingScreen;
 import de.macbury.zanbox.screens.game.GameScreen;
+import de.macbury.zanbox.screens.menu.MainMenuScreen;
 
 /**
  * Created by macbury on 26.05.14.
@@ -33,7 +34,7 @@ public class Screens implements Disposable {
   }
 
   public void showGameMenu() {
-    enter(new GameScreen());
+    enter(new MainMenuScreen());
   }
 
   public void enter(BaseScreen screen) {

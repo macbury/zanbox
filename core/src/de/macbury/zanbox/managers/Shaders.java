@@ -41,7 +41,6 @@ public class Shaders extends ShaderManager {
     add(SHADER_LIQUID, "liquid.vert.glsl", "liquid.frag.glsl");
 
     //createFB(FB.UI, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
   }
 
   private void loadHelpers() {

@@ -126,7 +126,7 @@ public class DebugWindow extends Dialog implements TimerListener {
     fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
     visibleChunks.setText("Chunks(Visible/Total): " + renderables.visibleChunks.size + "/" + provider.chunks.size);
     visibleChunkRenderablesLabel.setText("Chunk parts(V/T): " + renderables.visibleSectors.size + "/"+renderables.totalSectors.size);
-    visiblityBoundingBoxLabel.setText("World Box " + renderables.boundingBox.toString());
+    visiblityBoundingBoxLabel.setText("World Box " + renderables.visibleBoundingBox.toString());
     memoryLabel.setText("Memory(Java/Native): " + convertToStringRepresentation(Gdx.app.getJavaHeap()) + "/" + convertToStringRepresentation(Gdx.app.getNativeHeap()));
 
     BiomeDefinition tileID = provider.getTile(Math.round(Zanbox.level.worldPosition.x), Math.round(Zanbox.level.worldPosition.z), Zanbox.level.currentLayer);
